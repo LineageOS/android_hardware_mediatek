@@ -1,0 +1,9 @@
+on init
+    # LiveDisplay mediatek
+    chown system system /sys/devices/platform/mtk_disp_mgr.0/rgb
+    chmod 0660 /sys/devices/platform/mtk_disp_mgr.0/rgb
+
+service vendor.livedisplay-hal-2-0-mediatek /vendor/bin/hw/vendor.lineage.livedisplay@2.0-service-mediatek
+    class hal
+    user system
+    group system
