@@ -27,7 +27,7 @@ cc_library_shared {
     srcs: ["BootControl.cpp", "boot_region_control.cpp"],
     cppflags: ["-Wno-unused-variable"],
     cflags: ["-Wno-unused-variable"],
-    header_libs: ["device_kernel_headers"],
+    header_libs: ["generated_kernel_headers"],
 
     shared_libs: [
         "liblog",

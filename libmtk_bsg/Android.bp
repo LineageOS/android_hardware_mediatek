@@ -10,6 +10,6 @@ cc_library_shared {
     recovery_available: true,
     srcs: ["*.c"],
 
-    header_libs: ["device_kernel_headers"],
+    header_libs: ["generated_kernel_headers"],
     export_include_dirs: ["include"],
 }
