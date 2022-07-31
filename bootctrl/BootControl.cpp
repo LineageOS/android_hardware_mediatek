@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define LOG_TAG "android.hardware.boot@1.1-mtkimpl"
+#define LOG_TAG "android.hardware.boot@1.2-mtkimpl"
 
 #include <memory>
 
@@ -28,7 +28,7 @@
 namespace android {
 namespace hardware {
 namespace boot {
-namespace V1_1 {
+namespace V1_2 {
 namespace implementation {
 
 using ::android::hardware::boot::V1_0::CommandResult;
@@ -140,6 +140,10 @@ Return<bool> BootControl::setSnapshotMergeStatus(MergeStatus status) {
 
 Return<MergeStatus> BootControl::getSnapshotMergeStatus() {
     return impl_.GetSnapshotMergeStatus();
+}
+
+Return<uint32_t> BootControl::getActiveBootSlot() {
+    return impl_.GetActiveBootSlot();
 }
 
 IBootControl* HIDL_FETCH_IBootControl(const char* /* hal */) {

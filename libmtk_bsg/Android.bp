@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2021, Mediatek Inc. All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+cc_library_shared {
+    name: "libmtk_bsg",
+    vendor: true,
+    recovery_available: true,
+    srcs: ["*.c"],
+
+    header_libs: ["device_kernel_headers"],
+    export_include_dirs: ["include"],
+}

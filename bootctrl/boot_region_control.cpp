@@ -11,6 +11,9 @@
 #endif
 
 #include "boot_region_control_private.h"
+extern "C"{
+    #include "mtk_ioctl.h"
+}
 
 namespace android {
 namespace bootable {
@@ -107,9 +110,10 @@ static bool ufs_set_active_boot_part(int boot)
     idata.buf_byte = 1;
 
     if (ioctl(fd, UFS_IOCTL_QUERY, &idata) < 0) {
-      LOG(ERROR) << "ufs_set boot_part fail";
-      ret = false;
+      LOG(ERROR) << "ufs_set boot_part old fail";
+      ret = ioctrl_w_attr("/dev/ufs-bsg0", QUERY_ATTR_IDN_BOOT_LUN_EN, 0, 0, boot);
     }
+
     close(fd);
     return ret;
 }
