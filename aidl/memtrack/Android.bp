@@ -1,0 +1,19 @@
+cc_binary {
+    name: "android.hardware.memtrack-service.mediatek-mali",
+    relative_install_path: "hw",
+    init_rc: ["memtrack_default.rc"],
+    vintf_fragments: ["memtrack_default.xml"],
+    vendor: true,
+    shared_libs: [
+        "android.hardware.memtrack-V1-ndk",
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+    ],
+    srcs: [
+        "Memtrack.cpp",
+        "GpuSysfsReader.cpp",
+        "filesystem.cpp",
+        "main.cpp",
+    ],
+}
