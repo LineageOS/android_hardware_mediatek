@@ -1,5 +1,3 @@
-ifeq ($(TARGET_USES_MTK_POWERHAL),true)
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -30,5 +28,3 @@ ifneq ($(TARGET_POWERHAL_MODE_EXT),)
 endif
 
 include $(BUILD_SHARED_LIBRARY)
-
-endif # TARGET_USES_MTK_POWERHAL
