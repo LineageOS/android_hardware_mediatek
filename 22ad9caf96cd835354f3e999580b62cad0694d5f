@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf674e9c_a6490f67",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/BesLoudnessManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "expectedValue",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c930dd_b3a0d801",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/BesLoudnessManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ddbef88_be7f146d",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/PreferenceActivity.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a962fb_c16c90bd",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/PreferenceActivity.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a2bdb9_68bb493f",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/PreferenceActivity.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "839520f0_bf114850",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/PreferenceActivity.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-11T15:31:29Z",
+      "side": 1,
+      "message": "remove newline",
+      "revId": "22ad9caf96cd835354f3e999580b62cad0694d5f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
