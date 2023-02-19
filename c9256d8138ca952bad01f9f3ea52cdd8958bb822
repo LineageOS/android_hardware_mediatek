@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a6e63e_3910b00b",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/BesLoudnessManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-19T12:14:23Z",
+      "side": 1,
+      "message": "should be \"defaultValue\" now, it\u0027s not static final anymore",
+      "range": {
+        "startLine": 34,
+        "startChar": 22,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "c9256d8138ca952bad01f9f3ea52cdd8958bb822",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61b192a0_930c606e",
+        "filename": "BesLoudness/src/org/lineageos/settings/device/BesLoudnessManager.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 13028
+      },
+      "writtenOn": "2023-02-19T12:14:23Z",
+      "side": 1,
+      "message": "same",
+      "revId": "c9256d8138ca952bad01f9f3ea52cdd8958bb822",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
