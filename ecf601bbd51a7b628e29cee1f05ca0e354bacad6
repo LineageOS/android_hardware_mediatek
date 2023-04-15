@@ -34,6 +34,24 @@
       "parentUuid": "734b5f34_7c8ba264",
       "revId": "ecf601bbd51a7b628e29cee1f05ca0e354bacad6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9647e4_0a8b2431",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2023-04-15T16:46:23Z",
+      "side": 1,
+      "message": "I\u0027m fairly certain he needs to release those under Teracube name/account, not with his personal account.\n\nAdding Nolen for opinions",
+      "parentUuid": "eafdc0f1_a9af08ba",
+      "revId": "ecf601bbd51a7b628e29cee1f05ca0e354bacad6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
