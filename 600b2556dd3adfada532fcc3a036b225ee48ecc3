@@ -16,6 +16,24 @@
       "message": "why is effect and strength gated together?",
       "revId": "600b2556dd3adfada532fcc3a036b225ee48ecc3",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "991a0582_e7f4e37b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-05-05T17:37:42Z",
+      "side": 1,
+      "message": "nvm didn\u0027t see it already was this way",
+      "parentUuid": "a99f6f6b_aa065d74",
+      "revId": "600b2556dd3adfada532fcc3a036b225ee48ecc3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
