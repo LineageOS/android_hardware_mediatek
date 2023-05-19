@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "881dac12_eb8c7276",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32222
+      },
+      "writtenOn": "2023-05-19T20:27:27Z",
+      "side": 1,
+      "message": "Works well on nashc (mt6785), LGTM. Don\u0027t see why it won\u0027t work on other MediaTek platforms that use Mali but never hurts to double check.",
+      "revId": "6ac4027d8dff83fd289142c60f63fec7f30bb54e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
