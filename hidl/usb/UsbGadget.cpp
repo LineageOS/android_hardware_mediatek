@@ -33,9 +33,6 @@ namespace gadget {
 namespace V1_1 {
 namespace implementation {
 
-// For EngineerMode BypassService
-#define BYPASS (1 << 15)
-
 bool kByPassUsbd;
 bool kExitCheckThread;
 bool kUsbPullUp;
@@ -250,12 +247,6 @@ static V1_0::Status switchUsbFunctions(uint64_t functions) {
         case V1_0::GadgetFunction::ADB | V1_0::GadgetFunction::ACCESSORY |
                 V1_0::GadgetFunction::AUDIO_SOURCE:
             f_str = "accessory,audio_source,adb";
-            break;
-        case BYPASS:
-            f_str = "via_bypass";
-            break;
-        case V1_0::GadgetFunction::ADB | BYPASS:
-            f_str = "via_bypass,adb";
             break;
         default:
             ALOGE("Combination not supported");
