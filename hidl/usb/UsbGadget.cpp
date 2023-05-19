@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.usb@1.2-service-mediatekv2"
+#define LOG_TAG "android.hardware.usb@1.3-service-mediatekv2"
 
 #include "UsbGadget.h"
 #include <dirent.h>
