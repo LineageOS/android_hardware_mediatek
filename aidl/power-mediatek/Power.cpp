@@ -43,9 +43,21 @@ extern bool isDeviceSpecificModeSupported(Mode type, bool* _aidl_return);
 extern bool setDeviceSpecificMode(Mode type, bool enabled);
 #endif
 
-const std::vector<Boost> BOOST_RANGE{ndk::enum_range<Boost>().begin(),
-                                     ndk::enum_range<Boost>().end()};
-const std::vector<Mode> MODE_RANGE{ndk::enum_range<Mode>().begin(), ndk::enum_range<Mode>().end()};
+const std::vector<Boost> SUPPORTED_BOOSTS {
+    Boost::INTERACTION,
+    Boost::DISPLAY_UPDATE_IMMINENT,
+};
+
+const std::vector<Mode> SUPPORTED_MODES {
+#ifdef TAP_TO_WAKE_NODE
+    Mode::DOUBLE_TAP_TO_WAKE,
+#endif
+    Mode::LOW_POWER,
+    Mode::SUSTAINED_PERFORMANCE,
+    Mode::LAUNCH,
+    Mode::EXPENSIVE_RENDERING,
+    Mode::INTERACTIVE,
+};
 
 Power::Power() {
     powerHandle = dlopen(POWERHAL_LIB_NAME, RTLD_LAZY);
@@ -118,16 +130,16 @@ ndk::ScopedAStatus Power::setMode(Mode type, bool enabled) {
 #endif
         case Mode::LAUNCH:
         {
-            if (mLowPowerEnabled)
+            if (mLowPowerEnabled && !mLaunchHandle)
                 break;
 
-            if (mHandle != 0) {
-                libpowerhal_LockRel(mHandle);
-                mHandle = 0;
+            if (mLaunchHandle != 0) {
+                libpowerhal_LockRel(mLaunchHandle);
+                mLaunchHandle = 0;
             }
 
-            if (enabled)
-                mHandle = libpowerhal_CusLockHint(11, 30000, getpid());
+            if (enabled && !mLowPowerEnabled)
+                mLaunchHandle = libpowerhal_CusLockHint(11, 30000, getpid());
 
             break;
         }
@@ -141,6 +153,36 @@ ndk::ScopedAStatus Power::setMode(Mode type, bool enabled) {
                 /* Device entering non interactive state,
                    disable all hints to save power. */
                 libpowerhal_UserScnDisableAll();
+            break;
+        }
+        case Mode::EXPENSIVE_RENDERING:
+        {
+            if (mLowPowerEnabled && !mExpensiveRenderingHandle)
+                break;
+
+            if (mExpensiveRenderingHandle != 0) {
+                libpowerhal_LockRel(mExpensiveRenderingHandle);
+                mExpensiveRenderingHandle = 0;
+            }
+
+            if (enabled && !mLowPowerEnabled)
+                mExpensiveRenderingHandle = libpowerhal_CusLockHint(12, 0, getpid());
+
+            break;
+        }
+        case Mode::SUSTAINED_PERFORMANCE:
+        {
+            if (mLowPowerEnabled && !mSustainedPerformanceHandle)
+                break;
+
+            if (mSustainedPerformanceHandle != 0) {
+                libpowerhal_LockRel(mSustainedPerformanceHandle);
+                mSustainedPerformanceHandle = 0;
+            }
+
+            if (enabled && !mLowPowerEnabled)
+                mSustainedPerformanceHandle = libpowerhal_CusLockHint(8, 0, getpid());
+
             break;
         }
         case Mode::LOW_POWER:
@@ -160,38 +202,46 @@ ndk::ScopedAStatus Power::isModeSupported(Mode type, bool* _aidl_return) {
 #endif
 
     LOG(INFO) << "Power isModeSupported: " << static_cast<int32_t>(type);
-    *_aidl_return = type >= MODE_RANGE.front() && type <= MODE_RANGE.back();
+    *_aidl_return = std::find(SUPPORTED_MODES.begin(), SUPPORTED_MODES.end(), type) != SUPPORTED_MODES.end();
 
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Power::setBoost(Boost type, int32_t durationMs) {
+    int mediatek_type = 0;
+
     if (mLowPowerEnabled) {
-        LOG(INFO) << "Will not perform boosts in LOW_POWER";
+        LOG(VERBOSE) << "Will not perform boosts in LOW_POWER";
         return ndk::ScopedAStatus::ok();
     }
 
-    int32_t intType = static_cast<int32_t>(type);
+    switch (type) {
+        case Boost::INTERACTION:
+            LOG(VERBOSE) << "Power setBoost INTERACTION for: " << durationMs << "ms";
+            if (durationMs < 1)
+                durationMs = 80;
+            mediatek_type = 0; // INTERACTION
+            break;
+        case Boost::DISPLAY_UPDATE_IMMINENT:
+            LOG(VERBOSE) << "Power setBoost DISPLAY_UPDATE_IMMINENT for: " << durationMs << "ms";
+            mediatek_type = 1; // DISPLAY_UPDATE_IMMINENT
+            break;
+        default:
+            LOG(ERROR) << "Power unknown boost type: " << static_cast<int32_t>(type);
+            return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+    }
 
-    // Avoid boosts with 0 duration, as those will run indefinitely
-    if (type == Boost::INTERACTION && durationMs < 1)
-        durationMs = 80;
-
-    LOG(VERBOSE) << "Power setBoost: " << intType
-                 << ", duration: " << durationMs;
-
-    libpowerhal_CusLockHint(intType, durationMs, getpid());
+    libpowerhal_CusLockHint(mediatek_type, durationMs, getpid());
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Power::isBoostSupported(Boost type, bool* _aidl_return) {
     LOG(INFO) << "Power isBoostSupported: " << static_cast<int32_t>(type);
-    *_aidl_return = type >= BOOST_RANGE.front() && type <= BOOST_RANGE.back();
+    *_aidl_return = std::find(SUPPORTED_BOOSTS.begin(), SUPPORTED_BOOSTS.end(), type) != SUPPORTED_BOOSTS.end();
 
     return ndk::ScopedAStatus::ok();
 }
 
-#if POWERHAL_AIDL_VERSION == 2
 ndk::ScopedAStatus Power::createHintSession(int32_t, int32_t, const std::vector<int32_t>&, int64_t,
                                             std::shared_ptr<IPowerHintSession>* _aidl_return) {
     *_aidl_return = nullptr;
@@ -202,7 +252,6 @@ ndk::ScopedAStatus Power::getHintSessionPreferredRate(int64_t* outNanoseconds) {
     *outNanoseconds = -1;
     return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
-#endif
 
 }  // namespace mediatek
 }  // namespace impl
