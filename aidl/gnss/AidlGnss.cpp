@@ -16,7 +16,6 @@
 
 #define LOG_TAG "AidlGnss"
 
-#include <android/binder_manager.h>
 #include "AidlGnss.h"
 #include <log/log.h>
 #include "AidlGnssConfiguration.h"
@@ -212,20 +211,6 @@ void AidlGnss::gnssCapabilitiesCb(uint32_t capabilities) {
         ALOGE("[%s] %s: Unable to invoke callback", AIDL_SW_VERSION, __func__);
     }
     sem_post(&sSem);
-}
-
-int aidl_gnss_main() {
-    ALOGE("[%s] %s: AIDL Gnss start registering service", AIDL_SW_VERSION, __func__);
-    std::shared_ptr<AidlGnss> gnssAidl = ndk::SharedRefBase::make<AidlGnss>();
-    const std::string instance = std::string() + AidlGnss::descriptor + "/default";
-    binder_status_t status =
-            AServiceManager_addService(gnssAidl->asBinder().get(), instance.c_str());
-    if (status != STATUS_OK) {
-        ALOGE("[%s] %s: AIDL Gnss failed register service", AIDL_SW_VERSION, __func__);
-    } else {
-        ALOGE("[%s] %s: AIDL Gnss successfully register service: %s", AIDL_SW_VERSION, __func__, instance.c_str());
-    }
-    return 0;
 }
 
 }  // namespace aidl::android::hardware::gnss

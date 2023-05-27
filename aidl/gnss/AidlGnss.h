@@ -53,7 +53,4 @@ class AidlGnss : public BnGnss {
     static std::shared_ptr<IGnssCallback> sGnssCallback; // Aidl client callback from fwr
 };
 
-
-extern int aidl_gnss_main();
-
 }  // namespace aidl::android::hardware::gnss

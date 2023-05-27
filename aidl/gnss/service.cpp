@@ -19,20 +19,29 @@
 #include <android-base/logging.h>
 #include <android/binder_manager.h>
 #include <android/binder_process.h>
+#include <hidl/HidlSupport.h>
+#include <hidl/HidlTransportSupport.h>
 #include <log/log.h>
 #include <pthread.h>
+#include "AidlGnss.h"
 
-namespace aidl::android::hardware::gnss {
-extern int aidl_gnss_main();
-}
+using aidl::android::hardware::gnss::AidlGnss;
+using ::android::OK;
+using ::android::sp;
+using ::android::hardware::configureRpcThreadpool;
+using ::android::hardware::joinRpcThreadpool;
 
 int main() {
-    //// Register AIDL service
-    ALOGE("Registering passthrough GNSS hal AIDL v1 service");
     ABinderProcess_setThreadPoolMaxThreadCount(1);
     ABinderProcess_startThreadPool();
-    aidl::android::hardware::gnss::aidl_gnss_main();
+
+    std::shared_ptr<AidlGnss> gnssAidl = ndk::SharedRefBase::make<AidlGnss>();
+    const std::string instance = std::string() + AidlGnss::descriptor + "/default";
+    binder_status_t status =
+            AServiceManager_addService(gnssAidl->asBinder().get(), instance.c_str());
+    CHECK_EQ(status, STATUS_OK);
 
     ABinderProcess_joinThreadPool();
+
     return EXIT_FAILURE;  // should not reach
 }
