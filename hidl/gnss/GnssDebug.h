@@ -20,7 +20,7 @@
 #include <android/hardware/gnss/2.0/IGnssDebug.h>
 #include <hidl/Status.h>
 #include <hardware/gps.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 
 namespace android {
 namespace hardware {

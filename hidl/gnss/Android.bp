@@ -35,6 +35,9 @@ cc_library_shared {
         "android.hardware.gnss.measurement_corrections@1.1",
         "android.hardware.gnss.visibility_control@1.0",
     ],
+    header_libs: [
+        "gnss_headers.mediatek",
+    ],
     srcs: [
         "ThreadCreationWrapper.cpp",
         "AGnss.cpp",

@@ -35,7 +35,7 @@
 #include <android/hardware/gnss/2.1/IGnss.h>
 #include <hardware/fused_location.h>
 #include <hardware/gps.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <hidl/Status.h>
 
 #include <semaphore.h>

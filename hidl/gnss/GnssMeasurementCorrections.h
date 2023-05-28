@@ -20,7 +20,7 @@
 #include <android/hardware/gnss/measurement_corrections/1.1/IMeasurementCorrections.h>
 #include <hidl/MQDescriptor.h>
 #include <hidl/Status.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 
 namespace android {
 namespace hardware {

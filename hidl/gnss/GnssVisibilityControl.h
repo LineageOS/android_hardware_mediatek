@@ -20,7 +20,7 @@
 #include <android/hardware/gnss/visibility_control/1.0/IGnssVisibilityControl.h>
 #include <hidl/MQDescriptor.h>
 #include <hidl/Status.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 
 namespace android {
 namespace hardware {

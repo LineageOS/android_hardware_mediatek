@@ -18,7 +18,7 @@
 
 #include <hardware/fused_location.h>
 #include <hardware/gps.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <android/hardware/gnss/2.0/types.h>
 
 namespace android {

@@ -20,7 +20,7 @@
 #include <ThreadCreationWrapper.h>
 #include <android/hardware/gnss/1.0/IGnssGeofencing.h>
 #include <hidl/Status.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <hardware/gps.h>
 
 namespace android {

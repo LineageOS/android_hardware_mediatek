@@ -20,7 +20,7 @@
 #include <ThreadCreationWrapper.h>
 #include <android/hardware/gnss/2.0/IAGnss.h>
 #include <hardware/gps_internal.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <hidl/Status.h>
 #include <netinet/in.h>
 

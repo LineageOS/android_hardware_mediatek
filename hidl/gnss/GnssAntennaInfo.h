@@ -19,7 +19,7 @@
 
 #include <android/hardware/gnss/2.1/IGnssAntennaInfo.h>
 
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <semaphore.h>
 
 namespace android {
