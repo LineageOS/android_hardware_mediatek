@@ -1,0 +1,5 @@
+cc_library_headers {
+    name: "gnss_headers.mediatek",
+    export_include_dirs: ["include"],
+    vendor: true,
+}

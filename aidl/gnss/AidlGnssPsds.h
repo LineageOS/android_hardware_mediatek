@@ -17,7 +17,7 @@
 #pragma once
 
 #include <aidl/android/hardware/gnss/BnGnssPsds.h>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 #include <semaphore.h>
 
 namespace aidl::android::hardware::gnss {

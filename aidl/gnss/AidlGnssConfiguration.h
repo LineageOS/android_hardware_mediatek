@@ -18,7 +18,7 @@
 
 #include <aidl/android/hardware/gnss/BnGnssConfiguration.h>
 #include <vector>
-#include "gps_mtk.h"
+#include <mediatek/gps_mtk.h>
 
 namespace aidl::android::hardware::gnss {
 using std::vector;
