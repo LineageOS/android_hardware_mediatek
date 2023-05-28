@@ -43,6 +43,9 @@ cc_library_shared {
 cc_binary {
     name: "android.hardware.gnss-service.mediatek",
     relative_install_path: "hw",
+    required: [
+        "android.hardware.gnss@2.1-impl-mediatek",
+    ],
     init_rc: [
         "android.hardware.gnss-service.mediatek.rc",
     ],
