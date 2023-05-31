@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3631fe98_ec2d1199",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2023-05-31T11:20:34Z",
+      "side": 1,
+      "message": "??\n\nMind explaining this?",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
