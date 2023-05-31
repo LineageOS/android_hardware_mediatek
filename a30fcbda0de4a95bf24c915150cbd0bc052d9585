@@ -22,6 +22,30 @@
       },
       "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fbecef7_10d918d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 32222
+      },
+      "writtenOn": "2023-05-31T12:11:23Z",
+      "side": 1,
+      "message": "That\u0027s the way MediaTek\u0027s GNSS stack works, I\u0027ve already tried with just the AIDL implementation and GNSS indeed did not work at all without also registering HIDL GNSS 2.1, I can rewrite the commit message if you want.",
+      "parentUuid": "3631fe98_ec2d1199",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
