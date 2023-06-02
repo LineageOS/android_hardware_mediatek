@@ -93,6 +93,30 @@
       },
       "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb41be00_6a48a96e",
+        "filename": "aidl/gnss/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-06-02T09:16:36Z",
+      "side": 1,
+      "message": "yeah that\u0027s blocking, the iface will be registered, but won\u0027t join the pool rendering it useless",
+      "parentUuid": "49d3de62_df0ce98f",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 36
+      },
+      "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
