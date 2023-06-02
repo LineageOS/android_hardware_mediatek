@@ -46,6 +46,53 @@
       },
       "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce88ce8a_e264eb97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2023-06-02T09:12:17Z",
+      "side": 1,
+      "message": "I would say specify that this is a MTK issue and that the AIDL depends on the HIDL passthrough impl, rather than saying that the AOSP interface isn\u0027t \"complete\": it\u0027s perfectly fine to just have the AIDL interface registered",
+      "parentUuid": "4fbecef7_10d918d6",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49d3de62_df0ce98f",
+        "filename": "aidl/gnss/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2023-06-02T09:12:17Z",
+      "side": 1,
+      "message": "Luca: aren\u0027t these calls blocking? Supposedly it never reaches ABinderProcess_joinThreadPool() if that\u0027s true",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 36
+      },
+      "revId": "a30fcbda0de4a95bf24c915150cbd0bc052d9585",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
