@@ -1,0 +1,67 @@
+/*
+ * Copyright (c) 2023 The LineageOS Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+android_app {
+    name: "PowerOffAlarm",
+
+    srcs: ["java/**/*.java"],
+    resource_dirs: ["res"],
+
+    system_ext_specific: true,
+    certificate: "platform",
+    privileged: true,
+    platform_apis: true,
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+    jni_libs: ["libjni_poweroffalarm"],
+    required: [
+        "com.qualcomm.qti.poweroffalarm_whitelist",
+        "libjni_poweroffalarm",
+    ],
+}
+
+cc_library {
+    name: "libjni_poweroffalarm",
+    srcs: [
+        "jni/AlarmDriver.cpp",
+        "jni/RtcDriver.cpp",
+        "jni/TimerFdDriver.cpp",
+    ],
+    cflags: [
+        "-Werror",
+        "-Wall",
+        "-Wextra",
+    ],
+    header_libs: [
+        "jni_headers",
+        "libbase_headers",
+        "generated_kernel_headers",
+    ],
+    shared_libs: [
+        "liblog",
+    ],
+    system_ext_specific: true,
+}
+
+prebuilt_etc {
+    name: "com.qualcomm.qti.poweroffalarm_whitelist",
+    system_ext_specific: true,
+    sub_dir: "sysconfig",
+    src: "com.qualcomm.qti.poweroffalarm_whitelist.xml",
+    filename_from_src: true,
+}
