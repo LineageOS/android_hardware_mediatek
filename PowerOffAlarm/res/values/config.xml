@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <!--
+        List of enabled PowerOffAlarm drivers, initialization is attempted in this order.
+
+        - alarm: /dev/alarm legacy driver with MTK modifications, recommended until including 3.X
+                 but works until 4.19 for most devices
+        - rtc: the method which MTK userspace uses in modern userspace, which cannot properly be
+               checked for presence because the IOCTL definition is in kernel .c file, not
+               exported to userspace. If this is required for proper operation of power off alarm,
+               please overlay this config.
+        - timerfd: exists, appears unused in userspace, but the only thing we can programatically
+                   detect at build time (using device kernel headers), so this is preffered.
+    -->
+    <string name="config_powerOffAlarmDrivers" translatable="false">timerfd,alarm,rtc</string>
+
+    <!--
+        The amount of milliseconds the phone has to boot before alarm fires; if the alarm fires
+        at 5:30 pm, the RTC will be set to (by default) 150000 milliseconds (150 seconds) before
+        5:30 pm to give the phone time to boot up properly.
+    -->
+    <integer name="config_preBootMillis">150000</integer>
+
+</resources>
