@@ -1,0 +1,51 @@
+android_app {
+    name: "PowerOffAlarm",
+
+    srcs: ["java/**/*.java"],
+    resource_dirs: ["res"],
+
+    system_ext_specific: true,
+    certificate: "platform",
+    privileged: true,
+    platform_apis: true,
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+    jni_libs: ["libjni_poweroffalarm"],
+    required: [
+        "com.qualcomm.qti.poweroffalarm_whitelist",
+        "libjni_poweroffalarm",
+    ],
+}
+
+cc_library {
+    name: "libjni_poweroffalarm",
+    srcs: [
+        "jni/AlarmDriver.cpp",
+        "jni/RtcDriver.cpp",
+        "jni/TimerFdDriver.cpp",
+    ],
+    cflags: [
+        "-Werror",
+        "-Wall",
+        "-Wextra",
+    ],
+    header_libs: [
+        "jni_headers",
+        "libbase_headers",
+        "generated_kernel_headers",
+    ],
+    shared_libs: [
+        "liblog",
+    ],
+    system_ext_specific: true,
+}
+
+prebuilt_etc {
+    name: "com.qualcomm.qti.poweroffalarm_whitelist",
+    system_ext_specific: true,
+    sub_dir: "sysconfig",
+    src: "com.qualcomm.qti.poweroffalarm_whitelist.xml",
+    filename_from_src: true,
+}
