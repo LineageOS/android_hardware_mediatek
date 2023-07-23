@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d46f3843_1ac05fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T10:04:47Z",
+      "side": 1,
+      "message": "please note, we cannot use a different package name, because\n1. this is hard-coded in DeskClock\n2. if we change it in DeskClock, we need to duplicate code there, because qti PowerOffAlarm is closed source and cant be generic-ified\n3. this api is open to third party apps and there are actual users in the wild",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
