@@ -68,6 +68,23 @@
       "message": "forgot to say: verified all three backends on mt6768 android-12 fw 4.19",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee9ba188_4fce0b65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T12:51:41Z",
+      "side": 1,
+      "message": "I\u0027m mostly not fine with that... mostly since it\u0027s likely a 1:1 of the proprietary QCOM apk, I\u0027d be way happier if you convert it to kotlin since it would be \"original work\"\nAlso, change the package name to be different from qcom\u0027s?",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
