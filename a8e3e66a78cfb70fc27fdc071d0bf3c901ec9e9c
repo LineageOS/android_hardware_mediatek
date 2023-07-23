@@ -141,6 +141,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70a9d44e_4f0d77d5",
+        "filename": "PowerOffAlarm/res/values-de/strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:19:10Z",
+      "side": 1,
+      "message": "oh sorry, gerrit sorted it weird, thought you were talking about the license",
+      "parentUuid": "44c51c90_8fe98243",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d75a8ed6_7a67253a",
