@@ -85,6 +85,24 @@
       "message": "I\u0027m mostly not fine with that... mostly since it\u0027s likely a 1:1 of the proprietary QCOM apk, I\u0027d be way happier if you convert it to kotlin since it would be \"original work\"\nAlso, change the package name to be different from qcom\u0027s?",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f633e15_a2e57193",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T12:54:10Z",
+      "side": 1,
+      "message": "it\u0027s not at all 1:1 of the QCOM apk, everything in jni/ and src/org/lineageos/ was written by me - PowerOffAlarmBroadcastReceiver is based on jadx\u0027ed one, but not really that close anymore.\n\nThe reasons for not changing package name were noted in a comment above.",
+      "parentUuid": "ee9ba188_4fce0b65",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
