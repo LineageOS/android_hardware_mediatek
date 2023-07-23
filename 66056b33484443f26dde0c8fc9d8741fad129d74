@@ -16,6 +16,24 @@
       "message": "please note, we cannot use a different package name, because\n1. this is hard-coded in DeskClock\n2. if we change it in DeskClock, we need to duplicate code there, because qti PowerOffAlarm is closed source and cant be generic-ified\n3. this api is open to third party apps and there are actual users in the wild",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee5ac5d_83788a05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T10:09:40Z",
+      "side": 1,
+      "message": "some examples for usages with hardcoded pkg name:\n1. https://github.com/qw123wh/new-clock-fdroid/blob/478601dcc1a6bc82edebd1811d0289514a2560b0/app/src/main/java/com/best/deskclock/alarms/AlarmStateManager.java#L153\n2. https://github.com/forrestguice/SuntimesWidget/blob/50e3229eac2545a82e5764bef7d8516861ea60c6/app/src/main/java/com/forrestguice/suntimeswidget/alarmclock/AlarmNotifications.java#L380\n3. of course, our own DeskClock\n4. unknown number of closed source apps",
+      "parentUuid": "d46f3843_1ac05fbb",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
