@@ -627,6 +627,24 @@
       "parentUuid": "742e6f4a_b1a2bff0",
       "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "539e6a4d_e01ee162",
+        "filename": "PowerOffAlarm/res/drawable/permic_power_off_alarm.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T14:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "424bd9e3_d859f640",
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
