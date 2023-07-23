@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "183b0490_56adadfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T14:05:11Z",
+      "side": 1,
+      "message": "Since you\u0027re using the \"old\" apache style header could you switch to\n\u003c!--\n     SPDX-FileCopyrightText: 2023 The LineageOS Project\n     SPDX-License-Identifier: Apache-2.0\n--\u003e\nfor xml\nand\n/*\n * SPDX-FileCopyrightText: 2023 The LineageOS Project\n * SPDX-License-Identifier: Apache-2.0\n */\nfor c++?",
+      "revId": "2f8a3e0036e522fa8206177faafef10903128378",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
