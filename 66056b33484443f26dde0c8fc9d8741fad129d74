@@ -121,6 +121,41 @@
       "parentUuid": "4f633e15_a2e57193",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d56822f_bed36836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:05:01Z",
+      "side": 1,
+      "message": "meh you\u0027re right, I didn\u0027t notice apps hardcode target package to qcom\u0027s...\nis jni working as expected? you should have a JNI_Load method that registers your interface so that ART is able to look them up.",
+      "parentUuid": "4f633e15_a2e57193",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4edb19f9_3ce2e9e7",
+        "filename": "PowerOffAlarm/jni/TimerFdDriver.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:05:01Z",
+      "side": 1,
+      "message": "can use [[maybe_unused]] and avoid the weird if dev without the name",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
