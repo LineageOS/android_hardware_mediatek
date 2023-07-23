@@ -103,6 +103,24 @@
       "parentUuid": "ee9ba188_4fce0b65",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5831d14e_7643bfb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:01:36Z",
+      "side": 1,
+      "message": "ok, to be exact, jni/ is based on AlarmManager jni code from aosp frameworks/base, which is perfectly legal though",
+      "parentUuid": "4f633e15_a2e57193",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
