@@ -51,6 +51,23 @@
       "message": "Code looks good to me and it works on MT6853 with the rtc driver.",
       "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc16c46_12e530c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T12:45:15Z",
+      "side": 1,
+      "message": "forgot to say: verified all three backends on mt6768 android-12 fw 4.19",
+      "revId": "66056b33484443f26dde0c8fc9d8741fad129d74",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
