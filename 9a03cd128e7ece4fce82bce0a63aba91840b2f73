@@ -1,0 +1,302 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0893f672_03045fa3",
+        "filename": "PowerOffAlarm/Android.bp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "here too",
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f10c820_b9940f70",
+        "filename": "PowerOffAlarm/AndroidManifest.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "license",
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cba18f7_679adbdc",
+        "filename": "PowerOffAlarm/AndroidManifest.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "min sdk \u003d 1?\nset it to 33 ( since 20.0 ) or the lowest you\u0027re going to use it on ( or lower if you plan to use on older Androids )\nsince it\u0027s a core app it won\u0027t have any usage of \"platform\"",
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1d5375_bb9db123",
+        "filename": "PowerOffAlarm/java/com/qualcomm/qti/poweroffalarm/PowerOffAlarmBroadcastReceiver.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "final long alarmTime \u003d intent.getLongExtra(TIME, -1L);\n        and use alarmTime \u003d\u003d -1 instead of hasExtra in the check before",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 61
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8999a912_b0e374ac",
+        "filename": "PowerOffAlarm/java/org/lineageos/poweroffalarm/PowerOffAlarm.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "how about\n            if (isSupported) {\n                break;\n            }\n            Log.d(TAG, \"driver \" + driverName + \" is not supported\");\n            driver \u003d null;",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 13
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5389025_5d4d6dcc",
+        "filename": "PowerOffAlarm/java/org/lineageos/poweroffalarm/PowerOffAlarm.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "can\u0027t you directly assign to mDriver instead of the local driver?",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 25
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e508b7_515c3176",
+        "filename": "PowerOffAlarm/java/org/lineageos/poweroffalarm/PowerOffAlarm.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "use the primity type and default to -1",
+      "range": {
+        "startLine": 107,
+        "startChar": 12,
+        "endLine": 107,
+        "endChar": 16
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66e8ac0_fd1964fc",
+        "filename": "PowerOffAlarm/java/org/lineageos/poweroffalarm/PowerOffAlarm.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 51
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f2a26dd_c919574b",
+        "filename": "PowerOffAlarm/java/org/lineageos/poweroffalarm/PowerOffAlarm.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "!\u003d -1",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 34
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6cbd9f_238b4e62",
+        "filename": "PowerOffAlarm/jni/AlarmDriver.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "Isn\u0027t O_WRONLY enough for this ioctl?",
+      "range": {
+        "startLine": 40,
+        "startChar": 56,
+        "endLine": 40,
+        "endChar": 62
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70539e6e_227d6b86",
+        "filename": "PowerOffAlarm/jni/AlarmDriver.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 15
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28dd1dc5_7e6b12f1",
+        "filename": "PowerOffAlarm/jni/RtcDriver.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "O_WRONLY",
+      "range": {
+        "startLine": 39,
+        "startChar": 54,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2c70d3d_cd7e0602",
+        "filename": "PowerOffAlarm/jni/RtcDriver.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 15
+      },
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d24684_9596f6e0",
+        "filename": "PowerOffAlarm/res/drawable/permic_power_off_alarm.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2023-07-23T13:32:39Z",
+      "side": 1,
+      "message": "Where is that from?",
+      "revId": "9a03cd128e7ece4fce82bce0a63aba91840b2f73",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
