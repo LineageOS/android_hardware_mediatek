@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "897c2c78_97df4d16",
+        "filename": "PowerOffAlarm/jni/AlarmDriver.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bafe57cf_ccc16563",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9be802b7_babef0c9",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-07-23T13:13:43Z",
       "side": 1,
       "message": "license",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dec1d82c_ea3b35a7",
+        "filename": "PowerOffAlarm/jni/RtcDriver.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9be802b7_babef0c9",
       "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
@@ -52,6 +88,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "360dfc20_55faf07d",
+        "filename": "PowerOffAlarm/jni/TimerFdDriver.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c43a5965_78267c51",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fca6eb4b_507b9a24",
@@ -69,6 +123,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c51c90_8fe98243",
+        "filename": "PowerOffAlarm/res/values-de/strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:18:44Z",
+      "side": 1,
+      "message": "as per http://www.cafeconleche.org/books/effectivexml/chapters/01.html, the xml declaration has to be the first thing in the file, before any comment",
+      "parentUuid": "fca6eb4b_507b9a24",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d75a8ed6_7a67253a",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-07-23T13:13:43Z",
       "side": 1,
       "message": "we import translations automatically, add only the values/strings.xml one",
+      "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9921b01_b03db0df",
+        "filename": "PowerOffAlarm/res/values-zh-rCN/strings.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-23T13:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d75a8ed6_7a67253a",
       "revId": "a8e3e66a78cfb70fc27fdc071d0bf3c901ec9e9c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
