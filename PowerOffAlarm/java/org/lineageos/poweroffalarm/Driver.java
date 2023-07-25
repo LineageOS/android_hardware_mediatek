@@ -31,7 +31,7 @@ public interface Driver {
 
     /**
      * indicate if this driver backend is supported for RTC wakeup
-     * if this method returns false, it is guranteed that no other methods wil be called
+     * if this method returns false, it is guranteed that no other methods will be called
      * @return true if this driver is supported
      */
     public boolean isSupported();
