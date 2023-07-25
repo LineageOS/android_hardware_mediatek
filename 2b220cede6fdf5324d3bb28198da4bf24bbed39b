@@ -24,6 +24,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbfe37d8_f1c73c35",
+        "filename": "PowerOffAlarm/res/values/strings.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-25T05:53:29Z",
+      "side": 1,
+      "message": "https://review.lineageos.org/c/LineageOS/android_hardware_mediatek/+/362341",
+      "parentUuid": "d79053f3_a67a3fe4",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 41
+      },
+      "revId": "2b220cede6fdf5324d3bb28198da4bf24bbed39b",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8886d9f5_4601f7dd",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-24T11:13:47Z",
       "side": 1,
       "message": "Power off alarm",
+      "range": {
+        "startLine": 9,
+        "startChar": 18,
+        "endLine": 9,
+        "endChar": 41
+      },
+      "revId": "2b220cede6fdf5324d3bb28198da4bf24bbed39b",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad0682d_52c9c6b4",
+        "filename": "PowerOffAlarm/res/values/strings.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2023-07-25T05:53:29Z",
+      "side": 1,
+      "message": "ditto",
+      "parentUuid": "8886d9f5_4601f7dd",
       "range": {
         "startLine": 9,
         "startChar": 18,
