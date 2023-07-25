@@ -4,7 +4,7 @@
     SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-    <string name="app_name">PowerOffAlarm</string>
+    <string name="app_name">Power off alarm</string>
     <string name="permdesc_power_off_alarm">set and clear the alarm which will wake up device from the power off state</string>
-    <string name="permlab_power_off_alarm">Power Off Alarm</string>
+    <string name="permlab_power_off_alarm">Power off alarm</string>
 </resources>
