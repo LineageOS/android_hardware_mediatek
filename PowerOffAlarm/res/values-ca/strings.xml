@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Apaga l\'alarma</string>
+    <string name="permdesc_power_off_alarm">configura i esborra l\'alarma que despertarà el dispositiu des de l\'estat d\'apagat</string>
+    <string name="permlab_power_off_alarm">Apaga l\'alarma</string>
+</resources>

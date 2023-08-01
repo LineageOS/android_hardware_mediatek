@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Svee di distudât</string>
+    <string name="permdesc_power_off_alarm">stabilìs e nete la svee che e impiarà il dispositîf dal stât di distudât</string>
+    <string name="permlab_power_off_alarm">Svee di distudât</string>
+</resources>

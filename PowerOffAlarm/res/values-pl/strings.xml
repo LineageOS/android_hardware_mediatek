@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Alarm przy wyłączonym urządzeniu</string>
+    <string name="permdesc_power_off_alarm">ustawianie i kasowanie alarmu, który wybudzi urządzenie ze stanu wyłączenia.</string>
+    <string name="permlab_power_off_alarm">Alarm przy wyłączonym urządzeniu</string>
+</resources>

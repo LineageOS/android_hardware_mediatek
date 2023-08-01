@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">关机闹钟</string>
+    <string name="permdesc_power_off_alarm">设置并清除将从关机状态中唤醒设备的闹钟</string>
+    <string name="permlab_power_off_alarm">关机闹钟</string>
+</resources>

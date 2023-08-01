@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Alarm uitschakelen</string>
+    <string name="permdesc_power_off_alarm">zet het alarm aan en wis dit alarm dat het apparaat wakker zal maken vanuit de status \"uit\"</string>
+    <string name="permlab_power_off_alarm">Alarm uitschakelen</string>
+</resources>

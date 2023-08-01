@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Power off alarm</string>
+    <string name="permdesc_power_off_alarm">Set and clear the alarm which will wake up device from the power off state</string>
+    <string name="permlab_power_off_alarm">Power off alarm</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">電源オフアラーム</string>
+    <string name="permdesc_power_off_alarm">電源オフ状態からデバイスを起動させるアラームの設定や消去を実行する</string>
+    <string name="permlab_power_off_alarm">電源オフアラーム</string>
+</resources>
