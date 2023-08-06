@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2c84c6a_33cbe871",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17793
+      },
+      "writtenOn": "2023-08-06T06:45:11Z",
+      "side": 1,
+      "message": "this is equal to mediatek hal behavior",
+      "revId": "d31c6f0241b2965a526153c0ba8db46b18b9e084",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
