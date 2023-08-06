@@ -7,9 +7,7 @@
 #pragma once
 
 #include <aidl/android/hardware/vibrator/BnVibrator.h>
-#ifdef VIBRATOR_SUPPORTS_EFFECTS
 #include <map>
-#endif
 
 namespace aidl {
 namespace android {
@@ -26,10 +24,10 @@ const std::string kVibratorActivate = "/sys/class/leds/vibrator/activate";
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
 const std::string kVibratorStrength = "/sys/kernel/thunderquake_engine/level";
 const std::string kVibratorStrengthMax = "/sys/kernel/thunderquake_engine/max";
+#endif
 
 static std::map<EffectStrength, float> vibStrengths = {
         {EffectStrength::LIGHT, 0.25}, {EffectStrength::MEDIUM, 0.5}, {EffectStrength::STRONG, 1}};
-#endif
 
 class Vibrator : public BnVibrator {
   public:
@@ -70,14 +68,14 @@ class Vibrator : public BnVibrator {
   private:
     static ndk::ScopedAStatus setNode(const std::string path, const int32_t value);
     static int getIntProperty(const std::string& key, const int fallback);
-#ifdef VIBRATOR_SUPPORTS_EFFECTS
-    static bool exists(const std::string path);
-    static int getNode(const std::string path, const int fallback);
     std::map<Effect, int32_t> vibEffects = {
             {Effect::CLICK, getIntProperty("click" + kVibratorPropDuration, 50)},
             {Effect::TICK, getIntProperty("tick" + kVibratorPropDuration, 32)},
             {Effect::TEXTURE_TICK, getIntProperty("texture_tick" + kVibratorPropDuration, 25)},
     };
+#ifdef VIBRATOR_SUPPORTS_EFFECTS
+    static bool exists(const std::string path);
+    static int getNode(const std::string path, const int fallback);
     bool mVibratorStrengthSupported;
     int mVibratorStrengthMax;
 #endif
