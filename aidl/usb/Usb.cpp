@@ -566,6 +566,9 @@ Status getPortStatusHelper(android::hardware::usb::Usb* usb,
                     port.second ? canSwitchRoleHelper(port.first) : false;
 
             (*currentPortStatus)[i].supportedModes.push_back(PortMode::DRP);
+#ifdef USB_AUDIO_ACCESSORY_SUPPORTED
+            (*currentPortStatus)[i].supportedModes.push_back(PortMode::AUDIO_ACCESSORY);
+#endif
             (*currentPortStatus)[i].usbDataStatus.push_back(
                     usb->mUsbDataEnabled ? UsbDataStatus::ENABLED : UsbDataStatus::DISABLED_FORCE);
 
