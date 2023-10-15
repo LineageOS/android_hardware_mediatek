@@ -5,6 +5,6 @@
 -->
 <resources>
     <string name="app_name">Power off alarm</string>
-    <string name="permdesc_power_off_alarm">cihazı söndürmə statusundan oyandıracaq siqnalı tənzimləyin və silin</string>
+    <string name="permdesc_power_off_alarm">cihazı söndürmə statusundan oyandıracaq siqnalı ayarlayın və silin</string>
     <string name="permlab_power_off_alarm">Power off alarm</string>
 </resources>

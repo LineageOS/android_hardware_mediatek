@@ -4,5 +4,7 @@
     SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
+    <string name="app_name">Áminning um að slökkva</string>
     <string name="permdesc_power_off_alarm">setja og hreinsa út áminninguna sem mun vekja tækið upp úr slökktu ástandi</string>
+    <string name="permlab_power_off_alarm">Áminning um að slökkva</string>
 </resources>

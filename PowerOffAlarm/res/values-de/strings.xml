@@ -5,4 +5,6 @@
 -->
 <resources>
     <string name="app_name">Wecker bei ausgeschaltetem Gerät</string>
+    <string name="permdesc_power_off_alarm">Einstellen und Löschen des Weckers, der das Gerät aus dem ausgeschalteten Zustand aufweckt</string>
+    <string name="permlab_power_off_alarm">Wecker bei ausgeschaltetem Gerät</string>
 </resources>
