@@ -52,9 +52,6 @@ public class VolumeChangeService extends Service {
 
         telephonyManager.registerTelephonyCallback(getMainExecutor(), mCallStateListener);
 
-        // Restore gain levels on service start.
-        GainUtils.setGainLevel(audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
-
         return START_STICKY;
     }
 }
