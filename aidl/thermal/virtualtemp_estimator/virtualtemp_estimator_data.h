@@ -28,11 +28,11 @@ struct TFLiteWrapperMethods {
     tflitewrapper_init init;
     tflitewrapper_invoke invoke;
     tflitewrapper_destroy destroy;
-    mutable std::mutex mutex_;
+    mutable std::mutex mutex;
 };
 
-struct VirtualTempEstimatorTFLiteData {
-    VirtualTempEstimatorTFLiteData(size_t num_input_samples) {
+struct VtEstimatorTFLiteData {
+    VtEstimatorTFLiteData(size_t num_input_samples) {
         input_buffer = new float[num_input_samples];
         input_buffer_size = num_input_samples;
         is_initialized = false;
@@ -51,7 +51,7 @@ struct VirtualTempEstimatorTFLiteData {
     TFLiteWrapperMethods tflite_methods;
     bool is_initialized;
 
-    ~VirtualTempEstimatorTFLiteData() {
+    ~VtEstimatorTFLiteData() {
         if (tflite_wrapper && tflite_methods.destroy) {
             tflite_methods.destroy(tflite_wrapper);
         }
@@ -60,6 +60,28 @@ struct VirtualTempEstimatorTFLiteData {
             delete input_buffer;
         }
     }
+};
+
+struct VtEstimatorLinearModelData {
+    VtEstimatorLinearModelData(size_t num_input_sensors) {
+        num_linked_sensors = num_input_sensors;
+        prev_samples_order = 1;
+        cur_sample_index = 0;
+        first_iteration = true;
+    }
+
+    ~VtEstimatorLinearModelData() {}
+
+    size_t num_linked_sensors;
+    size_t prev_samples_order;
+    size_t cur_sample_index;
+    std::vector<std::vector<float>> input_samples;
+    std::vector<std::vector<float>> coefficients;
+    float offset;
+    bool use_prev_samples;
+    bool first_iteration;
+    bool is_initialized;
+    mutable std::mutex mutex;
 };
 
 }  // namespace vtestimator

@@ -1007,7 +1007,8 @@ bool ThermalHelperImpl::readThermalSensor(std::string_view sensor_name, float *t
             }
         }
 
-        if (sensor_info.virtual_sensor_info->formula == FormulaOption::USE_ML_MODEL) {
+        if ((sensor_info.virtual_sensor_info->formula == FormulaOption::USE_ML_MODEL) ||
+            (sensor_info.virtual_sensor_info->formula == FormulaOption::USE_LINEAR_MODEL)) {
             *temp = runVirtualTempEstimator(sensor_name, sensor_log_map);
 
             if (std::isnan(*temp)) {
