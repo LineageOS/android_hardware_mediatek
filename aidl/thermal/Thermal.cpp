@@ -231,6 +231,72 @@ void Thermal::sendThermalChangedCallback(const Temperature &t) {
                      callbacks_.end());
 }
 
+ndk::ScopedAStatus Thermal::registerCoolingDeviceChangedCallbackWithType(
+        const std::shared_ptr<ICoolingDeviceChangedCallback> &callback, CoolingType type) {
+    ATRACE_CALL();
+
+    if (callback == nullptr) {
+        return ndk::ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT,
+                                                                "Invalid nullptr callback");
+    }
+
+    if (!thermal_helper_->isInitializedOk()) {
+        return initErrorStatus();
+    }
+
+    std::lock_guard<std::mutex> _lock(cdev_callback_mutex_);
+    if (std::any_of(cdev_callbacks_.begin(), cdev_callbacks_.end(),
+                    [&](const CoolingDeviceCallbackSetting &c) {
+                        return interfacesEqual(c.callback, callback);
+                    })) {
+        return ndk::ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT,
+                                                                "Callback already registered");
+    }
+    cdev_callbacks_.emplace_back(callback, true, type);
+
+    // b/315858553 to develope the callback
+    LOG(INFO) << __func__ << ":" << toString(type) << " is under development";
+
+    return ndk::ScopedAStatus::ok();
+}
+
+ndk::ScopedAStatus Thermal::unregisterCoolingDeviceChangedCallback(
+        const std::shared_ptr<ICoolingDeviceChangedCallback> &callback) {
+    ATRACE_CALL();
+
+    if (callback == nullptr) {
+        return ndk::ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT,
+                                                                "Invalid nullptr callback");
+    }
+
+    bool removed = false;
+    std::lock_guard<std::mutex> _lock(cdev_callback_mutex_);
+    cdev_callbacks_.erase(
+            std::remove_if(
+                    cdev_callbacks_.begin(), cdev_callbacks_.end(),
+                    [&](const CoolingDeviceCallbackSetting &c) {
+                        if (interfacesEqual(c.callback, callback)) {
+                            LOG(INFO)
+                                    << "a callback has been unregistered to ThermalHAL, isFilter: "
+                                    << c.is_filter_type << " Type: " << toString(c.type);
+                            removed = true;
+                            return true;
+                        }
+                        return false;
+                    }),
+            cdev_callbacks_.end());
+
+    if (!removed) {
+        return ndk::ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT,
+                                                                "Callback wasn't registered");
+    }
+
+    // b/315858553 to develope the callback
+    LOG(INFO) << __func__ << " is under development";
+
+    return ndk::ScopedAStatus::ok();
+}
+
 void Thermal::dumpVirtualSensorInfo(std::ostringstream *dump_buf) {
     *dump_buf << "getVirtualSensorInfo:" << std::endl;
     const auto &map = thermal_helper_->GetSensorInfoMap();

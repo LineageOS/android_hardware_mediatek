@@ -28,6 +28,15 @@ struct CallbackSetting {
     TemperatureType type;
 };
 
+struct CoolingDeviceCallbackSetting {
+    CoolingDeviceCallbackSetting(std::shared_ptr<ICoolingDeviceChangedCallback> callback,
+                                 bool is_filter_type, CoolingType type)
+        : callback(std::move(callback)), is_filter_type(is_filter_type), type(type) {}
+    std::shared_ptr<ICoolingDeviceChangedCallback> callback;
+    bool is_filter_type;
+    CoolingType type;
+};
+
 class Thermal : public BnThermal {
   public:
     Thermal();
@@ -36,10 +45,6 @@ class Thermal : public BnThermal {
     ndk::ScopedAStatus getTemperatures(std::vector<Temperature> *_aidl_return) override;
     ndk::ScopedAStatus getTemperaturesWithType(TemperatureType type,
                                                std::vector<Temperature> *_aidl_return) override;
-
-    ndk::ScopedAStatus getCoolingDevices(std::vector<CoolingDevice> *_aidl_return) override;
-    ndk::ScopedAStatus getCoolingDevicesWithType(CoolingType type,
-                                                 std::vector<CoolingDevice> *_aidl_return) override;
 
     ndk::ScopedAStatus getTemperatureThresholds(
             std::vector<TemperatureThreshold> *_aidl_return) override;
@@ -53,6 +58,17 @@ class Thermal : public BnThermal {
             TemperatureType type) override;
     ndk::ScopedAStatus unregisterThermalChangedCallback(
             const std::shared_ptr<IThermalChangedCallback> &callback) override;
+
+    ndk::ScopedAStatus getCoolingDevices(std::vector<CoolingDevice> *_aidl_return) override;
+    ndk::ScopedAStatus getCoolingDevicesWithType(CoolingType type,
+                                                 std::vector<CoolingDevice> *_aidl_return) override;
+
+    ndk::ScopedAStatus registerCoolingDeviceChangedCallbackWithType(
+            const std::shared_ptr<ICoolingDeviceChangedCallback> &callback,
+            CoolingType type) override;
+    ndk::ScopedAStatus unregisterCoolingDeviceChangedCallback(
+            const std::shared_ptr<ICoolingDeviceChangedCallback> &callback) override;
+
     binder_status_t dump(int fd, const char **args, uint32_t numArgs) override;
 
     // Helper function for calling callbacks
@@ -85,6 +101,9 @@ class Thermal : public BnThermal {
     std::shared_ptr<ThermalHelper> thermal_helper_;
     std::mutex thermal_callback_mutex_;
     std::vector<CallbackSetting> callbacks_;
+    std::mutex cdev_callback_mutex_;
+    std::vector<CoolingDeviceCallbackSetting> cdev_callbacks_;
+
     Looper looper_;
 
     ndk::ScopedAStatus getFilteredTemperatures(bool filterType, TemperatureType type,
