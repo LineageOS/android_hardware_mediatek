@@ -4,5 +4,7 @@
     SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
+    <string name="app_name">Alarme appareil éteint</string>
     <string name="permdesc_power_off_alarm">régler ou effacer l\'alarme qui rallume l\'appareil lorsqu\'il est éteint</string>
+    <string name="permlab_power_off_alarm">Alarme appareil éteint</string>
 </resources>
