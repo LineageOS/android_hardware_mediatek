@@ -11,10 +11,13 @@
 #include "Power.h"
 
 #include <android-base/logging.h>
+#include <android-base/properties.h>
 
 #ifdef TAP_TO_WAKE_NODE
 #include <android-base/file.h>
 #endif
+
+using android::base::GetIntProperty;
 
 #define DLSYM_GET_FUNCTION(func_ptr, handle, func_name)          \
     func_ptr = (typeof(func_ptr))dlsym(handle, #func_name);      \
@@ -36,6 +39,12 @@ extern bool setDeviceSpecificMode(Mode type, bool enabled);
 #endif
 
 Power::Power() {
+    mTouchBoostDuration = GetIntProperty(kTouchBoostDurationProperty, kDefaultTouchBoostDuration);
+    if (mTouchBoostDuration < 0 || mTouchBoostDuration > kMaxTouchBoostDuration) {
+        LOG(ERROR) << "Invalid touch boost duration: " << mTouchBoostDuration;
+        mTouchBoostDuration = kDefaultTouchBoostDuration;
+    }
+
     mPerf = (struct libpowerhal_t*)calloc(1, sizeof(struct libpowerhal_t));
     if (!mPerf) {
         LOG(ERROR) << "Could not allocate memory for libpowerhal struct.";
@@ -73,7 +82,10 @@ void Power::handleInteractionHint(int32_t targetDuration) {
 
     // if targetDuration is 0, we perform a touch boost instead.
     if (targetDuration == 0) {
-        mPerf->CusLockHint(MTKPOWER_HINT_APP_TOUCH, kTouchBoostDuration, getpid());
+        if (mTouchBoostDuration == 0) {
+            return;
+        }
+        mPerf->CusLockHint(MTKPOWER_HINT_APP_TOUCH, mTouchBoostDuration, getpid());
         return;
     }
 

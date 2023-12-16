@@ -18,10 +18,12 @@ namespace power {
 namespace impl {
 namespace mediatek {
 
-const int32_t kTouchBoostDuration = 10;       /* ms */
-const int32_t kMinInteractiveDuration = 400;  /* ms */
-const int32_t kMaxInteractiveDuration = 5000; /* ms */
+const std::string kTouchBoostDurationProperty = "persist.vendor.powerhal.touchboost_duration";
+const int32_t kDefaultTouchBoostDuration = 1; /* ms */
 const int32_t kLaunchBoostDuration = 30000;   /* ms */
+const int32_t kMaxInteractiveDuration = 5000; /* ms */
+const int32_t kMinInteractiveDuration = 400;  /* ms */
+const int32_t kMaxTouchBoostDuration = 1000;  /* ms */
 
 class Power : public BnPower {
   public:
@@ -44,6 +46,7 @@ class Power : public BnPower {
     libpowerhal_t* mPerf;
 
     struct timespec mPreviousInteractionTime;
+    int32_t mTouchBoostDuration;
     int32_t mPreviousInteractionDuration;
     int32_t mPreviousInteractionHandle;
     int32_t mLaunchHandle;
