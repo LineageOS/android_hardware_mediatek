@@ -1,4 +1,0 @@
-service vendor.ir-default /vendor/bin/hw/android.hardware.ir-service.mediatek
-    class hal
-    user system
-    group system
