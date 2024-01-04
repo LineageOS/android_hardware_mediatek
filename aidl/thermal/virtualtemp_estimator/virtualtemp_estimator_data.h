@@ -68,6 +68,9 @@ struct VtEstimatorLinearModelData {
         prev_samples_order = 1;
         cur_sample_index = 0;
         first_iteration = true;
+        offset = 0;
+        is_initialized = false;
+        use_prev_samples = false;
     }
 
     ~VtEstimatorLinearModelData() {}
