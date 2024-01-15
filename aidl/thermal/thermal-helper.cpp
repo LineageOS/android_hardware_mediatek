@@ -760,7 +760,7 @@ void ThermalHelperImpl::initializeTrip(const std::unordered_map<std::string, std
                 if (!std::isnan(sensor_info.second.hot_thresholds[i]) &&
                     !std::isnan(sensor_info.second.hot_hysteresis[i])) {
                     // Update trip_point_0_temp threshold
-                    std::string threshold = std::to_string(static_cast<int>(
+                    std::string threshold = std::to_string(std::lround(
                             sensor_info.second.hot_thresholds[i] / sensor_info.second.multiplier));
                     path = ::android::base::StringPrintf("%s/%s", (tz_path.data()),
                                                          kSensorTripPointTempZeroFile.data());
@@ -771,8 +771,8 @@ void ThermalHelperImpl::initializeTrip(const std::unordered_map<std::string, std
                         break;
                     }
                     // Update trip_point_0_hyst threshold
-                    threshold = std::to_string(static_cast<int>(
-                            sensor_info.second.hot_hysteresis[i] / sensor_info.second.multiplier));
+                    threshold = std::to_string(std::lround(sensor_info.second.hot_hysteresis[i] /
+                                                           sensor_info.second.multiplier));
                     path = ::android::base::StringPrintf("%s/%s", (tz_path.data()),
                                                          kSensorTripPointHystZeroFile.data());
                     if (!::android::base::WriteStringToFile(threshold, path)) {
