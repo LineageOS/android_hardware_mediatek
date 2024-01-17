@@ -37,6 +37,7 @@ struct VtEstimatorTFLiteData {
         input_buffer_size = num_input_samples;
         is_initialized = false;
         tflite_wrapper = nullptr;
+        offset = 0;
 
         tflite_methods.create = nullptr;
         tflite_methods.init = nullptr;
@@ -49,6 +50,7 @@ struct VtEstimatorTFLiteData {
     size_t input_buffer_size;
     std::string model_path;
     TFLiteWrapperMethods tflite_methods;
+    float offset;
     bool is_initialized;
 
     ~VtEstimatorTFLiteData() {

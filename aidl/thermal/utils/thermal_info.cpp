@@ -379,6 +379,7 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
 
         vt_estimator_model_file = "vendor/etc/" + sensor["ModelPath"].asString();
         init_data.ml_model_init_data.model_path = vt_estimator_model_file;
+        init_data.ml_model_init_data.offset = offset;
 
         ::thermal::vtestimator::VtEstimatorStatus ret = vt_estimator->Initialize(init_data);
         if (ret != ::thermal::vtestimator::kVtEstimatorOk) {

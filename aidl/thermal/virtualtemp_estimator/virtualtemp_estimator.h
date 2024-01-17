@@ -27,12 +27,14 @@ struct MLModelInitData {
         model_path = "";
         use_prev_samples = false;
         prev_samples_order = 1;
+        offset = 0;
     }
     ~MLModelInitData() {}
 
     std::string model_path;
     bool use_prev_samples;
     size_t prev_samples_order;
+    float offset;
 };
 
 struct LinearModelInitData {

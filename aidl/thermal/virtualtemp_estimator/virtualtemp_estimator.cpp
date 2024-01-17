@@ -161,6 +161,7 @@ VtEstimatorStatus VirtualTempEstimator::TFliteInitialize(MLModelInitData data) {
 
     tflite_instance_->is_initialized = true;
     tflite_instance_->model_path = model_path;
+    tflite_instance_->offset = data.offset;
 
     LOG(INFO) << "Successfully initialized VirtualTempEstimator for " << model_path;
     return kVtEstimatorOk;
@@ -260,6 +261,8 @@ VtEstimatorStatus VirtualTempEstimator::TFliteEstimate(const std::vector<float> 
                    << ")";
         return kVtEstimatorInvokeFailed;
     }
+
+    *output += tflite_instance_->offset;
 
     return kVtEstimatorOk;
 }
