@@ -961,6 +961,7 @@ bool ThermalHelperImpl::readThermalSensor(std::string_view sensor_name, float *t
         std::shared_lock<std::shared_mutex> _lock(sensor_status_map_mutex_);
         if (sensor_status.override_status.emul_temp != nullptr) {
             *temp = sensor_status.override_status.emul_temp->temp;
+            (*sensor_log_map)[sensor_name.data()] = *temp;
             return true;
         }
     }
