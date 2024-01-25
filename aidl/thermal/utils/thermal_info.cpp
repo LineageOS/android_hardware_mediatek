@@ -1006,7 +1006,11 @@ bool ParseSensorInfo(const Json::Value &config,
             vr_threshold = getFloatFromValue(sensors[i]["VrThreshold"]);
             LOG(INFO) << "Sensor[" << name << "]'s VrThreshold: " << vr_threshold;
         }
-        float multiplier = sensors[i]["Multiplier"].asFloat();
+
+        float multiplier = 1.0;
+        if (!sensors[i]["Multiplier"].empty()) {
+            multiplier = sensors[i]["Multiplier"].asFloat();
+        }
         LOG(INFO) << "Sensor[" << name << "]'s Multiplier: " << multiplier;
 
         std::chrono::milliseconds polling_delay = kUeventPollTimeoutMs;
