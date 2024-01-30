@@ -35,10 +35,10 @@ bool calculateAvgPower(std::string_view power_rail, const PowerSample &last_samp
     *avg_power = NAN;
     const auto duration = curr_sample.duration - last_sample.duration;
     const auto deltaEnergy = curr_sample.energy_counter - last_sample.energy_counter;
-    if (!last_sample.duration) {
+    if (duration == 0) {
         LOG(VERBOSE) << "Power rail " << power_rail.data()
-                     << ": all power samples have not been collected yet";
-    } else if (duration <= 0 || deltaEnergy < 0) {
+                     << ": has not collected min 2 samples yet";
+    } else if (duration < 0 || deltaEnergy < 0) {
         LOG(ERROR) << "Power rail " << power_rail.data() << " is invalid: duration = " << duration
                    << ", deltaEnergy = " << deltaEnergy;
         return false;
@@ -79,33 +79,30 @@ bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
             continue;
         }
 
-        PowerSample power_sample = {
-                .energy_counter = 0,
-                .duration = 0,
-        };
-
         if (power_rail_info_pair.second.virtual_power_rail_info != nullptr &&
             power_rail_info_pair.second.virtual_power_rail_info->linked_power_rails.size()) {
             for (size_t i = 0;
                  i < power_rail_info_pair.second.virtual_power_rail_info->linked_power_rails.size();
                  ++i) {
-                if (!energy_info_map_.count(power_rail_info_pair.second.virtual_power_rail_info
-                                                    ->linked_power_rails[i])) {
-                    LOG(ERROR) << " Could not find energy source "
-                               << power_rail_info_pair.second.virtual_power_rail_info
-                                          ->linked_power_rails[i];
+                std::string power_rail =
+                        power_rail_info_pair.second.virtual_power_rail_info->linked_power_rails[i];
+                if (!energy_info_map_.count(power_rail)) {
+                    LOG(ERROR) << " Could not find energy source " << power_rail;
                     return false;
                 }
+
+                const auto curr_sample = energy_info_map_.at(power_rail);
                 power_history.emplace_back(std::queue<PowerSample>());
                 for (int j = 0; j < power_rail_info_pair.second.power_sample_count; j++) {
-                    power_history[i].emplace(power_sample);
+                    power_history[i].emplace(curr_sample);
                 }
             }
         } else {
             if (energy_info_map_.count(power_rail_info_pair.first)) {
+                const auto curr_sample = energy_info_map_.at(power_rail_info_pair.first);
                 power_history.emplace_back(std::queue<PowerSample>());
                 for (int j = 0; j < power_rail_info_pair.second.power_sample_count; j++) {
-                    power_history[0].emplace(power_sample);
+                    power_history[0].emplace(curr_sample);
                 }
             } else {
                 LOG(ERROR) << "Could not find energy source " << power_rail_info_pair.first;
