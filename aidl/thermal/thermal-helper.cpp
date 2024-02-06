@@ -408,7 +408,7 @@ bool ThermalHelperImpl::readTemperature(
         std::pair<ThrottlingSeverity, ThrottlingSeverity> *throttling_status,
         const bool force_no_cache) {
     // Return fail if the thermal sensor cannot be read.
-    float temp;
+    float temp = NAN;
     std::map<std::string, float> sensor_log_map;
     auto &sensor_status = sensor_status_map_.at(sensor_name.data());
 
@@ -990,7 +990,7 @@ bool ThermalHelperImpl::readThermalSensor(std::string_view sensor_name, float *t
         *temp = std::stof(::android::base::Trim(file_reading));
     } else {
         const auto &linked_sensors_size = sensor_info.virtual_sensor_info->linked_sensors.size();
-        std::vector<float> sensor_readings(linked_sensors_size, 0.0);
+        std::vector<float> sensor_readings(linked_sensors_size, NAN);
 
         // Calculate temperature of each of the linked sensor
         for (size_t i = 0; i < linked_sensors_size; i++) {
@@ -1019,7 +1019,7 @@ bool ThermalHelperImpl::readThermalSensor(std::string_view sensor_name, float *t
         } else {
             float temp_val = 0.0;
             for (size_t i = 0; i < linked_sensors_size; i++) {
-                float coefficient = 0.0;
+                float coefficient = NAN;
                 if (!readDataByType(sensor_info.virtual_sensor_info->coefficients[i], &coefficient,
                                     sensor_info.virtual_sensor_info->coefficients_type[i],
                                     force_no_cache, sensor_log_map)) {
