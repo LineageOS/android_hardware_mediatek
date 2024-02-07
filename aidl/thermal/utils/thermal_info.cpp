@@ -381,6 +381,32 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
         init_data.ml_model_init_data.model_path = vt_estimator_model_file;
         init_data.ml_model_init_data.offset = offset;
 
+        if (!sensor["PreviousSampleCount"].empty()) {
+            init_data.ml_model_init_data.use_prev_samples = true;
+            init_data.ml_model_init_data.prev_samples_order = sensor["PreviousSampleCount"].asInt();
+            LOG(INFO) << "Sensor[" << name << "] takes "
+                      << init_data.ml_model_init_data.prev_samples_order << " historic samples";
+        } else {
+            init_data.ml_model_init_data.use_prev_samples = false;
+            init_data.ml_model_init_data.prev_samples_order = 1;
+        }
+
+        if (!sensor["OutputLabelCount"].empty()) {
+            init_data.ml_model_init_data.output_label_count = sensor["OutputLabelCount"].asInt();
+            LOG(INFO) << "Sensor[" << name << "] outputs "
+                      << init_data.ml_model_init_data.output_label_count << " labels";
+        } else {
+            init_data.ml_model_init_data.output_label_count = 1;
+        }
+
+        if (!sensor["PredictHotSpotCount"].empty()) {
+            init_data.ml_model_init_data.num_hot_spots = sensor["PredictHotSpotCount"].asInt();
+            LOG(INFO) << "Sensor[" << name << "] predicts temperature at "
+                      << init_data.ml_model_init_data.num_hot_spots << " hot spots";
+        } else {
+            init_data.ml_model_init_data.num_hot_spots = 1;
+        }
+
         ::thermal::vtestimator::VtEstimatorStatus ret = vt_estimator->Initialize(init_data);
         if (ret != ::thermal::vtestimator::kVtEstimatorOk) {
             LOG(ERROR) << "Failed to initialize vt estimator for Sensor[" << name

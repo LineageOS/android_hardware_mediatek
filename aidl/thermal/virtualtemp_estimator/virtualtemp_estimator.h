@@ -28,6 +28,8 @@ struct MLModelInitData {
         use_prev_samples = false;
         prev_samples_order = 1;
         offset = 0;
+        output_label_count = 1;
+        num_hot_spots = 1;
     }
     ~MLModelInitData() {}
 
@@ -35,6 +37,8 @@ struct MLModelInitData {
     bool use_prev_samples;
     size_t prev_samples_order;
     float offset;
+    size_t output_label_count;
+    size_t num_hot_spots;
 };
 
 struct LinearModelInitData {
@@ -80,6 +84,7 @@ class VirtualTempEstimator {
   private:
     void LoadTFLiteWrapper();
     VtEstimationType type;
+    std::unique_ptr<VtEstimatorCommonData> common_instance_;
     std::unique_ptr<VtEstimatorTFLiteData> tflite_instance_;
     std::unique_ptr<VtEstimatorLinearModelData> linear_model_instance_;
 
