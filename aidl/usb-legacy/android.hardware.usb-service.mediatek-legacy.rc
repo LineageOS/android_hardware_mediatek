@@ -1,0 +1,12 @@
+on boot
+    chown root system /sys/class/dual_role_usb/dual-role-type_c_port0/power_role
+    chown root system /sys/class/dual_role_usb/dual-role-type_c_port0/data_role
+    chown root system /sys/class/dual_role_usb/dual-role-type_c_port0/port_type
+    chmod 664 /sys/class/dual_role_usb/dual-role-type_c_port0/power_role
+    chmod 664 /sys/class/dual_role_usb/dual-role-type_c_port0/data_role
+    chmod 664 /sys/class/dual_role_usb/dual-role-type_c_port0/port_type
+
+service vendor.usb_default /vendor/bin/hw/android.hardware.usb-service.mediatek-legacy
+    class hal
+    user system
+    group system
