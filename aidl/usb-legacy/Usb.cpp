@@ -535,6 +535,13 @@ Status getPortStatusHelper(android::hardware::usb::Usb *usb,
 
             currentRole.set<PortRole::dataRole>(PortDataRole::NONE);
             if (getCurrentRoleHelper(port.first, port.second, &currentRole) == Status::SUCCESS) {
+                /* HACK: Our device has broken roles: they appear to be permanently set
+                   to NONE and don't respond to configfs writes. This causes Android to
+                   not see the USB port as connected, breaking the USB settings.
+                   To get USB preferences to work, we have to spoof some roles. */
+                if (port.second == true && currentRole.get<PortRole::dataRole>() == PortDataRole::NONE) {
+                    currentRole.set<PortRole::dataRole>(PortDataRole::DEVICE);
+                }
                 (*currentPortStatus)[i].currentDataRole = currentRole.get<PortRole::dataRole>();
             } else {
                 ALOGE("Error while retrieving current port role");
@@ -543,6 +550,10 @@ Status getPortStatusHelper(android::hardware::usb::Usb *usb,
 
             currentRole.set<PortRole::mode>(PortMode::NONE);
             if (getCurrentRoleHelper(port.first, port.second, &currentRole) == Status::SUCCESS) {
+                // HACK: see above
+                if (port.second == true && currentRole.get<PortRole::mode>() == PortMode::NONE) {
+                    currentRole.set<PortRole::mode>(PortMode::UFP);
+                }
                 (*currentPortStatus)[i].currentMode = currentRole.get<PortRole::mode>();
             } else {
                 ALOGE("Error while retrieving current data role");
