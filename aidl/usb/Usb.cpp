@@ -310,12 +310,27 @@ Usb::Usb()
     }
 }
 
+bool canSwitchRoleHelper(const string &portName) {
+    string filename = kTypecPath + portName + "-partner/supports_usb_power_delivery";
+    string supportsPD;
+
+    if (ReadFileToString(filename, &supportsPD)) {
+        supportsPD = Trim(supportsPD);
+        if (supportsPD == "yes") {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 ScopedAStatus Usb::switchRole(const string& in_portName,
         const PortRole& in_role, int64_t in_transactionId) {
     string filename = appendRoleNodeHelper(string(in_portName.c_str()), in_role.getTag());
     string written;
     FILE *fp;
     bool roleSwitch = false;
+    bool canSwitch = canSwitchRoleHelper(in_portName);
 
     if (filename == "") {
         ALOGE("Fatal: invalid node type");
@@ -328,7 +343,7 @@ ScopedAStatus Usb::switchRole(const string& in_portName,
 
     if (in_role.getTag() == PortRole::mode) {
         roleSwitch = switchMode(in_portName, in_role, this);
-    } else {
+    } else if (canSwitch) {
         for (int i = 0; i < 20; i++) {
             fp = fopen(filename.c_str(), "w");
             if (fp != NULL) {
@@ -496,20 +511,6 @@ Status getTypeCPortNamesHelper(std::unordered_map<string, bool> *names) {
     return Status::ERROR;
 }
 
-bool canSwitchRoleHelper(const string &portName) {
-    string filename = kTypecPath + portName + "-partner/supports_usb_power_delivery";
-    string supportsPD;
-
-    if (ReadFileToString(filename, &supportsPD)) {
-        supportsPD = Trim(supportsPD);
-        if (supportsPD == "yes") {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 Status getPortStatusHelper(android::hardware::usb::Usb *usb,
         std::vector<PortStatus> *currentPortStatus) {
     std::unordered_map<string, bool> names;
@@ -566,11 +567,20 @@ Status getPortStatusHelper(android::hardware::usb::Usb *usb,
                 (*currentPortStatus)[i].canChangePowerRole,
                 usb->mUsbDataEnabled);
         }
+    } else {
+        currentPortStatus->resize(1);
 
-        return Status::SUCCESS;
+        (*currentPortStatus)[0].canChangeMode = false;
+        (*currentPortStatus)[0].canChangeDataRole = false;
+        (*currentPortStatus)[0].canChangePowerRole = false;
+
+        (*currentPortStatus)[0].supportedModes.push_back(PortMode::UFP);
+        (*currentPortStatus)[0].usbDataStatus.push_back(UsbDataStatus::ENABLED);
+
+        result = Status::SUCCESS;
     }
 done:
-    return Status::ERROR;
+    return result;
 }
 
 void queryVersionHelper(android::hardware::usb::Usb *usb,
