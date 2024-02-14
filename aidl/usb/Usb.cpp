@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <list>
 #include <chrono>
 #include <regex>
 #include <thread>
@@ -41,9 +42,9 @@ namespace usb {
 constexpr char kTypecPath[] = "/sys/class/typec/";
 constexpr char kDataRoleNode[] = "/data_role";
 constexpr char kPowerRoleNode[] = "/power_role";
-constexpr char kUsbDataPath[] = "/sys/class/udc/%s/device/usb_data_enabled";
 
-const std::string kUsbControllerName = GetProperty("sys.usb.controller", "");
+const std::list<std::string> kModePaths = {"/sys/class/udc/%s/device/mode",
+                                           "/sys/class/udc/%s/device/cmode"};
 
 // Set by the signal handler to destroy the thread
 volatile bool destroyThread;
@@ -51,50 +52,62 @@ volatile bool destroyThread;
 void queryVersionHelper(android::hardware::usb::Usb *usb,
                         std::vector<PortStatus> *currentPortStatus);
 
+bool setMtu3DrForceMode(const std::string controller, const std::string mode) {
+    std::string filename;
+    bool success = false;
+
+    for (const auto &path : kModePaths) {
+        filename = StringPrintf(path.c_str(), controller.c_str());
+        success = WriteStringToFile(mode, filename);
+        if (success) break;
+    }
+
+    return success;
+}
+
 ScopedAStatus Usb::enableUsbData(const string& in_portName, bool in_enable, int64_t in_transactionId) {
     std::vector<PortStatus> currentPortStatus;
-    string filename, pullup;
+    string pullup, controller;
     bool result = true;
 
     ALOGI("Userspace turn %s USB data signaling. opID:%ld", in_enable ? "on" : "off",
             in_transactionId);
 
-    if (kUsbControllerName.empty()) {
+    controller = GetProperty("sys.usb.controller", "");
+    if (controller.empty()) {
         ALOGE("sys.usb.controller is empty!");
         result = false;
         goto out;
     }
 
-    filename = StringPrintf(kUsbDataPath, kUsbControllerName.c_str());
-
     if (in_enable) {
         if (!mUsbDataEnabled) {
             if (ReadFileToString(PULLUP_PATH, &pullup)) {
                 pullup = Trim(pullup);
-                if (pullup != kUsbControllerName) {
-                    if (!WriteStringToFile(kUsbControllerName, PULLUP_PATH)) {
+                if (pullup != controller) {
+                    if (!WriteStringToFile(controller, PULLUP_PATH)) {
                         ALOGE("Gadget cannot be pulled up");
                         result = false;
                     }
                 }
             }
-            if (!WriteStringToFile("1", filename)) {
-                ALOGE("Not able to turn on usb connection notification");
+            if (!setMtu3DrForceMode(controller, "1")) {
+                ALOGE("Failed to set force mode to dual");
                 result = false;
             }
         }
     } else {
         if (ReadFileToString(PULLUP_PATH, &pullup)) {
             pullup = Trim(pullup);
-            if (pullup == kUsbControllerName) {
+            if (pullup == controller) {
                 if (!WriteStringToFile("none", PULLUP_PATH)) {
                     ALOGE("Gadget cannot be pulled down");
                     result = false;
                 }
             }
         }
-        if (!WriteStringToFile("0", filename)) {
-            ALOGE("Not able to turn on usb connection notification");
+        if (!setMtu3DrForceMode(controller, "0")) {
+            ALOGE("Failed to set force mode to off");
             result = false;
         }
     }

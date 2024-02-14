@@ -2,11 +2,13 @@ on boot
     chown root system /sys/class/typec/port0/power_role
     chown root system /sys/class/typec/port0/data_role
     chown root system /sys/class/typec/port0/port_type
-    chown root system /sys/class/udc/${sys.usb.controller}/device/usb_data_enabled
+    chown root system /sys/class/udc/${sys.usb.controller}/device/mode
+    chown root system /sys/class/udc/${sys.usb.controller}/device/cmode
     chmod 664 /sys/class/typec/port0/power_role
     chmod 664 /sys/class/typec/port0/data_role
     chmod 664 /sys/class/typec/port0/port_type
-    chmod 664 /sys/class/udc/${sys.usb.controller}/device/usb_data_enabled
+    chmod 664 /sys/class/udc/${sys.usb.controller}/device/mode
+    chmod 664 /sys/class/udc/${sys.usb.controller}/device/cmode
 
 service vendor.usb_default /vendor/bin/hw/android.hardware.usb-service.mediatek
     class hal
