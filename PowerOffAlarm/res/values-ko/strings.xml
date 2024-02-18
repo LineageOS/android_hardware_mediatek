@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">전원 꺼짐 알람</string>
+    <string name="permdesc_power_off_alarm">전원 꺼짐 상태에서 기기를 깨울 알람 설정 및 삭제</string>
+    <string name="permlab_power_off_alarm">전원 꺼짐 알람</string>
+</resources>
