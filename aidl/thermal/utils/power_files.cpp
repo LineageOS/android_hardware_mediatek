@@ -344,7 +344,8 @@ void PowerFiles::logPowerStatus(const boot_clock::time_point &now) {
         const auto &last_sample = power_status_log_.prev_energy_info_map.at(rail);
         const auto &curr_sample = energy_info_pair.second;
         float avg_power = NAN;
-        if (calculateAvgPower(rail, last_sample, curr_sample, &avg_power) && avg_power != NAN) {
+        if (calculateAvgPower(rail, last_sample, curr_sample, &avg_power) &&
+            !std::isnan(avg_power)) {
             // start of new line
             if (power_rail_log_cnt % kMaxPowerLogPerLine == 0) {
                 if (power_rail_log_cnt != 0) {
