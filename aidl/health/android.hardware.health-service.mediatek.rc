@@ -18,3 +18,4 @@ service vendor.charger /vendor/bin/hw/android.hardware.health-service.mediatek -
 
 on charger
     chown system system /dev/graphics/fb0
+    chown system system /dev/dri/card0
