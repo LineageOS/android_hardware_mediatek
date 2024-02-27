@@ -358,7 +358,7 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
     }
 
     if (formula == FormulaOption::USE_ML_MODEL) {
-        ::thermal::vtestimator::VtEstimationInitData init_data;
+        ::thermal::vtestimator::VtEstimationInitData init_data(::thermal::vtestimator::kUseMLModel);
         if (sensor["ModelPath"].empty()) {
             LOG(ERROR) << "Sensor[" << name << "] has no ModelPath";
             return false;
@@ -386,25 +386,18 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
             init_data.ml_model_init_data.prev_samples_order = sensor["PreviousSampleCount"].asInt();
             LOG(INFO) << "Sensor[" << name << "] takes "
                       << init_data.ml_model_init_data.prev_samples_order << " historic samples";
-        } else {
-            init_data.ml_model_init_data.use_prev_samples = false;
-            init_data.ml_model_init_data.prev_samples_order = 1;
         }
 
         if (!sensor["OutputLabelCount"].empty()) {
             init_data.ml_model_init_data.output_label_count = sensor["OutputLabelCount"].asInt();
             LOG(INFO) << "Sensor[" << name << "] outputs "
                       << init_data.ml_model_init_data.output_label_count << " labels";
-        } else {
-            init_data.ml_model_init_data.output_label_count = 1;
         }
 
         if (!sensor["PredictHotSpotCount"].empty()) {
             init_data.ml_model_init_data.num_hot_spots = sensor["PredictHotSpotCount"].asInt();
             LOG(INFO) << "Sensor[" << name << "] predicts temperature at "
                       << init_data.ml_model_init_data.num_hot_spots << " hot spots";
-        } else {
-            init_data.ml_model_init_data.num_hot_spots = 1;
         }
 
         ::thermal::vtestimator::VtEstimatorStatus ret = vt_estimator->Initialize(init_data);
@@ -419,7 +412,8 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
                   << "] with input samples: " << linked_sensors.size();
 
     } else if (formula == FormulaOption::USE_LINEAR_MODEL) {
-        ::thermal::vtestimator::VtEstimationInitData init_data;
+        ::thermal::vtestimator::VtEstimationInitData init_data(
+                ::thermal::vtestimator::kUseLinearModel);
 
         if ((!linked_sensors.size()) || (linked_sensors.size() > coefficients.size())) {
             LOG(ERROR) << "Sensor[" << name

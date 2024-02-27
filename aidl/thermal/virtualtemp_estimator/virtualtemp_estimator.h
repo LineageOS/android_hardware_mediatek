@@ -23,16 +23,6 @@ enum VtEstimatorStatus {
 enum VtEstimationType { kUseMLModel = 0, kUseLinearModel = 1, kInvalidEstimationType = 2 };
 
 struct MLModelInitData {
-    MLModelInitData() {
-        model_path = "";
-        use_prev_samples = false;
-        prev_samples_order = 1;
-        offset = 0;
-        output_label_count = 1;
-        num_hot_spots = 1;
-    }
-    ~MLModelInitData() {}
-
     std::string model_path;
     bool use_prev_samples;
     size_t prev_samples_order;
@@ -42,13 +32,6 @@ struct MLModelInitData {
 };
 
 struct LinearModelInitData {
-    LinearModelInitData() {
-        use_prev_samples = false;
-        prev_samples_order = 1;
-        offset = 0;
-    }
-    ~LinearModelInitData() {}
-
     bool use_prev_samples;
     size_t prev_samples_order;
     std::vector<float> coefficients;
@@ -56,7 +39,20 @@ struct LinearModelInitData {
 };
 
 union VtEstimationInitData {
-    VtEstimationInitData() {}
+    VtEstimationInitData(VtEstimationType type) {
+        if (type == kUseMLModel) {
+            ml_model_init_data.model_path = "";
+            ml_model_init_data.use_prev_samples = false;
+            ml_model_init_data.prev_samples_order = 1;
+            ml_model_init_data.offset = 0;
+            ml_model_init_data.output_label_count = 1;
+            ml_model_init_data.num_hot_spots = 1;
+        } else if (type == kUseLinearModel) {
+            linear_model_init_data.use_prev_samples = false;
+            linear_model_init_data.prev_samples_order = 1;
+            linear_model_init_data.offset = 0;
+        }
+    }
     ~VtEstimationInitData() {}
 
     MLModelInitData ml_model_init_data;
