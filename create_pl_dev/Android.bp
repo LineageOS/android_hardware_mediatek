@@ -1,0 +1,18 @@
+//
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_binary {
+    name: "create_pl_dev",
+    srcs: ["create_pl_dev.cpp"],
+    init_rc: ["create_pl_dev.rc"],
+    recovery_available: true,
+    static_libs: [
+        "libfs_mgr"
+    ],
+    shared_libs: [
+        "libbase",
+        "liblog",
+    ],
+}

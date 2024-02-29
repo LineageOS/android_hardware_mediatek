@@ -1,0 +1,27 @@
+on post-fs
+    start create_pl_dev
+
+    wait /dev/block/mapper/preloader_raw_a
+    wait /dev/block/mapper/preloader_raw_b
+
+    symlink /dev/block/mapper/preloader_raw_a /dev/block/by-name/preloader_raw_a
+    symlink /dev/block/mapper/preloader_raw_b /dev/block/by-name/preloader_raw_b
+
+    symlink /dev/block/mapper/preloader_raw_a /dev/block/platform/bootdevice/by-name/preloader_raw_a
+    symlink /dev/block/mapper/preloader_raw_b /dev/block/platform/bootdevice/by-name/preloader_raw_b
+
+    symlink /dev/block/mapper/preloader_raw_a /dev/block/platform/11270000.ufshci/by-name/preloader_raw_a
+    symlink /dev/block/mapper/preloader_raw_b /dev/block/platform/11270000.ufshci/by-name/preloader_raw_b
+
+    symlink /dev/block/mapper/preloader_raw_a /dev/block/platform/11230000.mmc/by-name/preloader_raw_a
+    symlink /dev/block/mapper/preloader_raw_b /dev/block/platform/11230000.mmc/by-name/preloader_raw_b
+
+    symlink /dev/block/mapper/preloader_raw_a /dev/block/platform/11230000.msdc/by-name/preloader_raw_a
+    symlink /dev/block/mapper/preloader_raw_b /dev/block/platform/11230000.msdc/by-name/preloader_raw_b
+
+service create_pl_dev /system/bin/create_pl_dev
+    user root
+    group root
+    seclabel u:r:update_engine:s0
+    oneshot
+    disabled
