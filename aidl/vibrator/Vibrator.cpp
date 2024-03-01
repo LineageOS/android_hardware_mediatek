@@ -27,12 +27,11 @@ ndk::ScopedAStatus Vibrator::getCapabilities(int32_t* _aidl_return) {
     LOG(VERBOSE) << "Vibrator reporting capabilities";
     *_aidl_return = IVibrator::CAP_ON_CALLBACK;
 
-    #ifdef VIBRATOR_SUPPORTS_EFFECTS
+#ifdef VIBRATOR_SUPPORTS_EFFECTS
     *_aidl_return |= IVibrator::CAP_PERFORM_CALLBACK;
 
-    if (mVibratorStrengthSupported)
-        *_aidl_return |= IVibrator::CAP_AMPLITUDE_CONTROL;
-    #endif
+    if (mVibratorStrengthSupported) *_aidl_return |= IVibrator::CAP_AMPLITUDE_CONTROL;
+#endif
 
     return ndk::ScopedAStatus::ok();
 }
@@ -49,8 +48,7 @@ ndk::ScopedAStatus Vibrator::on(int32_t timeoutMs,
     LOG(VERBOSE) << "Vibrator on for timeoutMs: " << timeoutMs;
 
     status = activate(timeoutMs);
-    if (!status.isOk())
-        return status;
+    if (!status.isOk()) return status;
 
     if (callback != nullptr) {
         std::thread([=] {
@@ -83,8 +81,7 @@ ndk::ScopedAStatus Vibrator::perform(Effect effect, EffectStrength strength,
     timeoutMs = vibEffects[effect];
 
     status = activate(timeoutMs);
-    if (!status.isOk())
-        return status;
+    if (!status.isOk()) return status;
 
     if (callback != nullptr) {
         std::thread([=] {
@@ -107,8 +104,7 @@ ndk::ScopedAStatus Vibrator::perform(Effect /* effect */, EffectStrength /* stre
 
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
 ndk::ScopedAStatus Vibrator::getSupportedEffects(std::vector<Effect>* _aidl_return) {
-    for (auto const& pair : vibEffects)
-        _aidl_return->push_back(pair.first);
+    for (auto const& pair : vibEffects) _aidl_return->push_back(pair.first);
 #else
 ndk::ScopedAStatus Vibrator::getSupportedEffects(std::vector<Effect>* /* _aidl_return */) {
 #endif
@@ -128,8 +124,7 @@ ndk::ScopedAStatus Vibrator::setAmplitude(float amplitude) {
 
     LOG(VERBOSE) << "Setting intensity: " << intensity;
 
-    if (mVibratorStrengthSupported)
-        setNode(kVibratorStrength, intensity);
+    if (mVibratorStrengthSupported) setNode(kVibratorStrength, intensity);
 
     return ndk::ScopedAStatus::ok();
 #else
@@ -150,7 +145,8 @@ ndk::ScopedAStatus Vibrator::getCompositionSizeMax(int32_t* maxSize __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getSupportedPrimitives(std::vector<CompositePrimitive>* supported __unused) {
+ndk::ScopedAStatus Vibrator::getSupportedPrimitives(
+        std::vector<CompositePrimitive>* supported __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
@@ -164,11 +160,13 @@ ndk::ScopedAStatus Vibrator::compose(const std::vector<CompositeEffect>& composi
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getSupportedAlwaysOnEffects(std::vector<Effect>* _aidl_return __unused) {
+ndk::ScopedAStatus Vibrator::getSupportedAlwaysOnEffects(
+        std::vector<Effect>* _aidl_return __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::alwaysOnEnable(int32_t id __unused, Effect effect __unused, EffectStrength strength __unused) {
+ndk::ScopedAStatus Vibrator::alwaysOnEnable(int32_t id __unused, Effect effect __unused,
+                                            EffectStrength strength __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
@@ -176,40 +174,41 @@ ndk::ScopedAStatus Vibrator::alwaysOnDisable(int32_t id __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getResonantFrequency(float *resonantFreqHz __unused) {
+ndk::ScopedAStatus Vibrator::getResonantFrequency(float* resonantFreqHz __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getQFactor(float *qFactor __unused) {
+ndk::ScopedAStatus Vibrator::getQFactor(float* qFactor __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getFrequencyResolution(float *freqResolutionHz __unused) {
+ndk::ScopedAStatus Vibrator::getFrequencyResolution(float* freqResolutionHz __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getFrequencyMinimum(float *freqMinimumHz __unused) {
+ndk::ScopedAStatus Vibrator::getFrequencyMinimum(float* freqMinimumHz __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getBandwidthAmplitudeMap(std::vector<float> *_aidl_return __unused) {
+ndk::ScopedAStatus Vibrator::getBandwidthAmplitudeMap(std::vector<float>* _aidl_return __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getPwlePrimitiveDurationMax(int32_t *durationMs __unused) {
+ndk::ScopedAStatus Vibrator::getPwlePrimitiveDurationMax(int32_t* durationMs __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getPwleCompositionSizeMax(int32_t *maxSize __unused) {
+ndk::ScopedAStatus Vibrator::getPwleCompositionSizeMax(int32_t* maxSize __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::getSupportedBraking(std::vector<Braking> *supported __unused) {
+ndk::ScopedAStatus Vibrator::getSupportedBraking(std::vector<Braking>* supported __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 
-ndk::ScopedAStatus Vibrator::composePwle(const std::vector<PrimitivePwle> &composite __unused,
-                                         const std::shared_ptr<IVibratorCallback> &callback __unused) {
+ndk::ScopedAStatus Vibrator::composePwle(const std::vector<PrimitivePwle>& composite __unused,
+                                         const std::shared_ptr<IVibratorCallback>& callback
+                                                 __unused) {
     return ndk::ScopedAStatus(AStatus_fromExceptionCode(EX_UNSUPPORTED_OPERATION));
 }
 

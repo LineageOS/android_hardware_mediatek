@@ -37,16 +37,13 @@ ndk::ScopedAStatus Vibrator::activate(const int32_t timeoutMs) {
     }
 
     status = setNode(kVibratorState, 1);
-    if (!status.isOk())
-        return status;
+    if (!status.isOk()) return status;
 
     status = setNode(kVibratorDuration, timeoutMs);
-    if (!status.isOk())
-        return status;
+    if (!status.isOk()) return status;
 
     status = setNode(kVibratorActivate, 1);
-    if (!status.isOk())
-        return status;
+    if (!status.isOk()) return status;
 
     return ndk::ScopedAStatus::ok();
 }

@@ -16,26 +16,23 @@ namespace android {
 namespace hardware {
 namespace vibrator {
 
-const std::string kVibratorPropPrefix   = "ro.vendor.vibrator.hal.";
+const std::string kVibratorPropPrefix = "ro.vendor.vibrator.hal.";
 const std::string kVibratorPropDuration = ".duration";
 
-const std::string kVibratorState       = "/sys/class/leds/vibrator/state";
-const std::string kVibratorDuration    = "/sys/class/leds/vibrator/duration";
-const std::string kVibratorActivate    = "/sys/class/leds/vibrator/activate";
+const std::string kVibratorState = "/sys/class/leds/vibrator/state";
+const std::string kVibratorDuration = "/sys/class/leds/vibrator/duration";
+const std::string kVibratorActivate = "/sys/class/leds/vibrator/activate";
 
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
-const std::string kVibratorStrength    = "/sys/kernel/thunderquake_engine/level";
+const std::string kVibratorStrength = "/sys/kernel/thunderquake_engine/level";
 const std::string kVibratorStrengthMax = "/sys/kernel/thunderquake_engine/max";
 
 static std::map<EffectStrength, float> vibStrengths = {
-    { EffectStrength::LIGHT, 0.25 },
-    { EffectStrength::MEDIUM, 0.5 },
-    { EffectStrength::STRONG, 1 }
-};
+        {EffectStrength::LIGHT, 0.25}, {EffectStrength::MEDIUM, 0.5}, {EffectStrength::STRONG, 1}};
 #endif
 
 class Vibrator : public BnVibrator {
-public:
+  public:
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
     Vibrator();
 #endif
@@ -59,26 +56,27 @@ public:
     ndk::ScopedAStatus getSupportedAlwaysOnEffects(std::vector<Effect>* _aidl_return) override;
     ndk::ScopedAStatus alwaysOnEnable(int32_t id, Effect effect, EffectStrength strength) override;
     ndk::ScopedAStatus alwaysOnDisable(int32_t id) override;
-    ndk::ScopedAStatus getResonantFrequency(float *resonantFreqHz) override;
-    ndk::ScopedAStatus getQFactor(float *qFactor) override;
-    ndk::ScopedAStatus getFrequencyResolution(float *freqResolutionHz) override;
-    ndk::ScopedAStatus getFrequencyMinimum(float *freqMinimumHz) override;
-    ndk::ScopedAStatus getBandwidthAmplitudeMap(std::vector<float> *_aidl_return) override;
-    ndk::ScopedAStatus getPwlePrimitiveDurationMax(int32_t *durationMs) override;
-    ndk::ScopedAStatus getPwleCompositionSizeMax(int32_t *maxSize) override;
+    ndk::ScopedAStatus getResonantFrequency(float* resonantFreqHz) override;
+    ndk::ScopedAStatus getQFactor(float* qFactor) override;
+    ndk::ScopedAStatus getFrequencyResolution(float* freqResolutionHz) override;
+    ndk::ScopedAStatus getFrequencyMinimum(float* freqMinimumHz) override;
+    ndk::ScopedAStatus getBandwidthAmplitudeMap(std::vector<float>* _aidl_return) override;
+    ndk::ScopedAStatus getPwlePrimitiveDurationMax(int32_t* durationMs) override;
+    ndk::ScopedAStatus getPwleCompositionSizeMax(int32_t* maxSize) override;
     ndk::ScopedAStatus getSupportedBraking(std::vector<Braking>* supported) override;
-    ndk::ScopedAStatus composePwle(const std::vector<PrimitivePwle> &composite,
-                                   const std::shared_ptr<IVibratorCallback> &callback) override;
-private:
+    ndk::ScopedAStatus composePwle(const std::vector<PrimitivePwle>& composite,
+                                   const std::shared_ptr<IVibratorCallback>& callback) override;
+
+  private:
     static ndk::ScopedAStatus setNode(const std::string path, const int32_t value);
     static int getIntProperty(const std::string& key, const int fallback);
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
     static bool exists(const std::string path);
     static int getNode(const std::string path, const int fallback);
     std::map<Effect, int32_t> vibEffects = {
-        { Effect::CLICK, getIntProperty("click" + kVibratorPropDuration, 50) },
-        { Effect::TICK, getIntProperty("tick" + kVibratorPropDuration, 32) },
-        { Effect::TEXTURE_TICK, getIntProperty("texture_tick" + kVibratorPropDuration, 25) },
+            {Effect::CLICK, getIntProperty("click" + kVibratorPropDuration, 50)},
+            {Effect::TICK, getIntProperty("tick" + kVibratorPropDuration, 32)},
+            {Effect::TEXTURE_TICK, getIntProperty("texture_tick" + kVibratorPropDuration, 25)},
     };
     bool mVibratorStrengthSupported;
     int mVibratorStrengthMax;
