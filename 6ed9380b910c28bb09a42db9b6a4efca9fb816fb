@@ -1,4 +1,28 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "544c40db_c71b875c",
+        "filename": "create_pl_dev/create_pl_dev.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2024-03-02T11:37:27Z",
+      "side": 1,
+      "message": "that\u0027s ok, you should write a proper sepolicy tho",
+      "range": {
+        "startLine": 25,
+        "startChar": 17,
+        "endLine": 25,
+        "endChar": 30
+      },
+      "revId": "6ed9380b910c28bb09a42db9b6a4efca9fb816fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ],
   "submitRequirementResults": []
 }
