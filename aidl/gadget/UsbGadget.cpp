@@ -207,7 +207,8 @@ static Status validateAndSetVidPid(int64_t functions) {
     }
     if (!saving.empty()) {
         if (!WriteStringToFile(saving, getUdcNodeHelper(SAVING_PATH))) {
-            ALOGW("Failed to update saving state");
+            ALOGE("Failed to update saving state");
+            ret = Status::ERROR;
         }
     }
 error:
@@ -308,8 +309,11 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(long functions,
 
     if (functions == GadgetFunction::NONE) {
         // Make sure we reset saving state if there are no functions enabled.
-        if (!WriteStringToFile("0", getUdcNodeHelper(SAVING_PATH)))
-            ALOGW("Failed to reset saving state");
+        if (!WriteStringToFile("0", getUdcNodeHelper(SAVING_PATH))) {
+            ALOGE("Failed to reset saving state");
+            status = Status::ERROR;
+            goto error;
+        }
         if (callback == NULL)
             return ScopedAStatus::fromServiceSpecificErrorWithMessage(-1, "callback == NULL");
         ScopedAStatus ret = callback->setCurrentUsbFunctionsCb(functions, status, in_transactionId);
