@@ -423,10 +423,12 @@ Status getPortStatusHelper(android::hardware::usb::Usb* usb,
                     usb->mUsbDataEnabled ? UsbDataStatus::ENABLED : UsbDataStatus::DISABLED_FORCE);
 
             ALOGI("%d:%s connected:%d canChangeMode:%d canChagedata:%d canChangePower:%d "
-                  "usbDataEnabled:%d",
+                  "usbDataEnabled:%d plugOrientation:%d",
                   i, port.first.c_str(), port.second, (*currentPortStatus)[i].canChangeMode,
                   (*currentPortStatus)[i].canChangeDataRole,
-                  (*currentPortStatus)[i].canChangePowerRole, usb->mUsbDataEnabled);
+                  (*currentPortStatus)[i].canChangePowerRole,
+                  usb->mUsbDataEnabled,
+                  (*currentPortStatus)[i].plugOrientation);
         }
 
         return Status::SUCCESS;
