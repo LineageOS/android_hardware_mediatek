@@ -53,6 +53,11 @@ bool ThermalFiles::readThermalFile(std::string_view thermal_name, std::string *d
         return false;
     }
 
+    if (sensor_reading.size() <= 1) {
+        LOG(ERROR) << thermal_name << "'s return size:" << sensor_reading.size() << " is invalid";
+        return false;
+    }
+
     // Strip the newline.
     *data = ::android::base::Trim(sensor_reading);
     return true;

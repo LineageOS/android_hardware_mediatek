@@ -9,6 +9,7 @@
 #include <aidl/android/frameworks/stats/IStats.h>
 #include <aidl/android/hardware/thermal/Temperature.h>
 #include <android-base/chrono_utils.h>
+#include <hardware/google/pixel/pixelstats/pixelatoms.pb.h>
 
 #include <chrono>
 #include <shared_mutex>
@@ -27,10 +28,18 @@ namespace implementation {
 using aidl::android::frameworks::stats::IStats;
 using aidl::android::frameworks::stats::VendorAtomValue;
 using ::android::base::boot_clock;
+using ::android::hardware::google::pixel::PixelAtoms::ThermalSensorAbnormalityDetected;
 using std::chrono::system_clock;
 using SystemTimePoint = std::chrono::time_point<std::chrono::system_clock>;
 
+// Number of abnormal atoms to be logged per kUpdateIntervalMs
+constexpr int kMaxAbnormalLoggingPerUpdateInterval = 20;
 constexpr int kMaxStatsReportingFailCount = 3;
+// Proto messages are 1-indexed and VendorAtom field numbers start at 2, so
+// store everything in the values array at the index of the field number
+// -2.
+constexpr int kVendorAtomOffset = 2;
+constexpr float kPrecisionThreshold = 1e-4;
 
 struct StatsRecord {
     int cur_state; /* temperature / cdev state at current time */
@@ -88,6 +97,23 @@ struct SensorTempStats : ThermalStats<float> {
     SystemTimePoint min_temp_timestamp = SystemTimePoint::min();
 };
 
+struct CurrTempStatus {
+    float temp;
+    boot_clock::time_point start_time;
+    int repeat_count;
+};
+
+struct SensorStats {
+    // Temperature residency stats for each sensor being watched
+    std::unordered_map<std::string, SensorTempStats> temp_stats_map_;
+    // Min, Max Temp threshold info for each sensor being monitored
+    std::unordered_map<std::string, std::shared_ptr<TempRangeInfo>> temp_range_info_map_;
+    // Temperature Stuck info for each sensor being monitored
+    std::unordered_map<std::string, std::shared_ptr<TempStuckInfo>> temp_stuck_info_map_;
+    // Current temperature status for each sensor being monitored for stuck
+    std::unordered_map<std::string, CurrTempStatus> curr_temp_status_map_;
+};
+
 class ThermalStatsHelper {
   public:
     ThermalStatsHelper() = default;
@@ -112,6 +138,8 @@ class ThermalStatsHelper {
      *  >0, count represents the number of stats failed to report.
      */
     int reportStats();
+    bool reportThermalAbnormality(const ThermalSensorAbnormalityDetected::AbnormalityType &type,
+                                  std::string_view name, std::optional<int> reading);
     // Get a snapshot of Thermal Stats Sensor Map till that point in time
     std::unordered_map<std::string, SensorTempStats> GetSensorTempStatsSnapshot();
     // Get a snapshot of Thermal Stats Sensor Map till that point in time
@@ -122,10 +150,9 @@ class ThermalStatsHelper {
     static constexpr std::chrono::milliseconds kUpdateIntervalMs =
             std::chrono::duration_cast<std::chrono::milliseconds>(24h);
     boot_clock::time_point last_total_stats_report_time = boot_clock::time_point::min();
-
-    mutable std::shared_mutex sensor_temp_stats_map_mutex_;
-    // Temperature stats for each sensor being watched
-    std::unordered_map<std::string, SensorTempStats> sensor_temp_stats_map_;
+    int abnormal_stats_reported_per_update_interval = 0;
+    mutable std::shared_mutex sensor_stats_mutex_;
+    SensorStats sensor_stats;
     mutable std::shared_mutex sensor_cdev_request_stats_map_mutex_;
     // userVote request stat for the sensor to the corresponding cdev (sensor -> cdev ->
     // StatsRecord)
@@ -139,7 +166,11 @@ class ThermalStatsHelper {
             const StatsInfo<int> &request_stats_info,
             const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
             const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_);
+    bool initializeSensorAbnormalityStats(
+            const AbnormalStatsInfo &abnormal_stats_info,
+            const std::unordered_map<std::string, SensorInfo> &sensor_info_map_);
     void updateStatsRecord(StatsRecord *stats_record, int new_state);
+    void verifySensorAbnormality(std::string_view sensor, float temperature);
     int reportAllSensorTempStats(const std::shared_ptr<IStats> &stats_client);
     bool reportSensorTempStats(const std::shared_ptr<IStats> &stats_client, std::string_view sensor,
                                const SensorTempStats &sensor_temp_stats, StatsRecord *stats_record);

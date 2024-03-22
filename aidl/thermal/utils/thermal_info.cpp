@@ -119,7 +119,74 @@ bool getFloatFromJsonValues(const Json::Value &values, ThrottlingArray *out, boo
     *out = ret;
     return true;
 }
+
+bool getTempRangeInfoFromJsonValues(const Json::Value &values, TempRangeInfo *temp_range_info) {
+    if (values.size() != 2) {
+        LOG(ERROR) << "Temp Range Values size: " << values.size() << "is invalid.";
+        return false;
+    }
+
+    float min_temp = getFloatFromValue(values[0]);
+    float max_temp = getFloatFromValue(values[1]);
+
+    if (std::isnan(min_temp) || std::isnan(max_temp)) {
+        LOG(ERROR) << "Illegal temp range: thresholds not defined properly " << min_temp << " : "
+                   << max_temp;
+        return false;
+    }
+
+    if (min_temp > max_temp) {
+        LOG(ERROR) << "Illegal temp range: temp_min_threshold(" << min_temp
+                   << ") > temp_max_threshold(" << max_temp << ")";
+        return false;
+    }
+    temp_range_info->min_temp_threshold = min_temp;
+    temp_range_info->max_temp_threshold = max_temp;
+    LOG(INFO) << "Temp Range Info: " << temp_range_info->min_temp_threshold
+              << " <= t <= " << temp_range_info->max_temp_threshold;
+    return true;
+}
+
+bool getTempStuckInfoFromJsonValue(const Json::Value &values, TempStuckInfo *temp_stuck_info) {
+    if (values["MinStuckDuration"].empty()) {
+        LOG(ERROR) << "Minimum stuck duration not present.";
+        return false;
+    }
+    int min_stuck_duration_int = getIntFromValue(values["MinStuckDuration"]);
+    if (min_stuck_duration_int <= 0) {
+        LOG(ERROR) << "Invalid Minimum stuck duration " << min_stuck_duration_int;
+        return false;
+    }
+
+    if (values["MinPollingCount"].empty()) {
+        LOG(ERROR) << "Minimum polling count not present.";
+        return false;
+    }
+    int min_polling_count = getIntFromValue(values["MinPollingCount"]);
+    if (min_polling_count <= 0) {
+        LOG(ERROR) << "Invalid Minimum stuck duration " << min_polling_count;
+        return false;
+    }
+    temp_stuck_info->min_stuck_duration = std::chrono::milliseconds(min_stuck_duration_int);
+    temp_stuck_info->min_polling_count = min_polling_count;
+    LOG(INFO) << "Temp Stuck Info: polling_count=" << temp_stuck_info->min_polling_count
+              << " stuck_duration=" << temp_stuck_info->min_stuck_duration.count();
+    return true;
+}
 }  // namespace
+
+std::ostream &operator<<(std::ostream &stream, const SensorFusionType &sensor_fusion_type) {
+    switch (sensor_fusion_type) {
+        case SensorFusionType::SENSOR:
+            return stream << "SENSOR";
+        case SensorFusionType::ODPM:
+            return stream << "ODPM";
+        case SensorFusionType::CONSTANT:
+            return stream << "CONSTANT";
+        default:
+            return stream << "UNDEFINED";
+    }
+}
 
 bool ParseThermalConfig(std::string_view config_path, Json::Value *config) {
     std::string json_doc;
@@ -152,8 +219,11 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
     std::vector<std::string> linked_sensors;
     std::vector<SensorFusionType> linked_sensors_type;
     std::vector<std::string> trigger_sensors;
-    std::vector<float> coefficients;
+    std::vector<std::string> coefficients;
+    std::vector<SensorFusionType> coefficients_type;
     FormulaOption formula = FormulaOption::COUNT_THRESHOLD;
+    std::string vt_estimator_model_file;
+    std::unique_ptr<::thermal::vtestimator::VirtualTempEstimator> vt_estimator;
 
     Json::Value values = sensor["Combination"];
     if (values.size()) {
@@ -164,6 +234,21 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
         }
     } else {
         LOG(ERROR) << "Sensor[" << name << "] has no Combination setting";
+        return false;
+    }
+
+    if (sensor["Formula"].asString().compare("COUNT_THRESHOLD") == 0) {
+        formula = FormulaOption::COUNT_THRESHOLD;
+    } else if (sensor["Formula"].asString().compare("WEIGHTED_AVG") == 0) {
+        formula = FormulaOption::WEIGHTED_AVG;
+    } else if (sensor["Formula"].asString().compare("MAXIMUM") == 0) {
+        formula = FormulaOption::MAXIMUM;
+    } else if (sensor["Formula"].asString().compare("MINIMUM") == 0) {
+        formula = FormulaOption::MINIMUM;
+    } else if (sensor["Formula"].asString().compare("USE_ML_MODEL") == 0) {
+        formula = FormulaOption::USE_ML_MODEL;
+    } else {
+        LOG(ERROR) << "Sensor[" << name << "]'s Formula is invalid";
         return false;
     }
 
@@ -182,6 +267,8 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
                 linked_sensors_type.emplace_back(SensorFusionType::SENSOR);
             } else if (values[j].asString().compare("ODPM") == 0) {
                 linked_sensors_type.emplace_back(SensorFusionType::ODPM);
+            } else if (values[j].asString().compare("CONSTANT") == 0) {
+                linked_sensors_type.emplace_back(SensorFusionType::CONSTANT);
             } else {
                 LOG(ERROR) << "Sensor[" << name << "] has invalid CombinationType settings "
                            << values[j].asString();
@@ -196,17 +283,52 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
     if (values.size()) {
         coefficients.reserve(values.size());
         for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
-            coefficients.emplace_back(getFloatFromValue(values[j]));
+            coefficients.emplace_back(values[j].asString());
             LOG(INFO) << "Sensor[" << name << "]'s coefficient[" << j << "]: " << coefficients[j];
         }
     } else {
         LOG(ERROR) << "Sensor[" << name << "] has no Coefficient setting";
         return false;
     }
-    if (linked_sensors.size() != coefficients.size()) {
+    if ((linked_sensors.size() != coefficients.size()) &&
+        (formula != FormulaOption::USE_ML_MODEL)) {
         LOG(ERROR) << "Sensor[" << name << "] has invalid Coefficient size";
         return false;
     }
+
+    values = sensor["CoefficientType"];
+    if (!values.size()) {
+        coefficients_type.reserve(linked_sensors.size());
+        for (size_t j = 0; j < linked_sensors.size(); ++j) {
+            coefficients_type.emplace_back(SensorFusionType::CONSTANT);
+        }
+    } else if (values.size() != coefficients.size()) {
+        LOG(ERROR) << "Sensor[" << name << "] has invalid coefficient type size";
+        return false;
+    } else {
+        for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
+            if (values[j].asString().compare("CONSTANT") == 0) {
+                coefficients_type.emplace_back(SensorFusionType::CONSTANT);
+            } else if (values[j].asString().compare("SENSOR") == 0) {
+                coefficients_type.emplace_back(SensorFusionType::SENSOR);
+            } else if (values[j].asString().compare("ODPM") == 0) {
+                coefficients_type.emplace_back(SensorFusionType::ODPM);
+            } else {
+                LOG(ERROR) << "Sensor[" << name << "] has invalid coefficient options "
+                           << values[j].asString();
+                return false;
+            }
+            LOG(INFO) << "Sensor[" << name << "]'s coefficient type[" << j
+                      << "]: " << coefficients_type[j];
+        }
+    }
+
+    if (linked_sensors.size() != coefficients_type.size()) {
+        LOG(ERROR) << "Sensor[" << name
+                   << "]'s combination size is not matched with coefficient type size";
+        return false;
+    }
+
     if (!sensor["Offset"].empty()) {
         offset = sensor["Offset"].asFloat();
     }
@@ -233,20 +355,43 @@ bool ParseVirtualSensorInfo(const std::string_view name, const Json::Value &sens
         }
     }
 
-    if (sensor["Formula"].asString().compare("COUNT_THRESHOLD") == 0) {
-        formula = FormulaOption::COUNT_THRESHOLD;
-    } else if (sensor["Formula"].asString().compare("WEIGHTED_AVG") == 0) {
-        formula = FormulaOption::WEIGHTED_AVG;
-    } else if (sensor["Formula"].asString().compare("MAXIMUM") == 0) {
-        formula = FormulaOption::MAXIMUM;
-    } else if (sensor["Formula"].asString().compare("MINIMUM") == 0) {
-        formula = FormulaOption::MINIMUM;
-    } else {
-        LOG(ERROR) << "Sensor[" << name << "]'s Formula is invalid";
-        return false;
+    if (formula == FormulaOption::USE_ML_MODEL) {
+        if (sensor["ModelPath"].empty()) {
+            LOG(ERROR) << "Sensor[" << name << "] has no ModelPath";
+            return false;
+        }
+
+        if (!linked_sensors.size()) {
+            LOG(ERROR) << "Sensor[" << name << "] uses USE_ML_MODEL and has zero linked_sensors";
+            return false;
+        }
+
+        vt_estimator = std::make_unique<::thermal::vtestimator::VirtualTempEstimator>(
+                linked_sensors.size());
+        if (!vt_estimator) {
+            LOG(ERROR) << "Failed to create vt estimator for Sensor[" << name
+                       << "] with linked sensor size : " << linked_sensors.size();
+            return false;
+        }
+
+        vt_estimator_model_file = "vendor/etc/" + sensor["ModelPath"].asString();
+
+        ::thermal::vtestimator::VtEstimatorStatus ret =
+                vt_estimator->Initialize(vt_estimator_model_file.c_str());
+        if (ret != ::thermal::vtestimator::kVtEstimatorOk) {
+            LOG(ERROR) << "Failed to initialize vt estimator for Sensor[" << name
+                       << "] with ModelPath: " << vt_estimator_model_file
+                       << " with ret code : " << ret;
+            return false;
+        }
+
+        LOG(INFO) << "Successfully created vt_estimator for Sensor[" << name
+                  << "] with input samples: " << linked_sensors.size();
     }
+
     virtual_sensor_info->reset(new VirtualSensorInfo{
-            linked_sensors, linked_sensors_type, coefficients, offset, trigger_sensors, formula});
+            linked_sensors, linked_sensors_type, coefficients, coefficients_type, offset,
+            trigger_sensors, formula, vt_estimator_model_file, std::move(vt_estimator)});
     return true;
 }
 
@@ -322,6 +467,7 @@ bool ParseBindedCdevInfo(const Json::Value &values,
         std::string power_rail;
         bool high_power_check = false;
         bool throttling_with_power_link = false;
+        bool enabled = true;
         CdevArray cdev_floor_with_power_link;
         cdev_floor_with_power_link.fill(0);
 
@@ -377,19 +523,23 @@ bool ParseBindedCdevInfo(const Json::Value &values,
                 }
             }
         }
+        if (values[j]["Disabled"].asBool()) {
+            enabled = false;
+        }
 
         (*binded_cdev_info_map)[cdev_name] = {
                 .limit_info = limit_info,
                 .power_thresholds = power_thresholds,
                 .release_logic = release_logic,
-                .high_power_check = high_power_check,
-                .throttling_with_power_link = throttling_with_power_link,
                 .cdev_weight_for_pid = cdev_weight_for_pid,
                 .cdev_ceiling = cdev_ceiling,
                 .max_release_step = max_release_step,
                 .max_throttle_step = max_throttle_step,
                 .cdev_floor_with_power_link = cdev_floor_with_power_link,
                 .power_rail = power_rail,
+                .high_power_check = high_power_check,
+                .throttling_with_power_link = throttling_with_power_link,
+                .enabled = enabled,
         };
     }
     return true;
@@ -521,9 +671,48 @@ bool ParseSensorThrottlingInfo(const std::string_view name, const Json::Value &s
         LOG(ERROR) << "Sensor[" << name << "]: failed to parse BindedCdevInfo";
         return false;
     }
+    Json::Value values;
+    ProfileMap profile_map;
+
+    values = sensor["Profile"];
+    for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
+        Json::Value sub_values;
+        const std::string &mode = values[j]["Mode"].asString();
+        std::unordered_map<std::string, BindedCdevInfo> binded_cdev_info_map_profile;
+        if (!ParseBindedCdevInfo(values[j]["BindedCdevInfo"], &binded_cdev_info_map_profile,
+                                 support_pid, &support_hard_limit)) {
+            LOG(ERROR) << "Sensor[" << name << " failed to parse BindedCdevInfo profile";
+        }
+        // Check if the binded_cdev_info_map_profile is valid
+        if (binded_cdev_info_map.size() != binded_cdev_info_map_profile.size()) {
+            LOG(ERROR) << "Sensor[" << name << "]:'s profile map size should not be changed";
+            return false;
+        } else {
+            for (const auto &binded_cdev_info_pair : binded_cdev_info_map_profile) {
+                if (binded_cdev_info_map.count(binded_cdev_info_pair.first)) {
+                    if (binded_cdev_info_pair.second.power_rail !=
+                        binded_cdev_info_map.at(binded_cdev_info_pair.first).power_rail) {
+                        LOG(ERROR) << "Sensor[" << name << "]:'s profile " << mode << " binded "
+                                   << binded_cdev_info_pair.first
+                                   << "'s power rail is not included in default rules";
+                        return false;
+                    } else {
+                        LOG(INFO) << "Sensor[" << name << "]:'s profile " << mode
+                                  << " is parsed successfully";
+                    }
+                } else {
+                    LOG(ERROR) << "Sensor[" << name << "]'s profile " << mode << " binded "
+                               << binded_cdev_info_pair.first
+                               << " is not included in default rules";
+                    return false;
+                }
+            }
+        }
+        profile_map[mode] = binded_cdev_info_map_profile;
+    }
 
     std::unordered_map<std::string, ThrottlingArray> excluded_power_info_map;
-    Json::Value values = sensor["ExcludedPowerInfo"];
+    values = sensor["ExcludedPowerInfo"];
     for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
         Json::Value sub_values;
         const std::string &power_rail = values[j]["PowerRail"].asString();
@@ -545,7 +734,7 @@ bool ParseSensorThrottlingInfo(const std::string_view name, const Json::Value &s
     }
     throttling_info->reset(new ThrottlingInfo{
             k_po, k_pu, k_i, k_d, i_max, max_alloc_power, min_alloc_power, s_power, i_cutoff,
-            i_default, tran_cycle, excluded_power_info_map, binded_cdev_info_map});
+            i_default, tran_cycle, excluded_power_info_map, binded_cdev_info_map, profile_map});
     *support_throttling = support_pid | support_hard_limit;
     return true;
 }
@@ -796,6 +985,16 @@ bool ParseSensorInfo(const Json::Value &config,
         }
         LOG(INFO) << "Sensor[" << name << "]'s Time resolution: " << time_resolution.count();
 
+        float step_ratio = NAN;
+        if (!sensors[i]["StepRatio"].empty()) {
+            step_ratio = sensors[i]["StepRatio"].asFloat();
+            if (step_ratio < 0 || step_ratio > 1) {
+                LOG(ERROR) << "Sensor[" << name << "]'s StepRatio should be set 0 ~ 1";
+                sensors_parsed->clear();
+                return false;
+            }
+        }
+
         if (is_hidden && send_cb) {
             LOG(ERROR) << "is_hidden and send_cb cannot be enabled together";
             sensors_parsed->clear();
@@ -833,6 +1032,7 @@ bool ParseSensorInfo(const Json::Value &config,
                 .polling_delay = polling_delay,
                 .passive_delay = passive_delay,
                 .time_resolution = time_resolution,
+                .step_ratio = step_ratio,
                 .send_cb = send_cb,
                 .send_powerhint = send_powerhint,
                 .is_watch = is_watch,
@@ -930,16 +1130,8 @@ bool ParsePowerRailInfo(const Json::Value &config,
             return false;
         }
 
-        std::string rail;
-        if (power_rails[i]["Rail"].empty()) {
-            rail = name;
-        } else {
-            rail = power_rails[i]["Rail"].asString();
-        }
-        LOG(INFO) << "PowerRail[" << i << "]'s Rail: " << rail;
-
         std::vector<std::string> linked_power_rails;
-        std::vector<float> coefficients;
+        std::vector<float> coefficient;
         float offset = 0;
         FormulaOption formula = FormulaOption::COUNT_THRESHOLD;
         bool is_virtual_power_rail = false;
@@ -969,11 +1161,11 @@ bool ParsePowerRailInfo(const Json::Value &config,
 
             values = power_rails[i]["Coefficient"];
             if (values.size()) {
-                coefficients.reserve(values.size());
+                coefficient.reserve(values.size());
                 for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
-                    coefficients.emplace_back(getFloatFromValue(values[j]));
+                    coefficient.emplace_back(getFloatFromValue(values[j]));
                     LOG(INFO) << "PowerRail[" << name << "]'s coefficient[" << j
-                              << "]: " << coefficients[j];
+                              << "]: " << coefficient[j];
                 }
             } else {
                 LOG(ERROR) << "PowerRails[" << name << "] has no coefficient for VirtualRail";
@@ -981,7 +1173,7 @@ bool ParsePowerRailInfo(const Json::Value &config,
                 return false;
             }
 
-            if (linked_power_rails.size() != coefficients.size()) {
+            if (linked_power_rails.size() != coefficient.size()) {
                 LOG(ERROR) << "PowerRails[" << name
                            << "]'s combination size is not matched with coefficient size";
                 power_rails_parsed->clear();
@@ -992,7 +1184,7 @@ bool ParsePowerRailInfo(const Json::Value &config,
                 offset = power_rails[i]["Offset"].asFloat();
             }
 
-            if (linked_power_rails.size() != coefficients.size()) {
+            if (linked_power_rails.size() != coefficient.size()) {
                 LOG(ERROR) << "PowerRails[" << name
                            << "]'s combination size is not matched with coefficient size";
                 power_rails_parsed->clear();
@@ -1017,7 +1209,7 @@ bool ParsePowerRailInfo(const Json::Value &config,
         std::unique_ptr<VirtualPowerRailInfo> virtual_power_rail_info;
         if (is_virtual_power_rail) {
             virtual_power_rail_info.reset(
-                    new VirtualPowerRailInfo{linked_power_rails, coefficients, offset, formula});
+                    new VirtualPowerRailInfo{linked_power_rails, coefficient, offset, formula});
         }
 
         power_sample_count = power_rails[i]["PowerSampleCount"].asInt();
@@ -1031,7 +1223,6 @@ bool ParsePowerRailInfo(const Json::Value &config,
         }
 
         (*power_rails_parsed)[name] = {
-                .rail = rail,
                 .power_sample_count = power_sample_count,
                 .power_sample_delay = power_sample_delay,
                 .virtual_power_rail_info = std::move(virtual_power_rail_info),
@@ -1139,44 +1330,180 @@ bool ParseStatsInfo(const Json::Value &stats_config,
     return true;
 }
 
-bool ParseStatsConfig(const Json::Value &config,
-                      const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
-                      const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_,
-                      StatsConfig *stats_config_parsed) {
-    Json::Value stats_config = config["Stats"];
+bool ParseSensorAbnormalStatsConfig(
+        const Json::Value &abnormal_stats_config,
+        const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
+        AbnormalStatsInfo *abnormal_stats_info_parsed) {
+    if (abnormal_stats_config.empty()) {
+        LOG(INFO) << "No sensors abnormality monitoring info present.";
+        return true;
+    }
 
+    Json::Value values;
+
+    std::optional<TempRangeInfo> default_temp_range_info;
+    std::vector<AbnormalStatsInfo::SensorsTempRangeInfo> sensors_temp_range_infos;
+    Json::Value outlier_temp_config = abnormal_stats_config["Outlier"];
+    if (outlier_temp_config) {
+        LOG(INFO) << "Start to parse outlier temp config.";
+
+        if (outlier_temp_config["Default"]) {
+            LOG(INFO) << "Start to parse defaultTempRange.";
+            if (!getTempRangeInfoFromJsonValues(outlier_temp_config["Default"],
+                                                &default_temp_range_info.value())) {
+                LOG(ERROR) << "Failed to parse default temp range config.";
+                return false;
+            }
+        }
+
+        Json::Value configs = outlier_temp_config["Configs"];
+        if (configs) {
+            std::unordered_set<std::string> sensors_parsed;
+            for (Json::Value::ArrayIndex i = 0; i < configs.size(); i++) {
+                LOG(INFO) << "Start to parse temp range config[" << i << "]";
+                AbnormalStatsInfo::SensorsTempRangeInfo sensors_temp_range_info;
+                values = configs[i]["Monitor"];
+                if (!values.size()) {
+                    LOG(ERROR) << "Invalid config no sensor list present for outlier temp "
+                                  "config.";
+                    return false;
+                }
+                for (Json::Value::ArrayIndex j = 0; j < values.size(); j++) {
+                    const std::string &sensor = values[j].asString();
+                    if (!sensor_info_map_.count(sensor)) {
+                        LOG(ERROR) << "Unknown sensor " << sensor;
+                        return false;
+                    }
+                    auto result = sensors_parsed.insert(sensor);
+                    if (!result.second) {
+                        LOG(ERROR) << "Duplicate Sensor Temp Range Config: " << sensor;
+                        return false;
+                    }
+                    LOG(INFO) << "Monitored sensor [" << j << "]: " << sensor;
+                    sensors_temp_range_info.sensors.push_back(sensor);
+                }
+                if (!getTempRangeInfoFromJsonValues(configs[i]["TempRange"],
+                                                    &sensors_temp_range_info.temp_range_info)) {
+                    LOG(ERROR) << "Failed to parse temp range config.";
+                    return false;
+                }
+                sensors_temp_range_infos.push_back(sensors_temp_range_info);
+            }
+        }
+    }
+    std::optional<TempStuckInfo> default_temp_stuck_info;
+    std::vector<AbnormalStatsInfo::SensorsTempStuckInfo> sensors_temp_stuck_infos;
+    Json::Value stuck_temp_config = abnormal_stats_config["Stuck"];
+    if (stuck_temp_config) {
+        LOG(INFO) << "Start to parse stuck temp config.";
+
+        if (stuck_temp_config["Default"]) {
+            LOG(INFO) << "Start to parse defaultTempStuck.";
+            if (!getTempStuckInfoFromJsonValue(stuck_temp_config["Default"],
+                                               &default_temp_stuck_info.value())) {
+                LOG(ERROR) << "Failed to parse default temp stuck config.";
+                return false;
+            }
+        }
+
+        Json::Value configs = stuck_temp_config["Configs"];
+        if (configs) {
+            std::unordered_set<std::string> sensors_parsed;
+            for (Json::Value::ArrayIndex i = 0; i < configs.size(); i++) {
+                LOG(INFO) << "Start to parse temp stuck config[" << i << "]";
+                AbnormalStatsInfo::SensorsTempStuckInfo sensor_temp_stuck_info;
+                values = configs[i]["Monitor"];
+                if (!values.size()) {
+                    LOG(ERROR) << "Invalid config no sensor list present for stuck temp "
+                                  "config.";
+                    return false;
+                }
+                for (Json::Value::ArrayIndex j = 0; j < values.size(); j++) {
+                    const std::string &sensor = values[j].asString();
+                    if (!sensor_info_map_.count(sensor)) {
+                        LOG(ERROR) << "Unknown sensor " << sensor;
+                        return false;
+                    }
+                    auto result = sensors_parsed.insert(sensor);
+                    if (!result.second) {
+                        LOG(ERROR) << "Duplicate Sensor Temp Stuck Config: " << sensor;
+                        return false;
+                    }
+                    LOG(INFO) << "Monitored sensor [" << j << "]: " << sensor;
+                    sensor_temp_stuck_info.sensors.push_back(sensor);
+                }
+                if (!getTempStuckInfoFromJsonValue(configs[i]["TempStuck"],
+                                                   &sensor_temp_stuck_info.temp_stuck_info)) {
+                    LOG(ERROR) << "Failed to parse temp stuck config.";
+                    return false;
+                }
+                sensors_temp_stuck_infos.push_back(sensor_temp_stuck_info);
+            }
+        }
+    }
+    *abnormal_stats_info_parsed = {
+            .default_temp_range_info = default_temp_range_info,
+            .sensors_temp_range_infos = sensors_temp_range_infos,
+            .default_temp_stuck_info = default_temp_stuck_info,
+            .sensors_temp_stuck_infos = sensors_temp_stuck_infos,
+    };
+    return true;
+}
+
+bool ParseSensorStatsConfig(const Json::Value &config,
+                            const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
+                            StatsInfo<float> *sensor_stats_info_parsed,
+                            AbnormalStatsInfo *abnormal_stats_info_parsed) {
+    Json::Value stats_config = config["Stats"];
     if (stats_config.empty()) {
         LOG(INFO) << "No Stats Config present.";
         return true;
     }
-
-    LOG(INFO) << "Parse Stats Config for Sensor Temp.";
-    // Parse sensor stats config
-    if (!ParseStatsInfo(stats_config["Sensors"], sensor_info_map_,
-                        &stats_config_parsed->sensor_stats_info,
-                        std::numeric_limits<float>::lowest())) {
-        LOG(ERROR) << "Failed to parse sensor temp stats info.";
-        stats_config_parsed->clear();
-        return false;
-    }
-
     // Parse cooling device user vote
-    if (stats_config["CoolingDevices"].empty()) {
-        LOG(INFO) << "No cooling device stats present.";
+    Json::Value sensor_config = stats_config["Sensors"];
+    if (sensor_config.empty()) {
+        LOG(INFO) << "No Sensor Stats Config present.";
         return true;
     }
-
-    LOG(INFO) << "Parse Stats Config for Sensor CDev Request.";
-    if (!ParseStatsInfo(stats_config["CoolingDevices"]["RecordVotePerSensor"],
-                        cooling_device_info_map_, &stats_config_parsed->cooling_device_request_info,
-                        -1)) {
-        LOG(ERROR) << "Failed to parse cooling device user vote stats info.";
-        stats_config_parsed->clear();
+    LOG(INFO) << "Parse Stats Config for Sensor Temp.";
+    // Parse sensor stats config
+    if (!ParseStatsInfo(stats_config["Sensors"], sensor_info_map_, sensor_stats_info_parsed,
+                        std::numeric_limits<float>::lowest())) {
+        LOG(ERROR) << "Failed to parse sensor temp stats info.";
+        sensor_stats_info_parsed->clear();
+        return false;
+    }
+    if (!ParseSensorAbnormalStatsConfig(sensor_config["Abnormality"], sensor_info_map_,
+                                        abnormal_stats_info_parsed)) {
+        LOG(ERROR) << "Failed to parse sensor abnormal stats config.";
         return false;
     }
     return true;
 }
 
+bool ParseCoolingDeviceStatsConfig(
+        const Json::Value &config,
+        const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_,
+        StatsInfo<int> *cooling_device_request_info_parsed) {
+    Json::Value stats_config = config["Stats"];
+    if (stats_config.empty()) {
+        LOG(INFO) << "No Stats Config present.";
+        return true;
+    }
+    // Parse cooling device user vote
+    if (stats_config["CoolingDevices"].empty()) {
+        LOG(INFO) << "No cooling device stats present.";
+        return true;
+    }
+    LOG(INFO) << "Parse Stats Config for Sensor CDev Request.";
+    if (!ParseStatsInfo(stats_config["CoolingDevices"]["RecordVotePerSensor"],
+                        cooling_device_info_map_, cooling_device_request_info_parsed, -1)) {
+        LOG(ERROR) << "Failed to parse cooling device user vote stats info.";
+        cooling_device_request_info_parsed->clear();
+        return false;
+    }
+    return true;
+}
 }  // namespace implementation
 }  // namespace thermal
 }  // namespace hardware

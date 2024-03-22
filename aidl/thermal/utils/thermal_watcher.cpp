@@ -391,7 +391,7 @@ void ThermalWatcher::registerFilesToWatchNl(const std::set<std::string> &sensors
 
 bool ThermalWatcher::startWatchingDeviceFiles() {
     if (cb_) {
-        auto ret = this->run("FileWatcherThread", ::android::PRIORITY_HIGHEST);
+        auto ret = this->run("FileWatcherThread", -10);
         if (ret != ::android::NO_ERROR) {
             LOG(ERROR) << "ThermalWatcherThread start fail";
             return false;

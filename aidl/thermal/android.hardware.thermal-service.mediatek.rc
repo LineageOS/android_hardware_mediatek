@@ -10,5 +10,5 @@ service vendor.thermal-hal /vendor/bin/hw/android.hardware.thermal-service.media
     class hal
     user system
     group system
-    priority -20
+    priority -10
     disabled

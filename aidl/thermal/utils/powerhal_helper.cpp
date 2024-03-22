@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#define ATRACE_TAG (ATRACE_TAG_THERMAL | ATRACE_TAG_HAL)
+
 #include "powerhal_helper.h"
 
 #include <android-base/file.h>
@@ -19,7 +21,6 @@
 #include <thread>
 #include <vector>
 
-#include "thermal_info.h"
 #include "thermal_throttling.h"
 
 namespace aidl {
@@ -47,7 +48,8 @@ bool PowerHalService::connect() {
     }
 
     const std::string kInstance = std::string(IPower::descriptor) + "/default";
-    ndk::SpAIBinder power_binder = ndk::SpAIBinder(AServiceManager_getService(kInstance.c_str()));
+    ndk::SpAIBinder power_binder =
+            ndk::SpAIBinder(AServiceManager_waitForService(kInstance.c_str()));
     ndk::SpAIBinder ext_power_binder;
 
     if (power_binder.get() == nullptr) {
@@ -77,7 +79,101 @@ bool PowerHalService::connect() {
         power_hal_aidl_exist_ = false;
     }
 
+    if (power_hal_ext_aidl_death_recipient_.get() == nullptr) {
+        power_hal_ext_aidl_death_recipient_ = ndk::ScopedAIBinder_DeathRecipient(
+                AIBinder_DeathRecipient_new(onPowerHalExtAidlBinderDied));
+    }
+
+    auto linked = AIBinder_linkToDeath(power_hal_ext_aidl_->asBinder().get(),
+                                       power_hal_ext_aidl_death_recipient_.get(), this);
+
+    if (linked != STATUS_OK) {
+        LOG(ERROR) << "Failed to register power_hal_ext death recipient";
+    }
+
     return true;
+}
+
+void PowerHalService::reconnect() {
+    ATRACE_CALL();
+    if (!connect()) {
+        LOG(ERROR) << " Failed to reconnect power_hal_ext";
+        return;
+    }
+
+    LOG(INFO) << "Resend the power hints when power_hal_ext is reconnected";
+    std::lock_guard<std::shared_mutex> _lock(powerhint_status_mutex_);
+    for (const auto &[sensor_name, supported_powerhint] : supported_powerhint_map_) {
+        std::stringstream log_buf;
+        for (const auto &severity : ::ndk::enum_range<ThrottlingSeverity>()) {
+            bool mode = severity <= supported_powerhint.prev_hint_severity;
+            setMode(sensor_name, severity, mode);
+            log_buf << toString(severity).c_str() << ":" << mode << " ";
+        }
+
+        LOG(INFO) << sensor_name << " send powerhint: " << log_buf.str();
+        log_buf.clear();
+    }
+    return;
+}
+
+void PowerHalService::updateSupportedPowerHints(
+        const std::unordered_map<std::string, SensorInfo> &sensor_info_map_) {
+    for (auto const &name_status_pair : sensor_info_map_) {
+        if (!(name_status_pair.second.send_powerhint)) {
+            continue;
+        }
+        ThrottlingSeverity current_severity = ThrottlingSeverity::NONE;
+        for (const auto &severity : ::ndk::enum_range<ThrottlingSeverity>()) {
+            if (severity == ThrottlingSeverity::NONE) {
+                supported_powerhint_map_[name_status_pair.first]
+                        .hint_severity_map[ThrottlingSeverity::NONE] = ThrottlingSeverity::NONE;
+                continue;
+            }
+
+            bool isSupported = false;
+            ndk::ScopedAStatus isSupportedResult;
+
+            if (power_hal_ext_aidl_ != nullptr) {
+                isSupported = isModeSupported(name_status_pair.first, severity);
+            }
+            if (isSupported)
+                current_severity = severity;
+            supported_powerhint_map_[name_status_pair.first].hint_severity_map[severity] =
+                    current_severity;
+        }
+    }
+}
+
+void PowerHalService::sendPowerExtHint(const Temperature &t) {
+    ATRACE_CALL();
+    std::lock_guard<std::shared_mutex> _lock(powerhint_status_mutex_);
+    ThrottlingSeverity prev_hint_severity = supported_powerhint_map_[t.name].prev_hint_severity;
+    ThrottlingSeverity current_hint_severity =
+            supported_powerhint_map_[t.name].hint_severity_map[t.throttlingStatus];
+    std::stringstream log_buf;
+
+    if (!power_hal_aidl_exist_) {
+        LOG(ERROR) << "power_hal_aidl is not exist";
+        return;
+    }
+
+    if (prev_hint_severity == current_hint_severity) {
+        return;
+    }
+
+    for (const auto &severity : ::ndk::enum_range<ThrottlingSeverity>()) {
+        if (severity != supported_powerhint_map_[t.name].hint_severity_map[severity]) {
+            continue;
+        }
+        bool mode = severity <= current_hint_severity;
+        setMode(t.name, severity, mode);
+        log_buf << toString(severity).c_str() << ":" << mode << " ";
+    }
+
+    LOG(INFO) << t.name << " send powerhint: " << log_buf.str();
+
+    supported_powerhint_map_[t.name].prev_hint_severity = current_hint_severity;
 }
 
 bool PowerHalService::isModeSupported(const std::string &type, const ThrottlingSeverity &t) {
@@ -105,8 +201,6 @@ void PowerHalService::setMode(const std::string &type, const ThrottlingSeverity 
     }
 
     std::string power_hint = StringPrintf("THERMAL_%s_%s", type.c_str(), toString(t).c_str());
-    LOG(INFO) << (error_on_exit ? "Resend Hint " : "Send Hint ") << power_hint
-              << " Enable: " << std::boolalpha << enable;
     lock_.lock();
     if (!power_hal_ext_aidl_->setMode(power_hint, enable).isOk()) {
         LOG(ERROR) << "Fail to set mode, Hint: " << power_hint;

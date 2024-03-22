@@ -29,6 +29,28 @@ constexpr std::string_view kEnergyValueNode("energy_value");
 using ::android::base::ReadFileToString;
 using ::android::base::StringPrintf;
 
+namespace {
+bool calculateAvgPower(std::string_view power_rail, const PowerSample &last_sample,
+                       const PowerSample &curr_sample, float *avg_power) {
+    *avg_power = NAN;
+    const auto duration = curr_sample.duration - last_sample.duration;
+    const auto deltaEnergy = curr_sample.energy_counter - last_sample.energy_counter;
+    if (!last_sample.duration) {
+        LOG(VERBOSE) << "Power rail " << power_rail.data()
+                     << ": all power samples have not been collected yet";
+    } else if (duration <= 0 || deltaEnergy < 0) {
+        LOG(ERROR) << "Power rail " << power_rail.data() << " is invalid: duration = " << duration
+                   << ", deltaEnergy = " << deltaEnergy;
+        return false;
+    } else {
+        *avg_power = static_cast<float>(deltaEnergy) / static_cast<float>(duration);
+        LOG(VERBOSE) << "Power rail " << power_rail.data() << ", avg power = " << *avg_power
+                     << ", duration = " << duration << ", deltaEnergy = " << deltaEnergy;
+    }
+    return true;
+}
+}  // namespace
+
 bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
     if (!ParsePowerRailInfo(config, &power_rail_info_map_)) {
         LOG(ERROR) << "Failed to parse power rail info config";
@@ -93,8 +115,8 @@ bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
 
         if (power_history.size()) {
             power_status_map_[power_rail_info_pair.first] = {
-                    .power_history = power_history,
                     .last_update_time = boot_clock::time_point::min(),
+                    .power_history = power_history,
                     .last_updated_avg_power = NAN,
             };
         } else {
@@ -103,6 +125,9 @@ bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
         }
         LOG(INFO) << "Successfully to register power rail " << power_rail_info_pair.first;
     }
+
+    power_status_log_ = {.prev_log_time = boot_clock::now(),
+                         .prev_energy_info_map = energy_info_map_};
     return true;
 }
 
@@ -202,33 +227,16 @@ bool PowerFiles::updateEnergyValues(void) {
 float PowerFiles::updateAveragePower(std::string_view power_rail,
                                      std::queue<PowerSample> *power_history) {
     float avg_power = NAN;
-
     if (!energy_info_map_.count(power_rail.data())) {
         LOG(ERROR) << " Could not find power rail " << power_rail.data();
         return avg_power;
     }
     const auto last_sample = power_history->front();
     const auto curr_sample = energy_info_map_.at(power_rail.data());
-    const auto duration = curr_sample.duration - last_sample.duration;
-    const auto deltaEnergy = curr_sample.energy_counter - last_sample.energy_counter;
-
-    if (!last_sample.duration) {
-        LOG(VERBOSE) << "Power rail " << power_rail.data()
-                     << ": all power samples have not been collected yet";
-    } else if (duration <= 0 || deltaEnergy < 0) {
-        LOG(ERROR) << "Power rail " << power_rail.data() << " is invalid: duration = " << duration
-                   << ", deltaEnergy = " << deltaEnergy;
-
-        return avg_power;
-    } else {
-        avg_power = static_cast<float>(deltaEnergy) / static_cast<float>(duration);
-        LOG(VERBOSE) << "Power rail " << power_rail.data() << ", avg power = " << avg_power
-                     << ", duration = " << duration << ", deltaEnergy = " << deltaEnergy;
+    if (calculateAvgPower(power_rail, last_sample, curr_sample, &avg_power)) {
+        power_history->pop();
+        power_history->push(curr_sample);
     }
-
-    power_history->pop();
-    power_history->push(curr_sample);
-
     return avg_power;
 }
 
@@ -323,6 +331,43 @@ bool PowerFiles::refreshPowerStatus(void) {
         updatePowerRail(power_status_pair.first);
     }
     return true;
+}
+
+void PowerFiles::logPowerStatus(const boot_clock::time_point &now) {
+    // calculate energy and print
+    uint8_t power_rail_log_cnt = 0;
+    uint64_t max_duration = 0;
+    float tot_power = 0.0;
+    std::string out;
+    for (const auto &energy_info_pair : energy_info_map_) {
+        const auto &rail = energy_info_pair.first;
+        if (!power_status_log_.prev_energy_info_map.count(rail)) {
+            continue;
+        }
+        const auto &last_sample = power_status_log_.prev_energy_info_map.at(rail);
+        const auto &curr_sample = energy_info_pair.second;
+        float avg_power = NAN;
+        if (calculateAvgPower(rail, last_sample, curr_sample, &avg_power) && avg_power != NAN) {
+            // start of new line
+            if (power_rail_log_cnt % kMaxPowerLogPerLine == 0) {
+                if (power_rail_log_cnt != 0) {
+                    out.append("\n");
+                }
+                out.append("Power rails ");
+            }
+            out.append(StringPrintf("[%s: %0.2f mW] ", rail.c_str(), avg_power));
+            power_rail_log_cnt++;
+            tot_power += avg_power;
+            max_duration = std::max(max_duration, curr_sample.duration - last_sample.duration);
+        }
+    }
+
+    if (power_rail_log_cnt) {
+        LOG(INFO) << StringPrintf("Power rails total power: %0.2f mW for %" PRId64 " ms", tot_power,
+                                  max_duration);
+        LOG(INFO) << out;
+    }
+    power_status_log_ = {.prev_log_time = now, .prev_energy_info_map = energy_info_map_};
 }
 
 }  // namespace implementation

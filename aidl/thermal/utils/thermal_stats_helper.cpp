@@ -8,7 +8,6 @@
 
 #include <android-base/logging.h>
 #include <android/binder_manager.h>
-#include <hardware/google/pixel/pixelstats/pixelatoms.pb.h>
 
 #include <algorithm>
 #include <numeric>
@@ -65,26 +64,49 @@ int calculateThresholdBucket(const std::vector<T> &thresholds, T value) {
     return bucket;
 }
 
+void resetCurrentTempStatus(CurrTempStatus *curr_temp_status, float new_temp) {
+    curr_temp_status->temp = new_temp;
+    curr_temp_status->start_time = boot_clock::now();
+    curr_temp_status->repeat_count = 1;
+}
+
 }  // namespace
 
 bool ThermalStatsHelper::initializeStats(
         const Json::Value &config,
         const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
         const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_) {
-    StatsConfig stats_config;
-    if (!ParseStatsConfig(config, sensor_info_map_, cooling_device_info_map_, &stats_config)) {
-        LOG(ERROR) << "Failed to parse stats config";
+    StatsInfo<float> sensor_stats_info;
+    AbnormalStatsInfo abnormal_stats_info;
+    if (!ParseSensorStatsConfig(config, sensor_info_map_, &sensor_stats_info,
+                                &abnormal_stats_info)) {
+        LOG(ERROR) << "Failed to parse sensor stats config";
         return false;
     }
-    bool is_initialized_ =
-            initializeSensorTempStats(stats_config.sensor_stats_info, sensor_info_map_) &&
-            initializeSensorCdevRequestStats(stats_config.cooling_device_request_info,
-                                             sensor_info_map_, cooling_device_info_map_);
-    if (is_initialized_) {
-        last_total_stats_report_time = boot_clock::now();
-        LOG(INFO) << "Thermal Stats Initialized Successfully";
+    StatsInfo<int> cooling_device_request_info;
+    if (!ParseCoolingDeviceStatsConfig(config, cooling_device_info_map_,
+                                       &cooling_device_request_info)) {
+        LOG(ERROR) << "Failed to parse cooling device stats config";
+        return false;
     }
-    return is_initialized_;
+    if (!initializeSensorTempStats(sensor_stats_info, sensor_info_map_)) {
+        LOG(ERROR) << "Failed to initialize sensor temp stats";
+        return false;
+    }
+    if (!initializeSensorCdevRequestStats(cooling_device_request_info, sensor_info_map_,
+                                          cooling_device_info_map_)) {
+        LOG(ERROR) << "Failed to initialize sensor cooling device request stats";
+        return false;
+    }
+    if (!initializeSensorAbnormalityStats(abnormal_stats_info, sensor_info_map_)) {
+        LOG(ERROR) << "Failed to initialize sensor abnormal stats";
+        return false;
+    }
+
+    last_total_stats_report_time = boot_clock::now();
+    abnormal_stats_reported_per_update_interval = 0;
+    LOG(INFO) << "Thermal Stats Initialized Successfully";
+    return true;
 }
 
 bool ThermalStatsHelper::initializeSensorCdevRequestStats(
@@ -151,7 +173,8 @@ bool ThermalStatsHelper::initializeSensorCdevRequestStats(
 bool ThermalStatsHelper::initializeSensorTempStats(
         const StatsInfo<float> &sensor_stats_info,
         const std::unordered_map<std::string, SensorInfo> &sensor_info_map_) {
-    std::unique_lock<std::shared_mutex> _lock(sensor_temp_stats_map_mutex_);
+    std::unique_lock<std::shared_mutex> _lock(sensor_stats_mutex_);
+    auto &temp_stats_map_ = sensor_stats.temp_stats_map_;
     const int severity_time_in_state_size = kThrottlingSeverityCount;
     for (const auto &[sensor, sensor_info] : sensor_info_map_) {
         // Record by severity
@@ -159,7 +182,7 @@ bool ThermalStatsHelper::initializeSensorTempStats(
             isRecordByDefaultThreshold(
                     sensor_stats_info.record_by_default_threshold_all_or_name_set_, sensor)) {
             // number of buckets = number of severity
-            sensor_temp_stats_map_[sensor].stats_by_default_threshold =
+            temp_stats_map_[sensor].stats_by_default_threshold =
                     StatsRecord(severity_time_in_state_size);
             LOG(INFO) << "Sensor temp stats on basis of severity initialized for [" << sensor
                       << "]";
@@ -168,12 +191,59 @@ bool ThermalStatsHelper::initializeSensorTempStats(
         // Record by custom threshold
         if (sensor_stats_info.record_by_threshold.count(sensor)) {
             for (const auto &threshold_list : sensor_stats_info.record_by_threshold.at(sensor)) {
-                sensor_temp_stats_map_[sensor].stats_by_custom_threshold.emplace_back(
-                        threshold_list);
+                temp_stats_map_[sensor].stats_by_custom_threshold.emplace_back(threshold_list);
                 LOG(INFO) << "Sensor temp stats on basis of threshold initialized for [" << sensor
                           << "]";
             }
         }
+    }
+    return true;
+}
+
+bool ThermalStatsHelper::initializeSensorAbnormalityStats(
+        const AbnormalStatsInfo &abnormal_stats_info,
+        const std::unordered_map<std::string, SensorInfo> &sensor_info_map_) {
+    std::unique_lock<std::shared_mutex> _lock(sensor_stats_mutex_);
+    auto &temp_range_info_map_ = sensor_stats.temp_range_info_map_;
+    for (const auto &sensors_temp_range_info : abnormal_stats_info.sensors_temp_range_infos) {
+        const auto &temp_range_info_ptr =
+                std::make_shared<TempRangeInfo>(sensors_temp_range_info.temp_range_info);
+        for (const auto &sensor : sensors_temp_range_info.sensors) {
+            temp_range_info_map_[sensor] = temp_range_info_ptr;
+        }
+    }
+    auto &temp_stuck_info_map_ = sensor_stats.temp_stuck_info_map_;
+    for (const auto &sensors_temp_stuck_info : abnormal_stats_info.sensors_temp_stuck_infos) {
+        const auto &temp_stuck_info_ptr =
+                std::make_shared<TempStuckInfo>(sensors_temp_stuck_info.temp_stuck_info);
+        for (const auto &sensor : sensors_temp_stuck_info.sensors) {
+            temp_stuck_info_map_[sensor] = temp_stuck_info_ptr;
+        }
+    }
+    const auto &default_temp_range_info_ptr =
+            abnormal_stats_info.default_temp_range_info
+                    ? std::make_shared<TempRangeInfo>(
+                              abnormal_stats_info.default_temp_range_info.value())
+                    : nullptr;
+    const auto &default_temp_stuck_info_ptr =
+            abnormal_stats_info.default_temp_stuck_info
+                    ? std::make_shared<TempStuckInfo>(
+                              abnormal_stats_info.default_temp_stuck_info.value())
+                    : nullptr;
+    for (const auto &sensor_info : sensor_info_map_) {
+        const auto &sensor = sensor_info.first;
+        if (default_temp_range_info_ptr && !temp_range_info_map_.count(sensor))
+            temp_range_info_map_[sensor] = default_temp_range_info_ptr;
+        if (default_temp_stuck_info_ptr && !temp_stuck_info_map_.count(sensor))
+            temp_stuck_info_map_[sensor] = default_temp_stuck_info_ptr;
+    }
+
+    for (const auto &sensor_temp_stuck_info : temp_stuck_info_map_) {
+        sensor_stats.curr_temp_status_map_[sensor_temp_stuck_info.first] = {
+                .temp = std::numeric_limits<float>::min(),
+                .start_time = boot_clock::time_point::min(),
+                .repeat_count = 0,
+        };
     }
     return true;
 }
@@ -221,11 +291,13 @@ void ThermalStatsHelper::updateSensorCdevRequestStats(std::string_view sensor,
 
 void ThermalStatsHelper::updateSensorTempStatsByThreshold(std::string_view sensor,
                                                           float temperature) {
-    std::unique_lock<std::shared_mutex> _lock(sensor_temp_stats_map_mutex_);
-    if (!sensor_temp_stats_map_.count(sensor.data())) {
+    std::unique_lock<std::shared_mutex> _lock(sensor_stats_mutex_);
+    verifySensorAbnormality(sensor, temperature);
+    auto &temp_stats_map_ = sensor_stats.temp_stats_map_;
+    if (!temp_stats_map_.count(sensor.data())) {
         return;
     }
-    auto &sensor_temp_stats = sensor_temp_stats_map_[sensor.data()];
+    auto &sensor_temp_stats = temp_stats_map_[sensor.data()];
     for (auto &stats_by_threshold : sensor_temp_stats.stats_by_custom_threshold) {
         int value = calculateThresholdBucket(stats_by_threshold.thresholds, temperature);
         if (value != stats_by_threshold.stats_record.cur_state) {
@@ -246,16 +318,62 @@ void ThermalStatsHelper::updateSensorTempStatsByThreshold(std::string_view senso
 
 void ThermalStatsHelper::updateSensorTempStatsBySeverity(std::string_view sensor,
                                                          const ThrottlingSeverity &severity) {
-    std::unique_lock<std::shared_mutex> _lock(sensor_temp_stats_map_mutex_);
-    if (sensor_temp_stats_map_.count(sensor.data()) &&
-        sensor_temp_stats_map_[sensor.data()].stats_by_default_threshold.has_value()) {
-        auto &stats_record =
-                sensor_temp_stats_map_[sensor.data()].stats_by_default_threshold.value();
+    std::unique_lock<std::shared_mutex> _lock(sensor_stats_mutex_);
+    auto &temp_stats_map_ = sensor_stats.temp_stats_map_;
+    if (temp_stats_map_.count(sensor.data()) &&
+        temp_stats_map_[sensor.data()].stats_by_default_threshold.has_value()) {
+        auto &stats_record = temp_stats_map_[sensor.data()].stats_by_default_threshold.value();
         int value = static_cast<int>(severity);
         if (value != stats_record.cur_state) {
             LOG(VERBOSE) << "Updating sensor stats for sensor: " << sensor.data()
                          << " with value: " << value;
             updateStatsRecord(&stats_record, value);
+        }
+    }
+}
+
+void ThermalStatsHelper::verifySensorAbnormality(std::string_view sensor, float temp) {
+    LOG(VERBOSE) << "Verify sensor abnormality for " << sensor << " with temp " << temp;
+    if (sensor_stats.temp_range_info_map_.count(sensor.data())) {
+        const auto &temp_range_info = sensor_stats.temp_range_info_map_[sensor.data()];
+        if (temp < temp_range_info->min_temp_threshold) {
+            LOG(ERROR) << "Outlier Temperature Detected, sensor: " << sensor.data()
+                       << " temp: " << temp << " < " << temp_range_info->min_temp_threshold;
+            reportThermalAbnormality(ThermalSensorAbnormalityDetected::EXTREME_LOW_TEMP, sensor,
+                                     std::round(temp));
+        } else if (temp > temp_range_info->max_temp_threshold) {
+            LOG(ERROR) << "Outlier Temperature Detected, sensor: " << sensor.data()
+                       << " temp: " << temp << " > " << temp_range_info->max_temp_threshold;
+            reportThermalAbnormality(ThermalSensorAbnormalityDetected::EXTREME_HIGH_TEMP, sensor,
+                                     std::round(temp));
+        }
+    }
+    if (sensor_stats.temp_stuck_info_map_.count(sensor.data())) {
+        const auto &temp_stuck_info = sensor_stats.temp_stuck_info_map_[sensor.data()];
+        auto &curr_temp_status = sensor_stats.curr_temp_status_map_[sensor.data()];
+        LOG(VERBOSE) << "Current Temp Status: temp=" << curr_temp_status.temp
+                     << " repeat_count=" << curr_temp_status.repeat_count
+                     << " start_time=" << curr_temp_status.start_time.time_since_epoch().count();
+        if (std::fabs(curr_temp_status.temp - temp) <= kPrecisionThreshold) {
+            curr_temp_status.repeat_count++;
+            if (temp_stuck_info->min_polling_count <= curr_temp_status.repeat_count) {
+                auto time_elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                        boot_clock::now() - curr_temp_status.start_time);
+                if (temp_stuck_info->min_stuck_duration <= time_elapsed_ms) {
+                    LOG(ERROR) << "Stuck Temperature Detected, sensor: " << sensor.data()
+                               << " temp: " << temp << " repeated "
+                               << temp_stuck_info->min_polling_count << " times for "
+                               << time_elapsed_ms.count() << "ms";
+                    if (reportThermalAbnormality(ThermalSensorAbnormalityDetected::SENSOR_STUCK,
+                                                 sensor, std::round(temp))) {
+                        // reset current status to verify for sensor stuck with start time as
+                        // current polling
+                        resetCurrentTempStatus(&curr_temp_status, temp);
+                    }
+                }
+            }
+        } else {
+            resetCurrentTempStatus(&curr_temp_status, temp);
         }
     }
 }
@@ -280,13 +398,14 @@ int ThermalStatsHelper::reportStats() {
     int count_failed_reporting =
             reportAllSensorTempStats(stats_client) + reportAllSensorCdevRequestStats(stats_client);
     last_total_stats_report_time = curTime;
+    abnormal_stats_reported_per_update_interval = 0;
     return count_failed_reporting;
 }
 
 int ThermalStatsHelper::reportAllSensorTempStats(const std::shared_ptr<IStats> &stats_client) {
     int count_failed_reporting = 0;
-    std::unique_lock<std::shared_mutex> _lock(sensor_temp_stats_map_mutex_);
-    for (auto &[sensor, temp_stats] : sensor_temp_stats_map_) {
+    std::unique_lock<std::shared_mutex> _lock(sensor_stats_mutex_);
+    for (auto &[sensor, temp_stats] : sensor_stats.temp_stats_map_) {
         for (size_t threshold_set_idx = 0;
              threshold_set_idx < temp_stats.stats_by_custom_threshold.size(); threshold_set_idx++) {
             auto &stats_by_threshold = temp_stats.stats_by_custom_threshold[threshold_set_idx];
@@ -303,6 +422,9 @@ int ThermalStatsHelper::reportAllSensorTempStats(const std::shared_ptr<IStats> &
                 count_failed_reporting++;
             }
         }
+        // Reset temp stats after reporting
+        temp_stats.max_temp = std::numeric_limits<float>::min();
+        temp_stats.min_temp = std::numeric_limits<float>::max();
     }
     return count_failed_reporting;
 }
@@ -432,6 +554,40 @@ std::vector<int64_t> ThermalStatsHelper::processStatsRecordForReporting(StatsRec
     return stats_residency;
 }
 
+bool ThermalStatsHelper::reportThermalAbnormality(
+        const ThermalSensorAbnormalityDetected::AbnormalityType &type, std::string_view name,
+        std::optional<int> reading) {
+    const auto value_str = reading.has_value() ? std::to_string(reading.value()) : "undefined";
+    if (abnormal_stats_reported_per_update_interval >= kMaxAbnormalLoggingPerUpdateInterval) {
+        LOG(ERROR) << "Thermal abnormal atom logging rate limited for " << name.data()
+                   << " with value " << value_str;
+        return true;
+    }
+    const std::shared_ptr<IStats> stats_client = getStatsService();
+    if (!stats_client) {
+        LOG(ERROR) << "Unable to get AIDL Stats service";
+        return false;
+    }
+    std::vector<VendorAtomValue> values(3);
+    values[ThermalSensorAbnormalityDetected::kTypeFieldNumber - kVendorAtomOffset] =
+            VendorAtomValue::make<VendorAtomValue::intValue>(type);
+    values[ThermalSensorAbnormalityDetected::kSensorFieldNumber - kVendorAtomOffset] =
+            VendorAtomValue::make<VendorAtomValue::stringValue>(name);
+    if (reading.has_value()) {
+        values[ThermalSensorAbnormalityDetected::kTempFieldNumber - kVendorAtomOffset] =
+                VendorAtomValue::make<VendorAtomValue::intValue>(reading.value());
+    }
+    if (!reportAtom(stats_client, PixelAtoms::Atom::kThermalSensorAbnormalityDetected,
+                    std::move(values))) {
+        LOG(ERROR) << "Failed to log thermal abnormal atom for " << name.data() << " with value "
+                   << value_str;
+        return false;
+    }
+    LOG(INFO) << "Thermal abnormality reported for " << name.data() << " with value " << value_str;
+    abnormal_stats_reported_per_update_interval++;
+    return true;
+}
+
 bool ThermalStatsHelper::reportAtom(const std::shared_ptr<IStats> &stats_client,
                                     const int32_t &atom_id, std::vector<VendorAtomValue> &&values) {
     LOG(VERBOSE) << "Reporting thermal stats for atom_id " << atom_id;
@@ -454,7 +610,7 @@ StatsRecord ThermalStatsHelper::restoreStatsRecordOnFailure(
 }
 
 std::unordered_map<std::string, SensorTempStats> ThermalStatsHelper::GetSensorTempStatsSnapshot() {
-    auto sensor_temp_stats_snapshot = sensor_temp_stats_map_;
+    auto sensor_temp_stats_snapshot = sensor_stats.temp_stats_map_;
     for (auto &sensor_temp_stats_pair : sensor_temp_stats_snapshot) {
         for (auto &temp_stats : sensor_temp_stats_pair.second.stats_by_custom_threshold) {
             // update the last unclosed entry and start new record with same state
