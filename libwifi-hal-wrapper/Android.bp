@@ -1,0 +1,29 @@
+//
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_shared {
+    name: "libwifi-hal-wrapper",
+    vendor: true,
+    required: [
+        "libwifi-hal-wrapper.xml",
+    ],
+    srcs: [
+        "libwifi-hal.cpp",
+    ],
+    shared_libs: [
+        "libcutils",
+        "libutils",
+        "liblog",
+        "libhardware_legacy",
+    ],
+}
+
+prebuilt_etc {
+    name: "libwifi-hal-wrapper.xml",
+    src: "libwifi-hal-wrapper.xml",
+    sub_dir: "wifi/vendor_hals",
+    vendor: true,
+}
