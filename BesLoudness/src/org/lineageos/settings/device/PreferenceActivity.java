@@ -22,7 +22,7 @@ public class PreferenceActivity extends CollapsingToolbarBaseActivity {
         super.onCreate(savedInstanceState);
         getFragmentManager()
                 .beginTransaction()
-                .replace(com.android.settingslib.widget.R.id.content_frame,
+                .replace(com.android.settingslib.collapsingtoolbar.R.id.content_frame,
                         new SoundPreferenceFragment())
                 .commit();
     }
