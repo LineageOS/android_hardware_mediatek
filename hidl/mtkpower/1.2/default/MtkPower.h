@@ -31,7 +31,7 @@ struct MtkPower : public V1_2::IMtkPower {
     Return<void> notifyAppState(const hidl_string& pack, const hidl_string& act, int32_t pid, int32_t state, int32_t uid) override;
     Return<int32_t> querySysInfo(int32_t cmd, int32_t param) override;
     Return<int32_t> setSysInfo(int32_t type, const hidl_string& data) override;
-    Return<int32_t> setSysInfoAsync(int32_t type, const hidl_string& data) override;
+    Return<void> setSysInfoAsync(int32_t type, const hidl_string& data) override;
 
     // Methods from ::vendor::mediatek::hardware::mtkpower::V1_1::IMtkPower follow.
     Return<int32_t> setMtkPowerCallback(const sp<::vendor::mediatek::hardware::mtkpower::V1_1::IMtkPowerCallback>& callback) override;

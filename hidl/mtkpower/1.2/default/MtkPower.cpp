@@ -84,10 +84,10 @@ Return<int32_t> MtkPower::setSysInfo(int32_t type, const hidl_string& data) {
     return 0;
 }
 
-Return<int32_t> MtkPower::setSysInfoAsync(int32_t type, const hidl_string& data) {
+Return<void> MtkPower::setSysInfoAsync(int32_t type, const hidl_string& data) {
     LOG(INFO) << "setSysInfoAsync type: " << type
               << " data: " << data;
-    return 0;
+    return Void();
 }
 
 
