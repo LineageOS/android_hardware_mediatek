@@ -59,7 +59,7 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
 
     SET_IF_NOT_NULL(fn, fln, wifi_initialize);
     SET_IF_NOT_NULL(fn, fln, wifi_wait_for_driver_ready);
-    fn->wifi_cleanup = wifi_cleanup;
+    SET_IF_NOT_NULL(fn, fln, wifi_cleanup);
     SET_IF_NOT_NULL(fn, fln, wifi_event_loop);
     SET_IF_NOT_NULL(fn, fln, wifi_get_error_info);
     SET_IF_NOT_NULL(fn, fln, wifi_get_supported_feature_set);
@@ -200,10 +200,4 @@ error:
     free(fln);
     if (lib_handle) dlclose(lib_handle);
     return ret;
-}
-
-void wifi_cleanup(wifi_handle wh, wifi_cleaned_up_handler wch) {
-    if (fln && fln->wifi_cleanup) fln->wifi_cleanup(wh, wch);
-    free(fln);
-    dlclose(lib_handle);
 }
