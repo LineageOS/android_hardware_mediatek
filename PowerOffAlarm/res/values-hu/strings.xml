@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Mi ébreszthet kikapcsolt állapotból</string>
+    <string name="permdesc_power_off_alarm">módosíthatja vagy törölheti azokat az ébresztéseket, amelyek felébresztenék kikapcsolt állapotból a készülékét</string>
+    <string name="permlab_power_off_alarm">Hasznos kapcsoló, amivel</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Alarme com o dispositivo desligado</string>
+    <string name="permdesc_power_off_alarm">definir e limpar o alarme que acordará o dispositivo do estado de desligamento</string>
+    <string name="permlab_power_off_alarm">Alarme com o dispositivo desligado</string>
+</resources>
