@@ -25,6 +25,9 @@
         </interface>
         <interface>
             <name>ISap</name>
+            <instance>slot1</instance>
+            <instance>slot2</instance>
+            <instance>slot3</instance>
             <instance>slot4</instance>
         </interface>
     </hal>
