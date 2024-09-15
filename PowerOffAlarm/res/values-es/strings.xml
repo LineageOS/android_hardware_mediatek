@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Alarma con el móvil apagado</string>
+    <string name="permdesc_power_off_alarm">activar y desactivar la alarma que activará el dispositivo desde el estado de apagado</string>
+    <string name="permlab_power_off_alarm">Alarma con el móvil apagado</string>
+</resources>
