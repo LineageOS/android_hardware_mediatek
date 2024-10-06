@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41bc6dc3_5403264b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 27025
+      },
+      "writtenOn": "2024-10-06T06:20:27Z",
+      "side": 1,
+      "message": "for lineage-22",
+      "revId": "fc60be64f2eb935ffedd0e23340030a53b60c5ab",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
