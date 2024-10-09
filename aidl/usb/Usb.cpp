@@ -604,13 +604,15 @@ void queryVersionHelper(android::hardware::usb::Usb* usb,
     Status status;
     pthread_mutex_lock(&usb->mLock);
     status = getPortStatusHelper(usb, currentPortStatus);
-    queryMoistureDetectionStatus(currentPortStatus);
-    queryNonCompliantChargerStatus(currentPortStatus);
-    if (usb->mCallback != NULL) {
-        ScopedAStatus ret = usb->mCallback->notifyPortStatusChange(*currentPortStatus, status);
-        if (!ret.isOk()) ALOGE("queryPortStatus error %s", ret.getDescription().c_str());
+    if (status == Status::SUCCESS && currentPortStatus->size() > 0) {
+        queryMoistureDetectionStatus(currentPortStatus);
+        queryNonCompliantChargerStatus(currentPortStatus);
+        if (usb->mCallback != NULL) {
+            ScopedAStatus ret = usb->mCallback->notifyPortStatusChange(*currentPortStatus, status);
+            if (!ret.isOk()) ALOGE("queryPortStatus error %s", ret.getDescription().c_str());
+        }
     } else {
-        ALOGI("Notifying userspace skipped. Callback is NULL");
+        ALOGI("%s skipped. currentPortStatus is empty", __func__);
     }
     pthread_mutex_unlock(&usb->mLock);
 }
