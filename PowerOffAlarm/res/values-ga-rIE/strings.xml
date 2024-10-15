@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023 The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="app_name">Cumhacht as an t-aláram</string>
+    <string name="permdesc_power_off_alarm">socraigh agus glan an t-aláram a dhúiseoidh gléas as an stát cumhachta</string>
+    <string name="permlab_power_off_alarm">Cumhacht as an t-aláram</string>
+</resources>
