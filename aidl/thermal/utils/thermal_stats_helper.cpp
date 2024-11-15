@@ -13,6 +13,8 @@
 #include <numeric>
 #include <string_view>
 
+#include "../thermal-helper.h"
+
 namespace aidl {
 namespace android {
 namespace hardware {
@@ -75,7 +77,8 @@ void resetCurrentTempStatus(CurrTempStatus *curr_temp_status, float new_temp) {
 bool ThermalStatsHelper::initializeStats(
         const Json::Value &config,
         const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
-        const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_) {
+        const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_,
+        ThermalHelper *const thermal_helper_handle) {
     StatsInfo<float> sensor_stats_info;
     AbnormalStatsInfo abnormal_stats_info;
     if (!ParseSensorStatsConfig(config, sensor_info_map_, &sensor_stats_info,
@@ -103,6 +106,7 @@ bool ThermalStatsHelper::initializeStats(
         return false;
     }
 
+    thermal_helper_handle_ = thermal_helper_handle;
     last_total_stats_report_time = boot_clock::now();
     abnormal_stats_reported_per_update_interval = 0;
     LOG(INFO) << "Thermal Stats Initialized Successfully";
@@ -577,6 +581,12 @@ bool ThermalStatsHelper::reportThermalAbnormality(
         values[ThermalSensorAbnormalityDetected::kTempFieldNumber - kVendorAtomOffset] =
                 VendorAtomValue::make<VendorAtomValue::intValue>(reading.value());
     }
+
+    // Dump additional traces before reporting abnormal event
+    if (thermal_helper_handle_) {
+        thermal_helper_handle_->dumpTraces(name);
+    }
+
     if (!reportAtom(stats_client, PixelAtoms::Atom::kThermalSensorAbnormalityDetected,
                     std::move(values))) {
         LOG(ERROR) << "Failed to log thermal abnormal atom for " << name.data() << " with value "

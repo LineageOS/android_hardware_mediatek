@@ -352,6 +352,14 @@ void Thermal::dumpVirtualSensorInfo(std::ostringstream *dump_buf) {
     }
 }
 
+void Thermal::dumpVtEstimatorInfo(std::ostringstream *dump_buf) {
+    *dump_buf << "getVtEstimatorInfo:" << std::endl;
+    const auto &map = thermal_helper_->GetSensorInfoMap();
+    for (const auto &name_info_pair : map) {
+        thermal_helper_->dumpVtEstimatorStatus(name_info_pair.first, dump_buf);
+    }
+}
+
 void Thermal::dumpThrottlingInfo(std::ostringstream *dump_buf) {
     *dump_buf << "getThrottlingInfo:" << std::endl;
     const auto &map = thermal_helper_->GetSensorInfoMap();
@@ -379,9 +387,14 @@ void Thermal::dumpThrottlingInfo(std::ostringstream *dump_buf) {
                     *dump_buf << name_info_pair.second.throttling_info->k_pu[i] << " ";
                 }
                 *dump_buf << "]" << std::endl;
-                *dump_buf << "   K_i: [";
+                *dump_buf << "   K_io: [";
                 for (size_t i = 0; i < kThrottlingSeverityCount; ++i) {
-                    *dump_buf << name_info_pair.second.throttling_info->k_i[i] << " ";
+                    *dump_buf << name_info_pair.second.throttling_info->k_io[i] << " ";
+                }
+                *dump_buf << "]" << std::endl;
+                *dump_buf << "   K_iu: [";
+                for (size_t i = 0; i < kThrottlingSeverityCount; ++i) {
+                    *dump_buf << name_info_pair.second.throttling_info->k_iu[i] << " ";
                 }
                 *dump_buf << "]" << std::endl;
                 *dump_buf << "   K_d: [";
@@ -677,12 +690,12 @@ void Thermal::dumpThermalStats(std::ostringstream *dump_buf) {
     }
 }
 
-void Thermal::dumpThermalData(int fd) {
+void Thermal::dumpThermalData(int fd, const char **args, uint32_t numArgs) {
     std::ostringstream dump_buf;
 
     if (!thermal_helper_->isInitializedOk()) {
         dump_buf << "ThermalHAL not initialized properly." << std::endl;
-    } else {
+    } else if (numArgs == 0 || std::string(args[0]) == "-a") {
         const auto &sensor_status_map = thermal_helper_->GetSensorStatusMap();
         {
             dump_buf << "getCachedTemperatures:" << std::endl;
@@ -720,7 +733,7 @@ void Thermal::dumpThermalData(int fd) {
             dump_buf << "getCurrentTemperatures:" << std::endl;
             Temperature temp_2_0;
             for (const auto &name_info_pair : map) {
-                thermal_helper_->readTemperature(name_info_pair.first, &temp_2_0, nullptr, true);
+                thermal_helper_->readTemperature(name_info_pair.first, &temp_2_0, true);
                 dump_buf << " Type: " << toString(temp_2_0.type)
                          << " Name: " << name_info_pair.first << " CurrentValue: " << temp_2_0.value
                          << " ThrottlingStatus: " << toString(temp_2_0.throttlingStatus)
@@ -805,6 +818,7 @@ void Thermal::dumpThermalData(int fd) {
             dump_buf << std::endl;
         }
         dumpVirtualSensorInfo(&dump_buf);
+        dumpVtEstimatorInfo(&dump_buf);
         dumpThrottlingInfo(&dump_buf);
         dumpThrottlingRequestStatus(&dump_buf);
         dumpPowerRailInfo(&dump_buf);
@@ -818,7 +832,10 @@ void Thermal::dumpThermalData(int fd) {
             dump_buf << " Ext connected: " << std::boolalpha
                      << thermal_helper_->isPowerHalExtConnected() << std::endl;
         }
+    } else if (std::string(args[0]) == "-vt-estimator") {
+        dumpVtEstimatorInfo(&dump_buf);
     }
+
     std::string buf = dump_buf.str();
     if (!::android::base::WriteStringToFd(buf, fd)) {
         PLOG(ERROR) << "Failed to dump state to fd";
@@ -827,8 +844,8 @@ void Thermal::dumpThermalData(int fd) {
 }
 
 binder_status_t Thermal::dump(int fd, const char **args, uint32_t numArgs) {
-    if (numArgs == 0 || std::string(args[0]) == "-a") {
-        dumpThermalData(fd);
+    if (numArgs == 0 || std::string(args[0]) == "-a" || std::string(args[0]) == "-vt-estimator") {
+        dumpThermalData(fd, args, numArgs);
         return STATUS_OK;
     }
 

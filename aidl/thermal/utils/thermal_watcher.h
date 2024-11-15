@@ -33,7 +33,8 @@ namespace implementation {
 
 using ::android::base::boot_clock;
 using ::android::base::unique_fd;
-using WatcherCallback = std::function<std::chrono::milliseconds(const std::set<std::string> &name)>;
+using WatcherCallback = std::function<std::chrono::milliseconds(
+        const std::unordered_map<std::string, float> &uevent_sensor_map)>;
 
 // A helper class for monitoring thermal files changes.
 class ThermalWatcher : public ::android::Thread {
@@ -67,10 +68,10 @@ class ThermalWatcher : public ::android::Thread {
     bool threadLoop() override;
 
     // Parse uevent message
-    void parseUevent(std::set<std::string> *sensor_name);
+    void parseUevent(std::unordered_map<std::string, float> *sensor_map);
 
     // Parse thermal netlink message
-    void parseGenlink(std::set<std::string> *sensor_name);
+    void parseGenlink(std::unordered_map<std::string, float> *sensor_map);
 
     // Maps watcher filer descriptor to watched file path.
     std::unordered_map<int, std::string> watch_to_file_path_map_;
