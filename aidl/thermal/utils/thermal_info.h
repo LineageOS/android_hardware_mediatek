@@ -117,6 +117,7 @@ enum class SensorFusionType : uint32_t {
     SENSOR = 0,
     ODPM,
     CONSTANT,
+    CDEV,
 };
 
 std::ostream &operator<<(std::ostream &os, const SensorFusionType &sensor_fusion_type);
@@ -132,6 +133,14 @@ struct VirtualSensorInfo {
     FormulaOption formula;
     std::string vt_estimator_model_file;
     std::unique_ptr<::thermal::vtestimator::VirtualTempEstimator> vt_estimator;
+    std::string backup_sensor;
+};
+
+struct PredictorInfo {
+    std::string sensor;
+    bool support_pid_compensation;
+    std::vector<float> prediction_weights;
+    ThrottlingArray k_p_compensate;
 };
 
 struct VirtualPowerRailInfo {
@@ -173,7 +182,8 @@ using ProfileMap = std::unordered_map<std::string, std::unordered_map<std::strin
 struct ThrottlingInfo {
     ThrottlingArray k_po;
     ThrottlingArray k_pu;
-    ThrottlingArray k_i;
+    ThrottlingArray k_io;
+    ThrottlingArray k_iu;
     ThrottlingArray k_d;
     ThrottlingArray i_max;
     ThrottlingArray max_alloc_power;
@@ -181,6 +191,7 @@ struct ThrottlingInfo {
     ThrottlingArray s_power;
     ThrottlingArray i_cutoff;
     float i_default;
+    float i_default_pct;
     int tran_cycle;
     std::unordered_map<std::string, ThrottlingArray> excluded_power_info_map;
     std::unordered_map<std::string, BindedCdevInfo> binded_cdev_info_map;
@@ -195,6 +206,7 @@ struct SensorInfo {
     ThrottlingArray cold_hysteresis;
     std::string temp_path;
     std::string zone_name;
+    std::string severity_reference;
     float vr_threshold;
     float multiplier;
     std::chrono::milliseconds polling_delay;
@@ -207,8 +219,10 @@ struct SensorInfo {
     bool send_powerhint;
     bool is_watch;
     bool is_hidden;
+    ThrottlingSeverity log_level;
     std::unique_ptr<VirtualSensorInfo> virtual_sensor_info;
     std::shared_ptr<ThrottlingInfo> throttling_info;
+    std::unique_ptr<PredictorInfo> predictor_info;
 };
 
 struct CdevInfo {
@@ -225,7 +239,10 @@ struct PowerRailInfo {
     std::unique_ptr<VirtualPowerRailInfo> virtual_power_rail_info;
 };
 
-bool ParseThermalConfig(std::string_view config_path, Json::Value *config);
+bool LoadThermalConfig(std::string_view config_path, Json::Value *config);
+bool ParseThermalConfig(std::string_view config_path, Json::Value *config,
+                        std::unordered_set<std::string> *loaded_config_paths);
+void MergeConfigEntries(Json::Value *config, Json::Value *sub_config, std::string_view member_name);
 bool ParseSensorInfo(const Json::Value &config,
                      std::unordered_map<std::string, SensorInfo> *sensors_parsed);
 bool ParseCoolingDevice(const Json::Value &config,

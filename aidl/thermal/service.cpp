@@ -22,6 +22,8 @@ using Thermal = ::aidl::android::hardware::thermal::implementation::Thermal;
 #endif
 
 int main(int /* argc */, char ** /* argv */) {
+    // ignore broken pipe signal to avoid Thermal HAL being killed when dumpsys timeout
+    signal(SIGPIPE, SIG_IGN);
     android::base::SetDefaultTag(kThermalLogTag.data());
 
     auto svc = ndk::SharedRefBase::make<Thermal>();

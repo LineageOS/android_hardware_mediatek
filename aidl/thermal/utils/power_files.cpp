@@ -33,20 +33,24 @@ namespace {
 bool calculateAvgPower(std::string_view power_rail, const PowerSample &last_sample,
                        const PowerSample &curr_sample, float *avg_power) {
     *avg_power = NAN;
-    const auto duration = curr_sample.duration - last_sample.duration;
-    const auto deltaEnergy = curr_sample.energy_counter - last_sample.energy_counter;
-    if (duration == 0) {
+    if (curr_sample.duration == last_sample.duration) {
         LOG(VERBOSE) << "Power rail " << power_rail.data()
                      << ": has not collected min 2 samples yet";
-    } else if (duration < 0 || deltaEnergy < 0) {
-        LOG(ERROR) << "Power rail " << power_rail.data() << " is invalid: duration = " << duration
-                   << ", deltaEnergy = " << deltaEnergy;
+        return true;
+    } else if (curr_sample.duration < last_sample.duration ||
+               curr_sample.energy_counter < last_sample.energy_counter) {
+        LOG(ERROR) << "Power rail " << power_rail.data()
+                   << " is invalid: last_sample=" << last_sample.energy_counter
+                   << "(T=" << last_sample.duration << ")"
+                   << ", curr_sample=" << curr_sample.energy_counter
+                   << "(T=" << curr_sample.duration << ")";
         return false;
-    } else {
-        *avg_power = static_cast<float>(deltaEnergy) / static_cast<float>(duration);
-        LOG(VERBOSE) << "Power rail " << power_rail.data() << ", avg power = " << *avg_power
-                     << ", duration = " << duration << ", deltaEnergy = " << deltaEnergy;
     }
+    const auto duration = curr_sample.duration - last_sample.duration;
+    const auto deltaEnergy = curr_sample.energy_counter - last_sample.energy_counter;
+    *avg_power = static_cast<float>(deltaEnergy) / static_cast<float>(duration);
+    LOG(VERBOSE) << "Power rail " << power_rail.data() << ", avg power = " << *avg_power
+                 << ", duration = " << duration << ", deltaEnergy = " << deltaEnergy;
     return true;
 }
 }  // namespace

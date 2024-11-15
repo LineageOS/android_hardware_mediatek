@@ -8,6 +8,7 @@
 
 #include <aidl/android/hardware/thermal/Temperature.h>
 
+#include <functional>
 #include <queue>
 #include <set>
 #include <shared_mutex>
@@ -53,7 +54,7 @@ class ThermalThrottling {
     void operator=(const ThermalThrottling &) = delete;
 
     // Clear throttling data
-    void clearThrottlingData(std::string_view sensor_name, const SensorInfo &sensor_info);
+    void clearThrottlingData(std::string_view sensor_name);
     // Register map for throttling algo
     bool registerThermalThrottling(
             std::string_view sensor_name, const std::shared_ptr<ThrottlingInfo> &throttling_info,
@@ -70,7 +71,8 @@ class ThermalThrottling {
             const ThrottlingSeverity curr_severity, const std::chrono::milliseconds time_elapsed_ms,
             const std::unordered_map<std::string, PowerStatus> &power_status_map,
             const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map,
-            const bool max_throttling = false);
+            const bool max_throttling = false,
+            const std::vector<float> &sensor_predictions = std::vector<float>{});
 
     // Compute the throttling target from all the sensors' request
     void computeCoolingDevicesRequest(std::string_view sensor_name, const SensorInfo &sensor_info,
@@ -84,9 +86,12 @@ class ThermalThrottling {
     // Check if the thermal throttling profile need to be switched
     void parseProfileProperty(std::string_view sensor_name, const SensorInfo &sensor_info);
     // PID algo - get the total power budget
-    float updatePowerBudget(const Temperature &temp, const SensorInfo &sensor_info,
-                            std::chrono::milliseconds time_elapsed_ms,
-                            ThrottlingSeverity curr_severity, const bool max_throttling);
+    float updatePowerBudget(
+            const Temperature &temp, const SensorInfo &sensor_info,
+            const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map,
+            std::chrono::milliseconds time_elapsed_ms, ThrottlingSeverity curr_severity,
+            const bool max_throttling,
+            const std::vector<float> &sensor_predictions = std::vector<float>{});
 
     // PID algo - return the power number from excluded power rail list
     float computeExcludedPower(const SensorInfo &sensor_info,
@@ -100,7 +105,7 @@ class ThermalThrottling {
             const ThrottlingSeverity curr_severity, const std::chrono::milliseconds time_elapsed_ms,
             const std::unordered_map<std::string, PowerStatus> &power_status_map,
             const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map,
-            const bool max_throttling);
+            const bool max_throttling, const std::vector<float> &sensor_predictions);
     // PID algo - map the target throttling state according to the power budget
     void updateCdevRequestByPower(
             std::string sensor_name,
