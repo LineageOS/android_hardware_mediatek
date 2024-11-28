@@ -1,0 +1,46 @@
+cc_binary {
+    name: "android.hardware.bluetooth@1.1-service",
+    defaults: ["hidl_defaults"],
+    relative_install_path: "hw",
+    vendor: true,
+    init_rc: ["android.hardware.bluetooth@1.1-service.rc"],
+    srcs: [
+        "service.cpp",
+        "bluetooth_address.cc",
+        "bluetooth_hci.cc",
+        "vendor_interface.cc",
+    ],
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libdl",
+        "libbase",
+        "libutils",
+        "libhardware",
+        "libhidlbase",
+        "android.hardware.bluetooth@1.0",
+        "android.hardware.bluetooth@1.1",
+    ],
+
+    static_libs: [
+        "android.hardware.bluetooth-hci",
+        "android.hardware.bluetooth-async",
+    ],
+}
+
+cc_test_host {
+    name: "bluetooth-address-unit-tests",
+    defaults: ["hidl_defaults"],
+    srcs: [
+        "bluetooth_address.cc",
+        "test/bluetooth_address_test.cc",
+    ],
+    local_include_dirs: [
+        "test",
+    ],
+    shared_libs: [
+        "libbase",
+        "libcutils",
+        "liblog",
+    ],
+}
