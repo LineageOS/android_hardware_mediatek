@@ -36,6 +36,7 @@ PRODUCT_VENDOR_PROPERTIES += \
     persist.log.tag.DSSelectorOP18=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.DSSelectorUtil=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.ExternalSimMgr=$(VENDOR_LOG_LEVEL) \
+    persist.log.tag.GPUAUX=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.gralloc4=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.GsmCallTkrHlpr=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.GsmCdmaConn=$(VENDOR_LOG_LEVEL) \
