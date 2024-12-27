@@ -1,0 +1,51 @@
+//
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+soong_namespace {
+}
+
+soong_config_module_type {
+    name: "mediatek_power_defaults",
+    module_type: "cc_defaults",
+    config_namespace: "mediatek_power",
+    value_variables: [
+        "double_tap_to_wake_node",
+    ],
+    bool_variables: [
+        "powerhal_ext",
+    ],
+    properties: [
+        "cflags",
+        "srcs",
+    ],
+}
+
+mediatek_power_defaults {
+    name: "mediatek_power_defaults",
+    soong_config_variables: {
+        double_tap_to_wake_node: {
+            cflags: ["-DTAP_TO_WAKE_NODE=\"%s\""],
+        },
+        powerhal_ext: {
+            cflags: ["-DMODE_EXT"],
+            srcs: [":powerhal_ext"],
+        },
+    },
+}
+
+cc_library_shared {
+    name: "android.hardware.power-service-mediatek",
+    defaults: ["mediatek_power_defaults"],
+    vendor: true,
+    compile_multilib: "64",
+    vintf_fragments: ["power-mtk.xml"],
+    srcs: ["Power.cpp"],
+
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "android.hardware.power-V2-ndk",
+    ],
+}
