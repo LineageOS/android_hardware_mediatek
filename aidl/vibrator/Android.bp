@@ -1,0 +1,46 @@
+//
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+soong_config_module_type {
+    name: "mediatek_vibrator_defaults",
+    module_type: "cc_defaults",
+    config_namespace: "mediatek_vibrator",
+    bool_variables: [
+        "supports_effects",
+    ],
+    properties: [
+        "cflags",
+    ],
+}
+
+mediatek_vibrator_defaults {
+    name: "mediatek_vibrator_defaults",
+    soong_config_variables: {
+        supports_effects: {
+            cflags: ["-DVIBRATOR_SUPPORTS_EFFECTS"],
+        },
+    },
+}
+
+cc_binary {
+    name: "android.hardware.vibrator-service.mediatek",
+    defaults: ["mediatek_vibrator_defaults"],
+    vintf_fragments: ["android.hardware.vibrator.mediatek.xml"],
+    init_rc: ["vibrator-mediatek.rc"],
+    vendor: true,
+    relative_install_path: "hw",
+
+    srcs: [
+        "Vibrator.cpp",
+        "VibratorUtils.cpp",
+        "main.cpp",
+    ],
+
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "android.hardware.vibrator-V2-ndk",
+    ],
+}
