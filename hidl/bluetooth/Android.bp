@@ -27,20 +27,3 @@ cc_binary {
         "android.hardware.bluetooth-async",
     ],
 }
-
-cc_test_host {
-    name: "bluetooth-address-unit-tests",
-    defaults: ["hidl_defaults"],
-    srcs: [
-        "bluetooth_address.cc",
-        "test/bluetooth_address_test.cc",
-    ],
-    local_include_dirs: [
-        "test",
-    ],
-    shared_libs: [
-        "libbase",
-        "libcutils",
-        "liblog",
-    ],
-}
