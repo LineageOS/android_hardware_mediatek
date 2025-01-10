@@ -1,9 +1,9 @@
 cc_binary {
-    name: "android.hardware.bluetooth@1.1-service",
+    name: "android.hardware.bluetooth@1.1-mtk-service",
     defaults: ["hidl_defaults"],
     relative_install_path: "hw",
     vendor: true,
-    init_rc: ["android.hardware.bluetooth@1.1-service.rc"],
+    init_rc: ["android.hardware.bluetooth@1.1-mtk-service.rc"],
     srcs: [
         "service.cpp",
         "bluetooth_address.cc",
