@@ -1,11 +1,14 @@
-#include <android-base/logging.h>
-#include <android/binder_manager.h>
-#include <android/binder_process.h>
+/*
+ * SPDX-FileCopyrightText: 2020 The Android Open Source Project
+ * SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 #include "Memtrack.h"
 
-#undef LOG_TAG
-#define LOG_TAG "memtrack-service"
+#include <android-base/logging.h>
+#include <android/binder_manager.h>
+#include <android/binder_process.h>
 
 using aidl::android::hardware::memtrack::Memtrack;
 
