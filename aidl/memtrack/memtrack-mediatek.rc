@@ -1,0 +1,5 @@
+service vendor.memtrack-mediatek /vendor/bin/hw/android.hardware.memtrack-service.mediatek
+    class hal
+    user graphics
+    group system
+    task_profiles ServiceCapacityLow
