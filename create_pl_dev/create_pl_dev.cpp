@@ -1,17 +1,19 @@
 /*
- * SPDX-FileCopyrightText: 2024 The LineageOS Project
+ * SPDX-FileCopyrightText: 2025 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 #define LOG_TAG "create_pl_dev"
 
 #include <android-base/unique_fd.h>
-#include <errno.h>
-#include <fcntl.h>
+#include <android-base/logging.h>
 #include <libdm/dm.h>
-#include <log/log.h>
-#include <stdio.h>
-#include <string.h>
+#include <map>
+#include <fstream>
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <cerrno>
 #include <unistd.h>
 
 #define BLOCK_SIZE 512
@@ -28,19 +30,14 @@
 
 using namespace android::dm;
 
-struct pl_device {
-    const char* dm_name;
-    const char* dev;
+std::map<const char*, const char*> pl_devices = {
+    {"preloader_raw_a", "/dev/block/sda"},
+    {"preloader_raw_b", "/dev/block/sdb"},
+    {"preloader_raw_a", "/dev/block/mmcblk0boot0"},
+    {"preloader_raw_b", "/dev/block/mmcblk0boot1"}
 };
 
-static struct pl_device pl_devices[] = {
-        {"preloader_raw_a", "/dev/block/sda"},
-        {"preloader_raw_b", "/dev/block/sdb"},
-        {"preloader_raw_a", "/dev/block/mmcblk0boot0"},
-        {"preloader_raw_b", "/dev/block/mmcblk0boot1"},
-};
-
-static void create_dm_device(const char* name, const char* dev, int start, int count) {
+void create_dm_device(const char* name, const char* dev, int start, int count) {
     DeviceMapper& dm = DeviceMapper::Instance();
     DmTable table;
     std::unique_ptr<DmTarget> target;
@@ -48,72 +45,71 @@ static void create_dm_device(const char* name, const char* dev, int start, int c
 
     target = std::make_unique<DmTargetLinear>(0, count, dev, start);
     if (!table.AddTarget(std::move(target))) {
-        ALOGE("Failed to add target for %s.", name);
+        LOG(ERROR) << "Failed to add target for " << name;
         return;
     }
 
     if (!dm.CreateDevice(name, table, &path, std::chrono::milliseconds(500))) {
-        ALOGE("Failed to create device %s.", name);
+        LOG(ERROR) << "Failed to create device " << name;
         return;
     }
 
-    ALOGI("Created DM device %s at %s.", name, path.c_str());
+    LOG(INFO) << "Created DM device " << name << " at " << path;
 }
 
 int main() {
-    int fd, size, count, start;
+    std::ifstream file;
+    std::streampos size;
+    int start, count;
     char header[COMBO_HEADER_SIZE];
 
-    for (int i = 0; i < sizeof(pl_devices) / sizeof(pl_device); i++) {
-        pl_device* device = &pl_devices[i];
-
-        if (access(device->dev, F_OK) == -1) {
-            ALOGE("Device %s not found.", device->dev);
+    for (const auto& [dm_name, dev] : pl_devices) {
+        if (access(dev, F_OK) == -1) {
+            LOG(ERROR) << "Device " << dev << " not found.";
             continue;
         }
 
-        fd = open(device->dev, O_RDONLY);
-        if (fd == -1) {
-            ALOGE("Failed to open %s: %s.", device->dev, strerror(errno));
+        file.open(dev, std::ios::binary | std::ios::ate);
+        if (!file) {
+            LOG(ERROR) << "Failed to open " << dev << ": " << strerror(errno);
             continue;
         }
 
-        size = lseek(fd, 0, SEEK_END);
+        std::streampos size = file.tellg();
         if (size == -1) {
-            ALOGE("Failed to seek %s: %s.", device->dev, strerror(errno));
-            close(fd);
+            LOG(ERROR) << "Failed to seek " << dev << ": " << strerror(errno);
             continue;
         }
 
         count = size / BLOCK_SIZE;
 
-        if (lseek(fd, 0, SEEK_SET) == -1) {
-            ALOGE("Failed to seek %s: %s.", device->dev, strerror(errno));
-            close(fd);
+        file.seekg(0, std::ios::beg);
+        if (!file) {
+            LOG(ERROR) << "Failed to seek " << dev << ": " << strerror(errno);
             continue;
         }
 
-        if (read(fd, header, COMBO_HEADER_SIZE) != COMBO_HEADER_SIZE) {
-            ALOGE("Failed to read %s: %s.", device->dev, strerror(errno));
-            close(fd);
+        file.read(header, COMBO_HEADER_SIZE);
+        if (file.gcount() != COMBO_HEADER_SIZE) {
+            LOG(ERROR) << "Failed to read " << dev << ": " << strerror(errno);
+            file.close();
             continue;
         }
 
-        close(fd);
+        file.close();
 
-        if (strncmp(header, UFS_HEADER, UFS_HEADER_SIZE) == 0 ||
-            strncmp(header, COMBO_HEADER, COMBO_HEADER_SIZE) == 0) {
+        if (std::memcmp(header, UFS_HEADER, UFS_HEADER_SIZE) == 0
+            || std::memcmp(header, COMBO_HEADER, COMBO_HEADER_SIZE) == 0) {
             start = UFS_HSZ / BLOCK_SIZE;
-        } else if (strncmp(header, EMMC_HEADER, COMBO_HEADER_SIZE) == 0) {
+        } else if (std::memcmp(header, EMMC_HEADER, COMBO_HEADER_SIZE) == 0) {
             start = EMMC_HSZ / BLOCK_SIZE;
         } else {
-            ALOGE("Unknown header %s for %s.", header, device->dev);
+            LOG(ERROR) << "Unknown header " << header << " for " << dev;
             continue;
         }
 
         count -= start;
-
-        create_dm_device(device->dm_name, device->dev, start, count);
+        create_dm_device(dm_name, dev, start, count);
     }
 
     return 0;
