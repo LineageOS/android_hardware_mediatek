@@ -16,6 +16,24 @@
       "message": "How did you test it?",
       "revId": "45149c49d2c37403c9eae384378849aaeb7aae80",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1965552a_f637e089",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35109
+      },
+      "writtenOn": "2025-04-03T06:29:52Z",
+      "side": 1,
+      "message": "I did a build test and also tried it on a device I was working on.",
+      "parentUuid": "a62b9bdd_ebacd17f",
+      "revId": "45149c49d2c37403c9eae384378849aaeb7aae80",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
