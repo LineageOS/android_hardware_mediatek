@@ -88,6 +88,24 @@
       "parentUuid": "304dcc50_6e4ff996",
       "revId": "45149c49d2c37403c9eae384378849aaeb7aae80",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9bb9e57_5938b348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35109
+      },
+      "writtenOn": "2025-04-05T09:00:14Z",
+      "side": 1,
+      "message": "I tested it, the same things are completed without any problems as before, I tried flashing `preloader_raw`, no problems occurred.",
+      "parentUuid": "09093ee6_19bac098",
+      "revId": "45149c49d2c37403c9eae384378849aaeb7aae80",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
