@@ -16,6 +16,24 @@
       "message": "Why removing static keywords?",
       "revId": "fde9a15f64654d6b4315f6b9a3722de61d94d005",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e73e034_9647fcd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35109
+      },
+      "writtenOn": "2025-04-05T12:18:49Z",
+      "side": 1,
+      "message": "This is already a single-file executable source, so there\u0027s nothing else it can affect. So I found the `static` key unnecessary",
+      "parentUuid": "664ddd99_3d4888ae",
+      "revId": "fde9a15f64654d6b4315f6b9a3722de61d94d005",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
