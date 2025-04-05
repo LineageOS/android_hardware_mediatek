@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "079fe2d4_bf825e4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2025-04-05T10:33:29Z",
+      "side": 1,
+      "message": "resource_dirs is implicitly set to res as per https://android.googlesource.com/platform/build/soong/+/refs/heads/android15-qpr2-release/docs/resources.md#soong-android-resource-compilation",
+      "revId": "fd458199490929ed7eac6da5d6fbd23baa612681",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
