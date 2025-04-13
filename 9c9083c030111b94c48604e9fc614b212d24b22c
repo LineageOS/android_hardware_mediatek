@@ -16,6 +16,29 @@
       "message": "Should fix `earth` build",
       "revId": "9c9083c030111b94c48604e9fc614b212d24b22c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "051b031f_b4c4c6ec",
+        "filename": "interfaces/Android.bp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2025-04-13T19:07:04Z",
+      "side": 1,
+      "message": "sort it",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 32,
+        "endChar": 72
+      },
+      "revId": "9c9083c030111b94c48604e9fc614b212d24b22c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
