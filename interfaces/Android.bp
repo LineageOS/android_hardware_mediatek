@@ -9,6 +9,16 @@ hidl_package_root {
 }
 
 prebuilt_hidl_interfaces {
+    name: "hidl_vendor_mediatek_hardware_engineermode_interface",
+    interfaces: [
+        "vendor.mediatek.hardware.engineermode@1.0::IEmd",
+        "vendor.mediatek.hardware.engineermode@1.1::IEmd",
+        "vendor.mediatek.hardware.engineermode@1.2::IEmd",
+        "vendor.mediatek.hardware.engineermode@1.3::IEmd"
+    ]
+}
+
+prebuilt_hidl_interfaces {
     name: "hidl_vendor_mediatek_hardware_keymaster_attestation_interface",
     interfaces: [
         "vendor.mediatek.hardware.keymaster_attestation@1.0::IKeymasterDevice",
