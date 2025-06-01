@@ -1,10 +1,11 @@
-subdirs = [
-    "*",
-]
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
 
 hidl_package_root {
-    name: "vendor.mediatek.hardware.mtkpower",
-    path: "hardware/mediatek/interfaces/mtkpower",
+    name: "vendor.mediatek.hardware",
+    path: "hardware/mediatek/interfaces/hardware",
 }
 
 prebuilt_hidl_interfaces {

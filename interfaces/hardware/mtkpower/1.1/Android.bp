@@ -4,7 +4,7 @@
 
 hidl_interface {
     name: "vendor.mediatek.hardware.mtkpower@1.1",
-    root: "vendor.mediatek.hardware.mtkpower",
+    root: "vendor.mediatek.hardware",
     system_ext_specific: true,
     srcs: [
         "IMtkPerf.hal",
