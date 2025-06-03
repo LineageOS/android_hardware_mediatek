@@ -256,6 +256,11 @@ Status UsbGadget::setupFunctions(long functions, const shared_ptr<IUsbGadgetCall
         if (linkFunction("ncm.gs9", i++)) return Status::ERROR;
     }
 
+    if ((functions & GadgetFunction::MTP) != 0) {
+        ALOGI("setCurrentUsbFunctions mtp");
+        if (linkFunction("mass_storage.0", i++)) return Status::ERROR;
+    }
+
     // Pull up the gadget right away when there are no ffs functions.
     if (!ffsEnabled) {
         if (!WriteStringToFile(kGadgetName, PULLUP_PATH)) return Status::ERROR;
