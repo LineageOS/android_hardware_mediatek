@@ -20,33 +20,9 @@
 #include "BluetoothHci.h"
 
 #include <cutils/properties.h>
-#include <fcntl.h>
-#include <hidl/HidlSupport.h>
-#include <hidl/HidlTransportSupport.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <poll.h>
-#include <string.h>
-#include <sys/uio.h>
-#include <termios.h>
-
-#include <iostream>
 
 #include "log/log.h"
 #include "vendor_interface.h"
-
-namespace {
-int SetTerminalRaw(int fd) {
-    termios terminal_settings;
-    int rval = tcgetattr(fd, &terminal_settings);
-    if (rval < 0) {
-        return rval;
-    }
-    cfmakeraw(&terminal_settings);
-    rval = tcsetattr(fd, TCSANOW, &terminal_settings);
-    return rval;
-}
-}  // namespace
 
 using namespace ::android::hardware::bluetooth::hci;
 using namespace ::android::hardware::bluetooth::async;
@@ -115,23 +91,8 @@ void OnDeath(void* cookie) {
     death_recipient->serviceDied();
 }
 
-BluetoothHci::BluetoothHci(const std::string& dev_path) {
-    char property_bytes[PROPERTY_VALUE_MAX];
-    property_get("vendor.ser.bt-uart", property_bytes, dev_path.c_str());
-    mDevPath = std::string(property_bytes);
+BluetoothHci::BluetoothHci() {
     mDeathRecipient = std::make_shared<BluetoothDeathRecipient>(this);
-}
-
-int BluetoothHci::getFdFromDevPath() {
-    int fd = open(mDevPath.c_str(), O_RDWR);
-    if (fd < 0) {
-        ALOGE("Could not connect to bt: %s (%s)", mDevPath.c_str(), strerror(errno));
-        return fd;
-    }
-    if (int ret = SetTerminalRaw(fd) < 0) {
-        ALOGI("Could not make %s a raw terminal %d(%s)", mDevPath.c_str(), ret, strerror(errno));
-    }
-    return fd;
 }
 
 ndk::ScopedAStatus BluetoothHci::initialize(const std::shared_ptr<IBluetoothHciCallbacks>& cb) {

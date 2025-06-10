@@ -20,20 +20,17 @@
 #include <aidl/android/hardware/bluetooth/BnBluetoothHci.h>
 #include <aidl/android/hardware/bluetooth/IBluetoothHciCallbacks.h>
 
-#include <future>
 #include <string>
 
-#include "async_fd_watcher.h"
 #include "h4_protocol.h"
 
 namespace aidl::android::hardware::bluetooth::impl {
 
 class BluetoothDeathRecipient;
 
-// This Bluetooth HAL implementation connects with a serial port at dev_path_.
 class BluetoothHci : public BnBluetoothHci {
   public:
-    BluetoothHci(const std::string& dev_path = "/dev/hvc5");
+    BluetoothHci();
 
     ndk::ScopedAStatus initialize(const std::shared_ptr<IBluetoothHciCallbacks>& cb) override;
 
@@ -47,20 +44,11 @@ class BluetoothHci : public BnBluetoothHci {
 
     ndk::ScopedAStatus close() override;
 
-    static void OnPacketReady();
-
-    static BluetoothHci* get();
-
   private:
     std::shared_ptr<IBluetoothHciCallbacks> mCb = nullptr;
 
-    std::shared_ptr<::android::hardware::bluetooth::hci::H4Protocol> mH4;
-
     std::shared_ptr<BluetoothDeathRecipient> mDeathRecipient;
 
-    std::string mDevPath;
-
-    int getFdFromDevPath();
     [[nodiscard]] ndk::ScopedAStatus send(::android::hardware::bluetooth::hci::PacketType type,
                                           const std::vector<uint8_t>& packet);
 
