@@ -91,6 +91,7 @@ class ThermalThrottling {
             const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map,
             std::chrono::milliseconds time_elapsed_ms, ThrottlingSeverity curr_severity,
             const bool max_throttling,
+            const std::unordered_map<std::string, PowerStatus> &power_status_map,
             const std::vector<float> &sensor_predictions = std::vector<float>{});
 
     // PID algo - return the power number from excluded power rail list

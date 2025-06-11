@@ -35,6 +35,7 @@ struct PowerStatus {
     // A vector to record the queues of power sample history.
     std::vector<std::queue<PowerSample>> power_history;
     float last_updated_avg_power;
+    bool enabled;
 };
 
 struct PowerStatusLog {
@@ -51,11 +52,15 @@ class PowerFiles {
     // Disallow copy and assign.
     PowerFiles(const PowerFiles &) = delete;
     void operator=(const PowerFiles &) = delete;
-    bool registerPowerRailsToWatch(const Json::Value &config);
+    bool registerPowerRailsToWatch(
+            const Json::Value &config,
+            std::unordered_map<std::string, std::vector<std::string>> *power_rail_switch_map);
     // Update the power data from ODPM sysfs
     bool refreshPowerStatus(void);
     // Log the power data for the duration
     void logPowerStatus(const boot_clock::time_point &now);
+    // OnOff the power calculation
+    void powerSamplingSwitch(std::string_view power_rail, const bool enabled);
     // Get previous power log time_point
     const boot_clock::time_point &GetPrevPowerLogTime() const {
         return power_status_log_.prev_log_time;

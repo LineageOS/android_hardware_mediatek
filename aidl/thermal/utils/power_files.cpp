@@ -33,7 +33,11 @@ namespace {
 bool calculateAvgPower(std::string_view power_rail, const PowerSample &last_sample,
                        const PowerSample &curr_sample, float *avg_power) {
     *avg_power = NAN;
-    if (curr_sample.duration == last_sample.duration) {
+
+    if (last_sample.duration == 0) {
+        LOG(VERBOSE) << "Power rail " << power_rail.data() << ": samples are under collecting";
+        return true;
+    } else if (curr_sample.duration == last_sample.duration) {
         LOG(VERBOSE) << "Power rail " << power_rail.data()
                      << ": has not collected min 2 samples yet";
         return true;
@@ -55,8 +59,10 @@ bool calculateAvgPower(std::string_view power_rail, const PowerSample &last_samp
 }
 }  // namespace
 
-bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
-    if (!ParsePowerRailInfo(config, &power_rail_info_map_)) {
+bool PowerFiles::registerPowerRailsToWatch(
+        const Json::Value &config,
+        std::unordered_map<std::string, std::vector<std::string>> *power_rail_switch_map) {
+    if (!ParsePowerRailInfo(config, &power_rail_info_map_, power_rail_switch_map)) {
         LOG(ERROR) << "Failed to parse power rail info config";
         return false;
     }
@@ -119,6 +125,7 @@ bool PowerFiles::registerPowerRailsToWatch(const Json::Value &config) {
                     .last_update_time = boot_clock::time_point::min(),
                     .power_history = power_history,
                     .last_updated_avg_power = NAN,
+                    .enabled = true,
             };
         } else {
             LOG(ERROR) << "power history size is zero";
@@ -328,10 +335,33 @@ bool PowerFiles::refreshPowerStatus(void) {
         return false;
     }
 
-    for (const auto &power_status_pair : power_status_map_) {
-        updatePowerRail(power_status_pair.first);
+    for (const auto &[power_rail, power_status] : power_status_map_) {
+        if (power_status.enabled) {
+            updatePowerRail(power_rail);
+        }
     }
     return true;
+}
+
+void PowerFiles::powerSamplingSwitch(std::string_view power_rail, const bool enabled) {
+    if (!power_rail_info_map_.contains(power_rail.data())) {
+        LOG(ERROR) << "Unable to clear status for invalid power rail: " << power_rail.data();
+        return;
+    }
+    auto &power_status = power_status_map_.at(power_rail.data());
+    power_status.enabled = enabled;
+
+    if (!enabled) {
+        PowerSample power_sample = {.energy_counter = 0, .duration = 0};
+
+        for (size_t i = 0; i < power_status.power_history.size(); i++) {
+            for (size_t j = 0; j < power_status.power_history[i].size(); j++) {
+                power_status.power_history[i].pop();
+                power_status.power_history[i].push(power_sample);
+            }
+        }
+        power_status.last_updated_avg_power = NAN;
+    }
 }
 
 void PowerFiles::logPowerStatus(const boot_clock::time_point &now) {

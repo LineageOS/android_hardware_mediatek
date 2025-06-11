@@ -177,7 +177,9 @@ float ThermalThrottling::updatePowerBudget(
         const Temperature &temp, const SensorInfo &sensor_info,
         const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map,
         std::chrono::milliseconds time_elapsed_ms, ThrottlingSeverity curr_severity,
-        const bool max_throttling, const std::vector<float> &sensor_predictions) {
+        const bool max_throttling,
+        const std::unordered_map<std::string, PowerStatus> &power_status_map,
+        const std::vector<float> &sensor_predictions) {
     float p = 0, d = 0;
     float power_budget = std::numeric_limits<float>::max();
     bool target_changed = false;
@@ -287,10 +289,18 @@ float ThermalThrottling::updatePowerBudget(
         compensation *= sensor_info.predictor_info->k_p_compensate[target_state];
     }
 
+    // Compute Exclude Powerbudget
+    std::string log_buf;
+    float excludepower = 0;
+    if (sensor_info.throttling_info->excluded_power_info_map.size()) {
+        excludepower = computeExcludedPower(sensor_info, curr_severity, power_status_map, &log_buf,
+                                            sensor_name);
+    }
+
     throttling_status.prev_err = err;
     // Calculate power budget
     power_budget = sensor_info.throttling_info->s_power[target_state] + p +
-                   throttling_status.i_budget + d + compensation;
+                   throttling_status.i_budget + d + compensation - excludepower;
 
     power_budget =
             std::clamp(power_budget, sensor_info.throttling_info->min_alloc_power[target_state],
@@ -313,7 +323,8 @@ float ThermalThrottling::updatePowerBudget(
               << " time_elapsed_ms=" << time_elapsed_ms.count() << " p=" << p
               << " i=" << throttling_status.i_budget << " d=" << d
               << " compensation=" << compensation << " budget transient=" << budget_transient
-              << " control target=" << target_state;
+              << " control target=" << target_state << " excluded power budget=" << excludepower
+              << log_buf;
 
     ATRACE_INT((sensor_name + std::string("-power_budget")).c_str(),
                static_cast<int>(power_budget));
@@ -334,6 +345,8 @@ float ThermalThrottling::updatePowerBudget(
     ATRACE_INT((sensor_name + std::string("-d")).c_str(), static_cast<int>(d));
     ATRACE_INT((sensor_name + std::string("-predict_compensation")).c_str(),
                static_cast<int>(compensation));
+    ATRACE_INT((sensor_name + std::string("-excluded_power_budget")).c_str(),
+               static_cast<int>(excludepower));
     ATRACE_INT((sensor_name + std::string("-temp")).c_str(),
                static_cast<int>(temp.value / sensor_info.multiplier));
 
@@ -356,7 +369,7 @@ float ThermalThrottling::computeExcludedPower(
             excluded_power += last_updated_avg_power *
                               excluded_power_info_pair.second[static_cast<size_t>(curr_severity)];
             log_buf->append(StringPrintf(
-                    "(%s: %0.2f mW, cdev_weight: %f)", excluded_power_info_pair.first.c_str(),
+                    " (%s: %0.2f mW, cdev_weight: %f)", excluded_power_info_pair.first.c_str(),
                     last_updated_avg_power,
                     excluded_power_info_pair.second[static_cast<size_t>(curr_severity)]));
 
@@ -392,18 +405,8 @@ bool ThermalThrottling::allocatePowerToCdev(
     std::unique_lock<std::shared_mutex> _lock(thermal_throttling_status_map_mutex_);
     auto total_power_budget =
             updatePowerBudget(temp, sensor_info, cooling_device_info_map, time_elapsed_ms,
-                              curr_severity, max_throttling, sensor_predictions);
+                              curr_severity, max_throttling, power_status_map, sensor_predictions);
     const auto &profile = thermal_throttling_status_map_[temp.name].profile;
-
-    if (sensor_info.throttling_info->excluded_power_info_map.size()) {
-        total_power_budget -= computeExcludedPower(sensor_info, curr_severity, power_status_map,
-                                                   &log_buf, temp.name);
-        total_power_budget = std::max(total_power_budget, 0.0f);
-        if (!log_buf.empty()) {
-            LOG(INFO) << temp.name << " power budget=" << total_power_budget << " after " << log_buf
-                      << " is excluded";
-        }
-    }
 
     // Go through binded cdev, compute total cdev weight
     for (const auto &binded_cdev_info_pair :

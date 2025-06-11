@@ -24,7 +24,7 @@ namespace thermal {
 namespace implementation {
 
 using ::android::base::boot_clock;
-constexpr int kToleranceIntervalMs = 1000;
+constexpr int kToleranceIntervalMs = 3750;
 
 struct PredictionSample {
     PredictionSample(int num_out_samples) {

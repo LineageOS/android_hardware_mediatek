@@ -39,7 +39,7 @@ bool getTypeFromString(std::string_view str, T *out) {
 
 float getFloatFromValue(const Json::Value &value) {
     if (value.isString()) {
-        return std::stof(value.asString());
+        return std::atof(value.asString().c_str());
     } else {
         return value.asFloat();
     }
@@ -257,6 +257,15 @@ bool ParseThermalConfig(std::string_view config_path, Json::Value *config,
         MergeConfigEntries(config, &sub_config, "Sensors");
         MergeConfigEntries(config, &sub_config, "CoolingDevices");
         MergeConfigEntries(config, &sub_config, "PowerRails");
+
+        if (!sub_config["Stats"].empty()) {
+            if ((*config)["Stats"].empty()) {
+                (*config)["Stats"] = sub_config["Stats"];
+            } else {
+                MergeConfigEntries(&(*config)["Stats"]["Sensors"], &sub_config["Stats"]["Sensors"],
+                                   "RecordWithThreshold");
+            }
+        }
     }
 
     return true;
@@ -689,10 +698,17 @@ bool ParseBindedCdevInfo(
         const Json::Value &values,
         std::unordered_map<std::string, BindedCdevInfo> *binded_cdev_info_map,
         const bool support_pid, bool *support_hard_limit,
-        const std::unordered_map<std::string, std::vector<int>> &scaling_frequency_map) {
+        const std::unordered_map<std::string, std::vector<int>> &scaling_frequency_map,
+        const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_) {
     for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
         Json::Value sub_values;
         const std::string &cdev_name = values[j]["CdevRequest"].asString();
+
+        if (cooling_device_info_map_.find(cdev_name) == cooling_device_info_map_.end()) {
+            LOG(ERROR) << "Binded cdev " << cdev_name << " is not defined in cooling devices";
+            return false;
+        }
+
         ThrottlingArray cdev_weight_for_pid;
         cdev_weight_for_pid.fill(NAN);
         CdevArray cdev_ceiling;
@@ -924,7 +940,8 @@ bool ParseBindedCdevInfo(
 bool ParseSensorThrottlingInfo(
         const std::string_view name, const Json::Value &sensor, bool *support_throttling,
         std::shared_ptr<ThrottlingInfo> *throttling_info,
-        const std::unordered_map<std::string, std::vector<int>> &scaling_frequency_map) {
+        const std::unordered_map<std::string, std::vector<int>> &scaling_frequency_map,
+        const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_) {
     std::array<float, kThrottlingSeverityCount> k_po;
     k_po.fill(0.0);
     std::array<float, kThrottlingSeverityCount> k_pu;
@@ -1079,7 +1096,8 @@ bool ParseSensorThrottlingInfo(
     // Parse binded cooling device
     std::unordered_map<std::string, BindedCdevInfo> binded_cdev_info_map;
     if (!ParseBindedCdevInfo(sensor["BindedCdevInfo"], &binded_cdev_info_map, support_pid,
-                             &support_hard_limit, scaling_frequency_map)) {
+                             &support_hard_limit, scaling_frequency_map,
+                             cooling_device_info_map_)) {
         LOG(ERROR) << "Sensor[" << name << "]: failed to parse BindedCdevInfo";
         return false;
     }
@@ -1092,7 +1110,8 @@ bool ParseSensorThrottlingInfo(
         const std::string &mode = values[j]["Mode"].asString();
         std::unordered_map<std::string, BindedCdevInfo> binded_cdev_info_map_profile;
         if (!ParseBindedCdevInfo(values[j]["BindedCdevInfo"], &binded_cdev_info_map_profile,
-                                 support_pid, &support_hard_limit, scaling_frequency_map)) {
+                                 support_pid, &support_hard_limit, scaling_frequency_map,
+                                 cooling_device_info_map_)) {
             LOG(ERROR) << "Sensor[" << name << " failed to parse BindedCdevInfo profile";
         }
         // Check if the binded_cdev_info_map_profile is valid
@@ -1153,7 +1172,8 @@ bool ParseSensorThrottlingInfo(
 }
 
 bool ParseSensorInfo(const Json::Value &config,
-                     std::unordered_map<std::string, SensorInfo> *sensors_parsed) {
+                     std::unordered_map<std::string, SensorInfo> *sensors_parsed,
+                     const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_) {
     Json::Value sensors = config["Sensors"];
     Json::Value cdevs = config["CoolingDevices"];
     std::unordered_map<std::string, std::vector<int>> scaling_frequency_map;
@@ -1250,6 +1270,17 @@ bool ParseSensorInfo(const Json::Value &config,
         }
         LOG(INFO) << "Sensor[" << name << "]'s SendPowerHint: " << std::boolalpha << send_powerhint
                   << std::noboolalpha;
+
+        bool is_trip_point_ignorable = false;
+        if (sensors[i]["TripPointIgnorable"].empty() ||
+            !sensors[i]["TripPointIgnorable"].isBool()) {
+            LOG(INFO) << "Failed to read Sensor[" << name
+                      << "]'s TripPointIgnorable, set to 'false'";
+        } else if (sensors[i]["TripPointIgnorable"].asBool()) {
+            is_trip_point_ignorable = true;
+        }
+        LOG(INFO) << "Sensor[" << name << "]'s TripPointIgnorable: " << std::boolalpha
+                  << is_trip_point_ignorable << std::noboolalpha;
 
         bool is_hidden = false;
         if (sensors[i]["Hidden"].empty() || !sensors[i]["Hidden"].isBool()) {
@@ -1425,10 +1456,19 @@ bool ParseSensorInfo(const Json::Value &config,
             LOG(INFO) << "Sensor[" << name << "]'s TempPath: " << temp_path;
         }
 
-        std::string severity_reference;
-        if (!sensors[i]["SeverityReference"].empty()) {
-            severity_reference = sensors[i]["SeverityReference"].asString();
-            LOG(INFO) << "Sensor[" << name << "]'s SeverityReference: " << temp_path;
+        std::vector<std::string> severity_reference;
+
+        values = sensors[i]["SeverityReference"];
+        if (values.isString()) {
+            severity_reference.emplace_back(values.asString());
+            LOG(INFO) << "Sensor[" << name << "]'s SeverityReference:" << values.asString();
+        } else if (values.size()) {
+            severity_reference.reserve(values.size());
+            for (Json::Value::ArrayIndex j = 0; j < values.size(); ++j) {
+                severity_reference.emplace_back(values[j].asString());
+                LOG(INFO) << "Sensor[" << name << "]'s SeverityReference[" << j
+                          << "]: " << severity_reference[j];
+            }
         }
 
         float vr_threshold = NAN;
@@ -1507,7 +1547,7 @@ bool ParseSensorInfo(const Json::Value &config,
         bool support_throttling = false;  // support pid or hard limit
         std::shared_ptr<ThrottlingInfo> throttling_info;
         if (!ParseSensorThrottlingInfo(name, sensors[i], &support_throttling, &throttling_info,
-                                       scaling_frequency_map)) {
+                                       scaling_frequency_map, cooling_device_info_map_)) {
             LOG(ERROR) << "Sensor[" << name << "]: failed to parse throttling info";
             sensors_parsed->clear();
             return false;
@@ -1535,6 +1575,7 @@ bool ParseSensorInfo(const Json::Value &config,
                 .send_powerhint = send_powerhint,
                 .is_watch = is_watch,
                 .is_hidden = is_hidden,
+                .is_trip_point_ignorable = is_trip_point_ignorable,
                 .log_level = log_level,
                 .virtual_sensor_info = std::move(virtual_sensor_info),
                 .throttling_info = std::move(throttling_info),
@@ -1554,6 +1595,8 @@ bool ParseCoolingDevice(const Json::Value &config,
     std::unordered_set<std::string> cooling_devices_name_parsed;
 
     for (Json::Value::ArrayIndex i = 0; i < cooling_devices.size(); ++i) {
+        bool apply_powercap = false;
+        float multiplier = 1.0;
         const std::string &name = cooling_devices[i]["Name"].asString();
         LOG(INFO) << "CoolingDevice[" << i << "]'s Name: " << name;
         if (name.empty()) {
@@ -1566,6 +1609,22 @@ bool ParseCoolingDevice(const Json::Value &config,
             LOG(INFO) << "CoolingDevice[" << name << "] is disabled. Skipping parsing";
             continue;
         }
+
+        if (cooling_devices[i]["PowerCap"].asBool() && cooling_devices[i]["PowerCap"].isBool()) {
+            LOG(INFO) << "CoolingDevice[" << name << "] apply powercap";
+            apply_powercap = true;
+        }
+
+        if (!cooling_devices[i]["Multiplier"].empty()) {
+            multiplier = cooling_devices[i]["Multiplier"].asFloat();
+            if (multiplier <= 0) {
+                cooling_devices_parsed->clear();
+                LOG(INFO) << "CoolingDevice[" << name << "]'s Multiplier: " << multiplier
+                          << " is invalid";
+                return false;
+            }
+        }
+        LOG(INFO) << "CoolingDevice[" << name << "]'s Multiplier: " << multiplier;
 
         auto result = cooling_devices_name_parsed.insert(name.data());
         if (!result.second) {
@@ -1604,14 +1663,13 @@ bool ParseCoolingDevice(const Json::Value &config,
                       << " does not support State2Power in thermal config";
         }
 
-        const std::string &power_rail = cooling_devices[i]["PowerRail"].asString();
-        LOG(INFO) << "Cooling device power rail : " << power_rail;
-
         (*cooling_devices_parsed)[name] = {
                 .type = cooling_device_type,
                 .read_path = read_path,
                 .write_path = write_path,
                 .state2power = state2power,
+                .apply_powercap = apply_powercap,
+                .multiplier = multiplier,
         };
         ++total_parsed;
     }
@@ -1619,8 +1677,10 @@ bool ParseCoolingDevice(const Json::Value &config,
     return true;
 }
 
-bool ParsePowerRailInfo(const Json::Value &config,
-                        std::unordered_map<std::string, PowerRailInfo> *power_rails_parsed) {
+bool ParsePowerRailInfo(
+        const Json::Value &config,
+        std::unordered_map<std::string, PowerRailInfo> *power_rails_parsed,
+        std::unordered_map<std::string, std::vector<std::string>> *power_rail_switch_map) {
     Json::Value power_rails = config["PowerRails"];
     std::size_t total_parsed = 0;
     std::unordered_set<std::string> power_rails_name_parsed;
@@ -1724,6 +1784,15 @@ bool ParsePowerRailInfo(const Json::Value &config,
         } else {
             power_sample_delay =
                     std::chrono::milliseconds(getIntFromValue(power_rails[i]["PowerSampleDelay"]));
+        }
+
+        std::string trigger_sensor;
+        values = power_rails[i]["TriggerSensor"];
+        if (!values.empty()) {
+            if (values.isString()) {
+                (*power_rail_switch_map)[values.asString()].emplace_back(name);
+                LOG(INFO) << "Power rail[" << name << "]'s TriggerSensor: " << values.asString();
+            }
         }
 
         (*power_rails_parsed)[name] = {

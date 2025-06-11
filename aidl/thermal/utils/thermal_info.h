@@ -217,7 +217,7 @@ struct SensorInfo {
     ThrottlingArray hot_hysteresis;
     ThrottlingArray cold_hysteresis;
     std::string temp_path;
-    std::string severity_reference;
+    std::vector<std::string> severity_reference;
     std::string zone_name;
     float vr_threshold;
     float multiplier;
@@ -231,6 +231,7 @@ struct SensorInfo {
     bool send_powerhint;
     bool is_watch;
     bool is_hidden;
+    bool is_trip_point_ignorable;
     ThrottlingSeverity log_level;
     std::unique_ptr<VirtualSensorInfo> virtual_sensor_info;
     std::shared_ptr<ThrottlingInfo> throttling_info;
@@ -243,6 +244,8 @@ struct CdevInfo {
     std::string write_path;
     std::vector<float> state2power;
     int max_state;
+    bool apply_powercap;
+    float multiplier;
 };
 
 struct PowerRailInfo {
@@ -256,11 +259,14 @@ bool ParseThermalConfig(std::string_view config_path, Json::Value *config,
                         std::unordered_set<std::string> *loaded_config_paths);
 void MergeConfigEntries(Json::Value *config, Json::Value *sub_config, std::string_view member_name);
 bool ParseSensorInfo(const Json::Value &config,
-                     std::unordered_map<std::string, SensorInfo> *sensors_parsed);
+                     std::unordered_map<std::string, SensorInfo> *sensors_parsed,
+                     const std::unordered_map<std::string, CdevInfo> &cooling_device_info_map_);
 bool ParseCoolingDevice(const Json::Value &config,
                         std::unordered_map<std::string, CdevInfo> *cooling_device_parsed);
-bool ParsePowerRailInfo(const Json::Value &config,
-                        std::unordered_map<std::string, PowerRailInfo> *power_rail_parsed);
+bool ParsePowerRailInfo(
+        const Json::Value &config,
+        std::unordered_map<std::string, PowerRailInfo> *power_rail_parsed,
+        std::unordered_map<std::string, std::vector<std::string>> *power_rail_switch_map);
 bool ParseSensorStatsConfig(const Json::Value &config,
                             const std::unordered_map<std::string, SensorInfo> &sensor_info_map_,
                             StatsInfo<float> *sensor_stats_info_parsed,

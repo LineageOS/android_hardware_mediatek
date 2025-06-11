@@ -757,6 +757,21 @@ bool VirtualTempEstimator::ParseInputConfig(const Json::Value &input_config) {
             LOG(INFO) << "Parsed tflite model max_sample_interval: " << max_sample_interval_ms
                       << " for " << common_instance_->sensor_name;
         }
+
+        if (!input_config["ModelConfig"]["prev_samples_order"].empty()) {
+            // read prev_samples_order
+            size_t prev_samples_order = input_config["ModelConfig"]["prev_samples_order"].asUInt();
+
+            LOG(INFO) << "Parsed tflite model prev_samples_order: " << prev_samples_order << " for "
+                      << common_instance_->sensor_name;
+
+            if (prev_samples_order != common_instance_->prev_samples_order) {
+                LOG(ERROR) << "prev_samples_order from Model Config: " << prev_samples_order
+                           << " does not match thermal config prev_samples_order: "
+                           << common_instance_->prev_samples_order;
+                return false;
+            }
+        }
     }
 
     if (!input_config["InputData"].empty()) {
