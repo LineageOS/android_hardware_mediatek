@@ -201,6 +201,19 @@ typedef enum {
    */
   BT_VND_OP_A2DP_OFFLOAD_STOP,
 
+  /* [operation]
+  *      Stack call to the vendor module to set FW assert and trigger coredump for debug.
+  *  [input param]
+  *      a pointer to uint8_t type indicating the assert reason.
+  *  [return]
+  *      0          - default, don't care.
+  *      -1         - kernel driver not ready.
+  *      -EBUSY     - stack set FW assert failed.
+  *  [callback]
+  *      None.
+  */
+  BT_VND_OP_SET_FW_ASSERT,
+
 } bt_vendor_opcode_t;
 
 /** Power on/off control states */
