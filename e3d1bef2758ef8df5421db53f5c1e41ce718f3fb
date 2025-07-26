@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee2e0d1_48100e49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2025-07-26T22:31:12Z",
+      "side": 1,
+      "message": "Make sure you ran `clang-format` with Google\u0027s defaults (see `.clang-format` on the root)",
+      "revId": "e3d1bef2758ef8df5421db53f5c1e41ce718f3fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e820e0_de0bce81",
+        "filename": "wpa_supplicant_8_lib/Android.bp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2025-07-26T22:31:12Z",
+      "side": 1,
+      "message": "SPDX-FileCopyrightText: The LineageOS Project (and remove the space below)",
+      "revId": "e3d1bef2758ef8df5421db53f5c1e41ce718f3fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a6bd07b_358baf81",
+        "filename": "wpa_supplicant_8_lib/mediatek_driver_cmd_nl80211.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2025-07-26T22:31:12Z",
+      "side": 1,
+      "message": "SPDX-FileCopyrightText: The LineageOS Project (and remove the space below)",
+      "revId": "e3d1bef2758ef8df5421db53f5c1e41ce718f3fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c393bed_3be53787",
+        "filename": "wpa_supplicant_8_lib/mediatek_driver_nl80211.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2025-07-26T22:31:12Z",
+      "side": 1,
+      "message": "SPDX-FileCopyrightText: The LineageOS Project (and remove the space below)",
+      "revId": "e3d1bef2758ef8df5421db53f5c1e41ce718f3fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
