@@ -22,6 +22,23 @@
       },
       "revId": "fdaa8049bc9ad82faf131d01eff42f3baf6c5147",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8674840_1ebfe188",
+        "filename": "wpa_supplicant_8_lib/mediatek_driver_cmd_nl80211.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1292,
+      "author": {
+        "id": 32222
+      },
+      "writtenOn": "2025-07-26T16:29:37Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem to be an actual command on AOSP wpa_supplicant. You should probably check the other ones as well.",
+      "revId": "fdaa8049bc9ad82faf131d01eff42f3baf6c5147",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
