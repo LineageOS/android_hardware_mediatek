@@ -24,6 +24,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6468da60_9e4c745d",
+        "filename": "wpa_supplicant_8_lib/mediatek_driver_cmd_nl80211.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 29578
+      },
+      "writtenOn": "2025-07-26T22:56:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a81ea3a7_2a018405",
+      "range": {
+        "startLine": 1174,
+        "startChar": 5,
+        "endLine": 1174,
+        "endChar": 6
+      },
+      "revId": "fdaa8049bc9ad82faf131d01eff42f3baf6c5147",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8674840_1ebfe188",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-07-26T16:29:37Z",
       "side": 1,
       "message": "This doesn\u0027t seem to be an actual command on AOSP wpa_supplicant. You should probably check the other ones as well.",
+      "revId": "fdaa8049bc9ad82faf131d01eff42f3baf6c5147",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97133932_c2f21062",
+        "filename": "wpa_supplicant_8_lib/mediatek_driver_cmd_nl80211.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1292,
+      "author": {
+        "id": 29578
+      },
+      "writtenOn": "2025-07-26T22:56:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8674840_1ebfe188",
       "revId": "fdaa8049bc9ad82faf131d01eff42f3baf6c5147",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
