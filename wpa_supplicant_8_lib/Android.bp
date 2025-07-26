@@ -1,0 +1,37 @@
+//
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_static {
+name:
+    "lib_driver_cmd_mt66xx",
+    vendor: true,
+    owner: "mtk",
+    sanitize: {
+        cfi: true,
+    },
+    cflags: [
+        "-DCONFIG_ANDROID_LOG",
+    ],
+    arch: {
+        arm: {
+            cflags: ["-mabi=aapcs-linux"],
+        },
+    },
+    srcs: ["mediatek_driver_cmd_nl80211.c"],
+    shared_libs: [
+        "libc",
+        "libcutils",
+    ],
+    include_dirs: [
+        "external/wpa_supplicant_8/src",
+        "external/wpa_supplicant_8/src/common",
+        "external/wpa_supplicant_8/src/drivers",
+        "external/wpa_supplicant_8/src/l2_packet",
+        "external/wpa_supplicant_8/src/utils",
+        "external/wpa_supplicant_8/src/wps",
+        "external/wpa_supplicant_8/wpa_supplicant",
+        "external/libnl/include",
+    ],
+}
