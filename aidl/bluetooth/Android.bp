@@ -58,28 +58,6 @@ cc_binary {
     ],
 }
 
-cc_fuzz {
-    name: "android.hardware.bluetooth-service.default.mediatek_fuzzer",
-    host_supported: true,
-    defaults: ["service_fuzzer_defaults"],
-    srcs: [
-        "test/fuzzer.cpp",
-    ],
-    static_libs: [
-        "android.hardware.bluetooth.async",
-        "android.hardware.bluetooth.hci",
-        "android.hardware.bluetooth-V1-ndk",
-        "libbluetoothhcihalimplmediatek",
-        "liblog",
-    ],
-    fuzz_config: {
-        componentid: 27441,
-        cc: [
-            "mylesgw@google.com",
-        ],
-    },
-}
-
 filegroup {
     name: "manifest_android.hardware.bluetooth-service.mediatek.xml",
     srcs: ["bluetooth-service-mediatek.xml"],
