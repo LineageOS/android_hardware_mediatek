@@ -17,7 +17,7 @@
 
 #include "vendor_interface.h"
 
-#define LOG_TAG "android.hardware.bluetooth.service.default"
+#define LOG_TAG "android.hardware.bluetooth.service.mediatek"
 #include <cutils/properties.h>
 #include <dlfcn.h>
 #include <fcntl.h>

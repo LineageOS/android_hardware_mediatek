@@ -3,7 +3,7 @@ package {
 }
 
 cc_defaults {
-    name: "android.hardware.bluetooth-service-build-defaults.nxp",
+    name: "android.hardware.bluetooth-service-build-defaults.mediatek",
     cflags: [
         "-Wall",
         "-Wextra",
@@ -24,10 +24,10 @@ cc_defaults {
 }
 
 cc_library_static {
-    name: "libbluetoothhcihalimplnxp",
+    name: "libbluetoothhcihalimplmediatek",
     vendor_available: true,
     host_supported: true,
-    defaults: ["android.hardware.bluetooth-service-build-defaults.nxp"],
+    defaults: ["android.hardware.bluetooth-service-build-defaults.mediatek"],
     srcs: [
         "BluetoothHci.cpp",
         "vendor_interface.cc",
@@ -36,12 +36,12 @@ cc_library_static {
 }
 
 cc_binary {
-    name: "android.hardware.bluetooth-service.default.nxp",
+    name: "android.hardware.bluetooth-service.mediatek",
     relative_install_path: "hw",
-    init_rc: ["bluetooth-service-default-nxp.rc"],
-    vintf_fragments: [":manifest_android.hardware.bluetooth-service.default.nxp.xml"],
+    init_rc: ["bluetooth-service-mediatek.rc"],
+    vintf_fragments: [":manifest_android.hardware.bluetooth-service.mediatek.xml"],
     vendor: true,
-    defaults: ["android.hardware.bluetooth-service-build-defaults.nxp"],
+    defaults: ["android.hardware.bluetooth-service-build-defaults.mediatek"],
     srcs: [
         "service.cpp",
     ],
@@ -54,12 +54,12 @@ cc_binary {
         "liblog",
     ],
     static_libs: [
-        "libbluetoothhcihalimplnxp",
+        "libbluetoothhcihalimplmediatek",
     ],
 }
 
 cc_fuzz {
-    name: "android.hardware.bluetooth-service.default.nxp_fuzzer",
+    name: "android.hardware.bluetooth-service.default.mediatek_fuzzer",
     host_supported: true,
     defaults: ["service_fuzzer_defaults"],
     srcs: [
@@ -69,7 +69,7 @@ cc_fuzz {
         "android.hardware.bluetooth.async",
         "android.hardware.bluetooth.hci",
         "android.hardware.bluetooth-V1-ndk",
-        "libbluetoothhcihalimplnxp",
+        "libbluetoothhcihalimplmediatek",
         "liblog",
     ],
     fuzz_config: {
@@ -81,6 +81,6 @@ cc_fuzz {
 }
 
 filegroup {
-    name: "manifest_android.hardware.bluetooth-service.default.nxp.xml",
-    srcs: ["bluetooth-service-default-nxp.xml"],
+    name: "manifest_android.hardware.bluetooth-service.mediatek.xml",
+    srcs: ["bluetooth-service-mediatek.xml"],
 }
