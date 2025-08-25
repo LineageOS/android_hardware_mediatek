@@ -36,7 +36,7 @@ public class PreferenceActivity extends CollapsingToolbarBaseActivity {
             MainSwitchPreference toggle = (MainSwitchPreference)
                     findPreference(BesLoudnessManager.KEY_BESLOUDNESS);
             assert toggle != null;
-            toggle.updateStatus(BesLoudnessManager.get(getContext()));
+            toggle.setChecked(BesLoudnessManager.get(getContext()));
             toggle.addOnSwitchChangeListener(this);
         }
 
