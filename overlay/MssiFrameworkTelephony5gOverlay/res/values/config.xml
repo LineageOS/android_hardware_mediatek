@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Whether the device enable the standalone (SA) mode of 5G NR.-->
+    <bool name="config_telephony5gStandalone">true</bool>
+
+    <!-- Whether the device enable the non-standalone (NSA) mode of 5G NR.-->
+    <bool name="config_telephony5gNonStandalone">true</bool>
+</resources>

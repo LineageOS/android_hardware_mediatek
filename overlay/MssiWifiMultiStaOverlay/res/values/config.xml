@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Wifi driver supports IEEE80211AX for softap -->
+    <bool translatable="false" name="config_wifiSoftapIeee80211axSupported">true</bool>
+
+    <!-- Enable Make-Before-Break Wifi network switching.
+         Note: this is conditional on the device supporting dual concurrent STAs. -->
+    <bool translatable="false" name="config_wifiMultiStaNetworkSwitchingMakeBeforeBreakEnabled">true</bool>
+
+    <!-- Enable concurrent peer to peer + internet connectivity
+         Note: this is conditional on the device supporting dual concurrent STAs. -->
+    <bool translatable="false" name="config_wifiMultiStaLocalOnlyConcurrencyEnabled">true</bool>
+
+    <!-- Enable concurrent restricted connectivity + internet connectivity
+         Note: this is conditional on the device supporting dual concurrent STAs. -->
+    <bool translatable="false" name="config_wifiMultiStaRestrictedConcurrencyEnabled">true</bool>
+
+    <!-- Enable concurrent internet connectivity + internet connectivity
+         Note: this is conditional on the device supporting dual concurrent STAs. -->
+    <bool translatable="false" name="config_wifiMultiStaMultiInternetConcurrencyEnabled">true</bool>
+</resources>

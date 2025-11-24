@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Configure tcp buffer sizes per network type in the form:
+         network-type:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
+
+         The network-type must be a valid DataConfigNetworkType value. If no value is found for the
+         network-type in use, config_tcp_buffers will be used instead.
+    -->
+    <string-array name="config_network_type_tcp_buffers">
+        <item>"GPRS:4092,8760,48000,4096,8760,48000"</item>
+        <item>"EDGE:4093,26280,70800,4096,16384,70800"</item>
+        <item>"UMTS:58254,349525,1048576,58254,349525,1048576"</item>
+        <item>"CDMA:4094,87380,262144,4096,16384,262144"</item>
+        <item>"1xRTT:16384,32768,131072,4096,16384,102400"</item>
+        <item>"EvDo_0:4094,87380,262144,4096,16384,262144"</item>
+        <item>"EvDo_A:4094,87380,262144,4096,16384,262144"</item>
+        <item>"HSDPA:61167,367002,1101005,8738,52429,262114"</item>
+        <item>"HSUPA:40778,244668,734003,16777,100663,301990"</item>
+        <item>"HSPA:40778,244668,734003,16777,100663,301990"</item>
+        <item>"EvDo_B:4094,87380,262144,4096,16384,262144"</item>
+        <item>"eHRPD:131072,262144,1048576,4096,16384,524288"</item>
+        <item>"iDEN:4094,87380,262144,4096,16384,262144"</item>
+        <item>"LTE:2097152,4194304,8388608,262144,524288,2097152"</item>
+        <item>"HSPA+:122334,734003,2202010,32040,192239,576717"</item>
+        <item>"GSM:4092,8760,48000,4096,8760,48000"</item>
+        <item>"TD_SCDMA:58254,349525,1048576,58254,349525,1048576"</item>
+        <item>"LTE_CA:4096,6291456,12582912,4096,1048576,2097152"</item>
+        <item>"NR_NSA:2097152,6291456,16777216,512000,2097152,8388608"</item>
+        <item>"NR_NSA_MMWAVE:2097152,6291456,16777216,512000,2097152,8388608"</item>
+        <item>"NR_SA:2097152,6291456,16777216,512000,2097152,8388608"</item>
+        <item>"NR_SA_MMWAVE:2097152,6291456,16777216,512000,2097152,8388608"</item>
+    </string-array>
+
+    <!-- IWLAN data service class name to bind to by default. If none is specified in an overlay, an
+         empty string is passed in -->
+    <string name="config_wlan_data_service_class" translatable="false">com.mediatek.internal.telephony.data.IwlanDataService</string>
+
+    <!-- IWLAN network service class name to bind to by default. If none is specified in an overlay,
+         an empty string is passed in -->
+    <string name="config_wlan_network_service_class" translatable="false">com.mediatek.internal.telephony.IWlanNetworkService</string>
+</resources>
