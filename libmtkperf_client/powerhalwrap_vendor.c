@@ -64,3 +64,7 @@ int PowerHal_Wrap_setSysInfoAsync(int type, const char* data) {
 int PowerHal_Wrap_EnableMultiDisplayMode(int enable, int fps) {
     return 0;
 }
+
+int PowerHal_Wrap_EnableCameraMode(int enable, int param) {
+    return 0;
+}
