@@ -20,6 +20,7 @@
 #include <hidl/LegacySupport.h>
 #include <hwbinder/ProcessState.h>
 
+#include "MtkAudio.h"
 #include "SoundTriggerHw.h"
 
 using namespace android::hardware;
@@ -28,6 +29,7 @@ using android::OK;
 using InterfacesList = std::vector<std::string>;
 
 using ::aidl::android::hardware::soundtrigger3::SoundTriggerHw;
+using ::aidl::vendor::mediatek::hardware::audio::MtkAudio;
 
 /** Try to register the provided factories in the provided order.
  *  If any registers successfully, do not register any other and return true.
@@ -132,6 +134,12 @@ int main(int /* argc */, char* /* argv */[]) {
     binder_status_t soundTriggerHw_status = AServiceManager_addService(
             mtkSoundTriggerHw->asBinder().get(), soundTriggerHw_instance.c_str());
     CHECK_EQ(soundTriggerHw_status, STATUS_OK);
+
+    std::shared_ptr<MtkAudio> mtkAudio = ndk::SharedRefBase::make<MtkAudio>();
+    const std::string instance = std::string() + MtkAudio::descriptor + "/default";
+    binder_status_t mtkAudio_status =
+            AServiceManager_addService(mtkAudio->asBinder().get(), instance.c_str());
+    CHECK_EQ(mtkAudio_status, STATUS_OK);
 
     joinRpcThreadpool();
 }
