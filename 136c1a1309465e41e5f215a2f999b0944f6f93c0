@@ -1,0 +1,354 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e061c361_786b5155",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "All this plus:\n- Please run through `lineage/scripts/dev/beautify_rro.py hardware/mediatek/overlay`\n\nIt will remove defaults and format and such.",
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce6e2534_1d373635",
+        "filename": "overlay/MssiFrameworkOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "Another case of this not being true to all targets.",
+      "range": {
+        "startLine": 8,
+        "startChar": 16,
+        "endLine": 8,
+        "endChar": 42
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c1185ce_326ae4fa",
+        "filename": "overlay/MssiFrameworkOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "Default in vendor/lineage",
+      "range": {
+        "startLine": 12,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acee1e6_152a3342",
+        "filename": "overlay/MssiFrameworkOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "This feels wrong.\n\nLike, not true for Q@5 even.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b5bf92_e558975d",
+        "filename": "overlay/MssiFrameworkOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "lineage leaves this to devices - because ATV\u0027s (Kirkwood is MTK even) shouldn\u0027t have it.",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "858c8f5f_0778e8a8",
+        "filename": "overlay/MssiFrameworkOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "Should only be the case if has 3.5mm... which isn\u0027t the case for all devices surely? Again, Kirkwood at minimum.",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 51
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ccc30c3_9f477411",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "True for /all/ MTK?",
+      "range": {
+        "startLine": 8,
+        "startChar": 16,
+        "endLine": 8,
+        "endChar": 37
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a338e18_4492413b",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "can we ensure that all MTK devices w/ telephony will support IMS on Lineage?",
+      "range": {
+        "startLine": 24,
+        "startChar": 16,
+        "endLine": 24,
+        "endChar": 45
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9fc242b_058264f5",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config_telephony.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "very little chance this is truly common?",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36a71557_0ed82aed",
+        "filename": "overlay/MssiNetworkStackOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "weird... why?",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 56
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe968aec_98dd0f50",
+        "filename": "overlay/MssiTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "default?",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 52
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca4530fd_14c85357",
+        "filename": "overlay/MssiWifi6gOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 19,
+        "startChar": 39,
+        "endLine": 19,
+        "endChar": 69
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfb7d337_52945aa9",
+        "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "same here?",
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed5c5c7_6b67da4a",
+        "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "why do we define channel lists?",
+      "range": {
+        "startLine": 30,
+        "startChar": 39,
+        "endLine": 30,
+        "endChar": 69
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b1c342f_827d3fb9",
+        "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "this is just platform UX changes, pls no - either vendor/lineage or nah",
+      "range": {
+        "startLine": 59,
+        "startChar": 37,
+        "endLine": 59,
+        "endChar": 95
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab75996_5f3f968f",
+        "filename": "overlay/mssi.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-27T22:30:43Z",
+      "side": 1,
+      "message": "tabs to spaces in whole makefile pls",
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
