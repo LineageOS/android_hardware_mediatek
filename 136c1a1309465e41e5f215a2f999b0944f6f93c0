@@ -602,6 +602,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eda9c9e_ec742b8f",
+        "filename": "overlay/MssiTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:38:10Z",
+      "side": 1,
+      "message": "k",
+      "parentUuid": "c2e6da76_e40408af",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 52
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca4530fd_14c85357",
@@ -663,6 +687,30 @@
       "side": 1,
       "message": "k",
       "parentUuid": "c2158098_cb46da74",
+      "range": {
+        "startLine": 19,
+        "startChar": 39,
+        "endLine": 19,
+        "endChar": 69
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f037c174_e2547dda",
+        "filename": "overlay/MssiWifi6gOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:38:10Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "63d5d39b_021701f0",
       "range": {
         "startLine": 19,
         "startChar": 39,
