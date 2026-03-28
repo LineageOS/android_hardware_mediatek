@@ -318,6 +318,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfbbed55_7aae2d55",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "6565153a_619d832e",
+      "range": {
+        "startLine": 8,
+        "startChar": 16,
+        "endLine": 8,
+        "endChar": 37
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a338e18_4492413b",
@@ -355,6 +379,30 @@
       "side": 1,
       "message": "Only samsung mtk wouldn\u0027t have a working ims in theory but they aren\u0027t unlockable nowadays, the rest can just use another device stack if their stack are broken since it\u0027s pretty much generic since Android 12 MSSI. Afaik the oldest IMS stack that ever worked on AOSP for MediaTek goes back to begonia with Android Pie.",
       "parentUuid": "0a338e18_4492413b",
+      "range": {
+        "startLine": 24,
+        "startChar": 16,
+        "endLine": 24,
+        "endChar": 45
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c13c14_c08e64a3",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "fef60a75_571a9dce",
       "range": {
         "startLine": 24,
         "startChar": 16,
@@ -412,6 +460,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d07dd152_6df2549d",
+        "filename": "overlay/MssiFrameworkTelephonyOverlay/res/values/config_telephony.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "f725a39d_edfaed7f",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36a71557_0ed82aed",
@@ -449,6 +521,30 @@
       "side": 1,
       "message": "MediaTek always ship this on vendor, not sure if we really need to keep it since it works fine without it",
       "parentUuid": "36a71557_0ed82aed",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 56
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35e956e9_00ff537d",
+        "filename": "overlay/MssiNetworkStackOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "I\u0027d drop it then. No need to deviate.",
+      "parentUuid": "7aed7995_103077a4",
       "range": {
         "startLine": 9,
         "startChar": 24,
@@ -555,6 +651,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63d5d39b_021701f0",
+        "filename": "overlay/MssiWifi6gOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "k",
+      "parentUuid": "c2158098_cb46da74",
+      "range": {
+        "startLine": 19,
+        "startChar": 39,
+        "endLine": 19,
+        "endChar": 69
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfb7d337_52945aa9",
         "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
         "patchSetId": 1
@@ -584,6 +704,24 @@
       "side": 1,
       "message": "Same asnwer as the 6g one",
       "parentUuid": "cfb7d337_52945aa9",
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e520aa42_1f6ea4e9",
+        "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "k",
+      "parentUuid": "c3fd2f39_d60b61a0",
       "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
@@ -625,6 +763,30 @@
       "side": 1,
       "message": "Same answer as the 6g one",
       "parentUuid": "1ed5c5c7_6b67da4a",
+      "range": {
+        "startLine": 30,
+        "startChar": 39,
+        "endLine": 30,
+        "endChar": 69
+      },
+      "revId": "136c1a1309465e41e5f215a2f999b0944f6f93c0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5101566b_b87c6aac",
+        "filename": "overlay/MssiWifiOverlay/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-28T01:37:12Z",
+      "side": 1,
+      "message": "k",
+      "parentUuid": "e832ba41_1d5e629e",
       "range": {
         "startLine": 30,
         "startChar": 39,
