@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Indicates that 11be mode is supported on this device
+           Note that if this flag is set to true, then 11be is assumed to be supported.
+           However, if it is left to the default value of false, the 11be support will
+           be checked via NL80211 interface -->
+    <bool name="config_wifi11beSupportOverride">true</bool>
+
+    <!-- Wifi driver supports IEEE80211BE for softap -->
+    <bool name="config_wifiSoftapIeee80211beSupported">true</bool>
+
+    <!-- Enable aggregation of Wifi link layer radio stats from all radios.
+         Defaults to false will fetch radio stats only from Radio 0. This is to avoid
+         incorrect behavior due to driver/firmware returning bogus radio stats from other radios.
+         Note: Full DBS capable devices interested in radio stats from all the radios can enable this
+         configuration. -->
+    <bool name="config_wifiLinkLayerAllRadiosStatsAggregationEnabled">true</bool>
+
+    <!-- integer indicating the maximum number of MLDs supported for multi-link operation (MLO)
+         SoftAp. Each multi-link device (AP MLD) can be operated with multiple links or single link.
+         It is required to configure it at least 1 for multiple links MLO SoftAp. Default value 0 is
+         treated as device does NOT support multiple links MLO SoftAp and the maximum
+         number of MLDs is decided by configuration, config_wifiSoftApSingleLinkMloInBridgedModeSupported.
+         (i.e. 2 when config_wifiSoftApSingleLinkMloInBridgedModeSupported is true and 1 when
+         config_wifiSoftApSingleLinkMloInBridgedModeSupported is false.)
+         -->
+    <integer name="config_wifiSoftApMaxNumberMLDSupported">2</integer>
+
+    <!-- (Deprecated) Wi-Fi chip supports single link MLO SoftAp instances in the bridged mode.
+         The value will be used only when config_wifiSoftApMaxNumberMLDSupported isn't configured -->
+    <bool name="config_wifiSoftApSingleLinkMloInBridgedModeSupported">true</bool>
+</resources>
