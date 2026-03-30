@@ -13,6 +13,7 @@
 #include <json/reader.h>
 #include <utils/Trace.h>
 
+#include <algorithm>
 #include <cmath>
 #include <sstream>
 #include <vector>
