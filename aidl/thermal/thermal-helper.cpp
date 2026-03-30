@@ -584,7 +584,20 @@ SensorReadStatus ThermalHelperImpl::readTemperature(std::string_view sensor_name
 
     if (ret == SensorReadStatus::UNDER_COLLECTING) {
         LOG(INFO) << "Thermal sensor " << sensor_name.data() << " is under collecting";
-        return SensorReadStatus::UNDER_COLLECTING;
+        const auto &sensor_info = sensor_info_map_.at(sensor_name.data());
+        if (sensor_info.virtual_sensor_info == nullptr ||
+            sensor_info.virtual_sensor_info->backup_sensor.empty()) {
+            return SensorReadStatus::UNDER_COLLECTING;
+        } else {
+            LOG(INFO) << "Data under collecting, using backup sensor: "
+                      << sensor_info.virtual_sensor_info->backup_sensor;
+            if (readThermalSensor(sensor_info.virtual_sensor_info->backup_sensor, &temp,
+                force_no_cache, &sensor_log_map) != SensorReadStatus::OKAY) {
+                LOG(INFO) << "Failed to read backup thermal sensor: "
+                           << sensor_info.virtual_sensor_info->backup_sensor;
+                return ret;
+            }
+        }
     }
 
     if (std::isnan(temp)) {
@@ -1709,7 +1722,11 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
             continue;
         }
 
-        std::pair<ThrottlingSeverity, ThrottlingSeverity> throttling_status;
+        if (!power_data_is_updated) {
+            power_files_.refreshPowerStatus();
+            power_data_is_updated = true;
+        }
+
         const auto ret = readTemperature(name_status_pair.first, &temp, force_no_cache);
         if (ret == SensorReadStatus::ERROR) {
             LOG(ERROR) << __func__
@@ -1740,11 +1757,6 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
                     }
                 }
             }
-        }
-
-        if (!power_data_is_updated) {
-            power_files_.refreshPowerStatus();
-            power_data_is_updated = true;
         }
 
         if (sensor_status.severity == ThrottlingSeverity::NONE) {
