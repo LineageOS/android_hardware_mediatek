@@ -16,6 +16,24 @@
       "message": "???? This is already in a retry loop...",
       "revId": "37411580f010438831f98d760bef336ef3b95603",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8421d5_18f5bd85",
+        "filename": "aidl/usb/Usb.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-03-30T00:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08d1f1f8_76941391",
+      "revId": "37411580f010438831f98d760bef336ef3b95603",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ],
   "submitRequirementResults": [
