@@ -346,7 +346,8 @@ float ThermalThrottling::updatePowerBudget(
                static_cast<int>(err / sensor_info.multiplier));
     ATRACE_INT((sensor_name + std::string("-p")).c_str(), static_cast<int>(p));
     ATRACE_INT((sensor_name + std::string("-d")).c_str(), static_cast<int>(d));
-    ATRACE_INT((sensor_name + std::string("-dt_per_min")).c_str(), static_cast<int>(dt_per_min));
+    ATRACE_INT((sensor_name + std::string("-dt(mdegC)_per_min")).c_str(),
+               static_cast<int>(dt_per_min * 1000));
     ATRACE_INT((sensor_name + std::string("-predict_compensation")).c_str(),
                static_cast<int>(compensation));
     ATRACE_INT((sensor_name + std::string("-excluded_power_budget")).c_str(),
