@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8281a867_b19e634a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-03-30T04:05:13Z",
+      "side": 1,
+      "message": "All VTS tests passed for VtsHalMemtrackTargetTest on Pacman (mali-r38p1), I would need someone to test on mali-r32p1 and on PVR too",
+      "revId": "bc6a27cd7db800385d2f17d8fd5408fc93dcbeca",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
