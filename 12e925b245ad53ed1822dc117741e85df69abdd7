@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67c6502_3fc3bc86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-04-25T18:38:02Z",
+      "side": 1,
+      "message": "Confirmed to works fine on MT6878 (Android U), MT6897 (Android U) and MT6899 (Android V)",
+      "revId": "12e925b245ad53ed1822dc117741e85df69abdd7",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
