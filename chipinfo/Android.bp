@@ -1,0 +1,11 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+sh_binary {
+    name: "chipinfo",
+    src: "chipinfo.sh",
+    init_rc: ["chipinfo.rc"],
+    vendor: true,
+}
