@@ -1,0 +1,82 @@
+//
+// SPDX-FileCopyrightText: 2022 The Android Open Source Project
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+package {
+    // See: http://go/android-license-faq
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+cc_defaults {
+    name: "android.hardware.boot-service_mediatek_common",
+    relative_install_path: "hw",
+    defaults: ["libboot_control_defaults"],
+    srcs: [
+        "main.cpp",
+        "BootControl.cpp",
+        "MtkBootRegionControl.cpp",
+        "emmc-bootpart.cpp",
+        "ufs-bsg.cpp",
+    ],
+}
+
+cc_binary {
+    name: "android.hardware.boot-service.mediatek",
+    defaults: ["android.hardware.boot-service_mediatek_common"],
+    init_rc: ["android.hardware.boot-service.mediatek.rc"],
+    vendor: true,
+
+    stl: "c++_static",
+    shared_libs: [
+        "libbinder_ndk",
+        "liblog",
+    ],
+    static_libs: [
+        "android.hardware.boot@1.1",
+        "android.hardware.boot-V1-ndk",
+        "libbase",
+        "libboot_control",
+    ],
+    header_libs: [
+        "device_kernel_headers"
+    ],
+
+    vintf_fragment_modules: [
+        "android.hardware.boot-service.mediatek.xml",
+    ],
+}
+
+cc_binary {
+    name: "android.hardware.boot-service.mediatek_recovery",
+    defaults: ["android.hardware.boot-service_mediatek_common"],
+    init_rc: ["android.hardware.boot-service.mediatek_recovery.rc"],
+    vintf_fragment_modules: ["android.hardware.boot-service.mediatek.xml.recovery"],
+    recovery: true,
+
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "android.hardware.boot@1.1",
+        "android.hardware.boot-V1-ndk",
+    ],
+    static_libs: [
+        "libboot_control",
+    ],
+    header_libs: [
+        "device_kernel_headers"
+    ],
+}
+
+vintf_fragment {
+    name: "android.hardware.boot-service.mediatek.xml.recovery",
+    src: "android.hardware.boot-service.mediatek.xml",
+    recovery: true,
+}
+
+vintf_fragment {
+    name: "android.hardware.boot-service.mediatek.xml",
+    src: "android.hardware.boot-service.mediatek.xml",
+    vendor: true,
+}
