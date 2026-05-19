@@ -1,8 +1,18 @@
 //
 // SPDX-FileCopyrightText: 2021 The Android Open Source Project
-// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-FileCopyrightText: 2024-2026 The LineageOS Project
 // SPDX-License-Identifier: Apache-2.0
 //
+
+soong_config_module_type {
+    name: "target_board_platform_prebuilt_etc",
+    module_type: "prebuilt_etc",
+    config_namespace: "ANDROID",
+    value_variables: ["target_board_platform"],
+    properties: [
+        "name",
+    ],
+}
 
 cc_binary {
     name: "android.hardware.usb.gadget-service.mediatek",
@@ -36,4 +46,18 @@ cc_binary {
     export_shared_lib_headers: [
         "android.frameworks.stats-V2-ndk",
     ],
+}
+
+target_board_platform_prebuilt_etc {
+    soong_config_variables: {
+        target_board_platform: {
+            name: "init.%s.usb.rc",
+            conditions_default: {
+                name: "init.mediatek.usb.rc",
+            },
+        },
+    },
+    src: "init.mediatek.usb.rc",
+    sub_dir: "init/hw",
+    vendor: true,
 }
