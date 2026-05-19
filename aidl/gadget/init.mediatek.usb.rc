@@ -2,7 +2,7 @@ on post-fs
     mkdir /dev/usb-ffs 0775 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mkdir /config/usb_gadget/g1 0770 shell shell
-    write /config/usb_gadget/g1/idVendor 0x0E8D
+    write /config/usb_gadget/g1/idVendor ${vendor.usb.vid:-0x0E8D}
     write /config/usb_gadget/g1/bcdDevice 0x0223
     write /config/usb_gadget/g1/bcdUSB 0x0200
     write /config/usb_gadget/g1/os_desc/use 1
@@ -382,7 +382,7 @@ on boot
     # for usb otg sdcard hot plug detection
     write /sys/module/block/parameters/events_dfl_poll_msecs 1000
 
-    setprop sys.usb.controller "11201000.usb0"
+    setprop sys.usb.controller ${vendor.usb.controller:-16751000.usb0}
 
     # Set permissions for USB service
     chown root system /sys/class/typec/port0/power_role
@@ -402,7 +402,7 @@ on charger
     mkdir /dev/usb-ffs 0775 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mkdir /config/usb_gadget/g1 0770 shell shell
-    write /config/usb_gadget/g1/idVendor 0x0E8D
+    write /config/usb_gadget/g1/idVendor ${vendor.usb.vid:-0x0E8D}
     write /config/usb_gadget/g1/bcdDevice 0x0223
     write /config/usb_gadget/g1/bcdUSB 0x0200
     write /config/usb_gadget/g1/os_desc/use 1
@@ -418,14 +418,14 @@ on charger
     write /config/usb_gadget/g1/os_desc/qw_sign "MSFT100"
     write /config/usb_gadget/g1/configs/b.1/MaxPower 500
     symlink /config/usb_gadget/g1/configs/b.1 /config/usb_gadget/g1/os_desc/b.1
-    setprop sys.usb.controller "11201000.usb0"
+    setprop sys.usb.controller ${vendor.usb.controller:-16751000.usb0}
     setprop sys.usb.configfs 1
 
 on property:ro.bootmode=charger
     setprop sys.usb.config midi
 
 on property:sys.usb.config=midi && property:sys.usb.configfs=1
-    write /config/usb_gadget/g1/idVendor 0x0E8D
+    write /config/usb_gadget/g1/idVendor ${vendor.usb.vid:-0x0E8D}
     write /config/usb_gadget/g1/idProduct 0x2046
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "midi"
     symlink /config/usb_gadget/g1/functions/midi.gs5 /config/usb_gadget/g1/configs/b.1/f1
@@ -433,4 +433,4 @@ on property:sys.usb.config=midi && property:sys.usb.configfs=1
     setprop sys.usb.state ${sys.usb.config}
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && property:sys.usb.configfs=1
-    write /config/usb_gadget/g1/idProduct 0x201C
+    write /config/usb_gadget/g1/idProduct ${vendor.usb.pid:-0x201C}
