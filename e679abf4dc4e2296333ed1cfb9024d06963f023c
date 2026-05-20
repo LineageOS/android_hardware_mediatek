@@ -16,6 +16,24 @@
       "message": "btw, what?",
       "revId": "e679abf4dc4e2296333ed1cfb9024d06963f023c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "341e5bdf_3037c874",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 2
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:56:51Z",
+      "side": 1,
+      "message": "MediaTek does that for KPOC (kernel power off charging binary), shouldn\u0027t be needed for AOSP on devices that has a working offline charging",
+      "parentUuid": "e2dd3489_dad99812",
+      "revId": "e679abf4dc4e2296333ed1cfb9024d06963f023c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
