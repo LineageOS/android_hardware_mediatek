@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "abaa5755_a0767d51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T17:55:12Z",
+      "side": 1,
+      "message": "I suppose we can (especially if we do a common makefile to inherit common parts like overlays, avb, bootctrl, etc). Tho we would need someone with a musb-hdcr device to be sure those low end platforms works fine with this since this is based over a mtu3 usb gadget init",
+      "parentUuid": "f94c61ea_520e8c43",
+      "revId": "e679abf4dc4e2296333ed1cfb9024d06963f023c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e2dd3489_dad99812",
         "filename": "aidl/gadget/init.mediatek.usb.rc",
         "patchSetId": 2
