@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f94c61ea_520e8c43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32222
+      },
+      "writtenOn": "2026-05-20T17:20:14Z",
+      "side": 1,
+      "message": "\u003e Values default to MT6993 platform, use the added properties to change any of those if needed.\n\nOkay, but maybe we could provide a Makefile to set the correct values based on TARGET_BOARD_PLATFORM?",
+      "revId": "e679abf4dc4e2296333ed1cfb9024d06963f023c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e2dd3489_dad99812",
         "filename": "aidl/gadget/init.mediatek.usb.rc",
         "patchSetId": 2
