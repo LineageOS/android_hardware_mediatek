@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b121397_7f8bfbfb",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dfba855_0d0fb4ad",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3316937a_c6be90dc",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-20T13:24:25Z",
       "side": 1,
       "message": "```suggestion\n    setprop sys.usb.controller ${vendor.usb.controller:-11201000.usb0}\n```",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdef4acd_b8c3a547",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3316937a_c6be90dc",
       "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
@@ -52,6 +88,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f00eeb0_e658f0b3",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23405c99_9e79b865",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b303939c_9c0a4cdc",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-05-20T13:24:25Z",
       "side": 1,
       "message": "```suggestion\n    setprop sys.usb.controller ${vendor.usb.controller:-11201000.usb0}\n```",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e6e5b5_f4e50d55",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b303939c_9c0a4cdc",
       "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
@@ -86,6 +158,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7c7edde_a3e47381",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b52623b0_99010c86",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75327b52_00ac456c",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-05-20T13:24:25Z",
       "side": 1,
       "message": "```suggestion\n    write /config/usb_gadget/g1/idProduct ${vendor.usb.pid:-0x201C}\n```",
+      "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "606262dd_66805740",
+        "filename": "aidl/gadget/init.mediatek.usb.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-05-20T14:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75327b52_00ac456c",
       "revId": "748e9a73c21d5b22e0120887a2f154d67ec69c38",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
