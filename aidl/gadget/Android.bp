@@ -8,9 +8,11 @@ soong_config_module_type {
     name: "target_board_platform_prebuilt_etc",
     module_type: "prebuilt_etc",
     config_namespace: "ANDROID",
+    bool_variables: ["use_custom_usb_gadget_rc"],
     value_variables: ["target_board_platform"],
     properties: [
         "name",
+        "enabled",
     ],
 }
 
@@ -54,6 +56,12 @@ target_board_platform_prebuilt_etc {
             name: "init.%s.usb.rc",
             conditions_default: {
                 name: "init.mediatek.usb.rc",
+            },
+        },
+        use_custom_usb_gadget_rc: {
+            enabled: false,
+            conditions_default: {
+                enabled: true,
             },
         },
     },
