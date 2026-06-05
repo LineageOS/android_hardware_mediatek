@@ -14,6 +14,8 @@ import android.util.Log;
 public class GainUtils {
     public static final String LOG_TAG = "MtkInCallService";
     public static final int volSteps = SystemProperties.getInt("ro.config.vc_call_vol_steps", 7);
+    public static final int musicVolSteps = SystemProperties.getInt("ro.config.media_vol_steps", 25);
+    public static final int musicGainEnabled = SystemProperties.getBoolean("ro.config.media_gain_enabled", false);
 
     /**
      * Sets the gain level for a given audio device.
@@ -28,6 +30,15 @@ public class GainUtils {
         AudioSystem.setParameters(parameters);
     }
 
+    public static void setMusicGainLevel(int gainIndex) {
+        String parameters = String.format("volumeDevice=%d;volumeIndex=%d;volumeStreamType=%d",
+                                          AudioDeviceInfo.TYPE_BUILTIN_SPEAKER,
+                                          Math.min(musicVolSteps, gainIndex),
+                                          AudioSystem.STREAM_MUSIC);
+        Log.d(LOG_TAG, "Setting music gain parameters: " + parameters);
+        AudioSystem.setParameters(parameters);
+    }
+
     /**
      * Sets the gain level for built-in earpiece and bluetooth SCO devices.
      * @param gainIndex The gain level to set.
@@ -35,5 +46,12 @@ public class GainUtils {
     public static void setGainLevel(int gainIndex) {
         GainUtils.setGainLevel(AudioDeviceInfo.TYPE_BUILTIN_EARPIECE, gainIndex, AudioSystem.STREAM_VOICE_CALL);
         GainUtils.setGainLevel(AudioDeviceInfo.TYPE_BLUETOOTH_SCO, gainIndex, AudioSystem.STREAM_VOICE_CALL);
+    }
+
+   /**
+    * Gets the property to enable music stream gain level.
+    */
+    public static void getMusicGainEnabled() {
+        return musicGainEnabled;
     }
 }
