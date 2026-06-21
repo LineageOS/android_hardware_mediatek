@@ -72,6 +72,7 @@ PRODUCT_VENDOR_PROPERTIES += \
     persist.log.tag.MAPI-SocketListener=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.MAPI-TranslatorManager=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.MDM-Subscriber=$(VENDOR_LOG_LEVEL) \
+    persist.log.tag.MDP=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.mipc_lib=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.MipcEventHandler=$(VENDOR_LOG_LEVEL) \
     persist.log.tag.MTK_APPList=$(VENDOR_LOG_LEVEL) \
