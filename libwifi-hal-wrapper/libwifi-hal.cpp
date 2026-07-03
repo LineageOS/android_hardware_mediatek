@@ -84,8 +84,20 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     SET_IF_NOT_NULL(fn, fln, wifi_clear_link_stats);
     SET_IF_NOT_NULL(fn, fln, wifi_get_valid_channels);
     SET_IF_NOT_NULL(fn, fln, wifi_rtt_range_request);
+#ifndef USE_PRE_U_QPR2_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_rtt_range_request_v3);
+#ifndef USE_PRE_BAKLAVA_QPR0_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_rtt_range_request_v4);
+#endif
+#endif
     SET_IF_NOT_NULL(fn, fln, wifi_rtt_range_cancel);
     SET_IF_NOT_NULL(fn, fln, wifi_get_rtt_capabilities);
+#ifndef USE_PRE_U_QPR2_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_get_rtt_capabilities_v3);
+#ifndef USE_PRE_BAKLAVA_QPR0_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_get_rtt_capabilities_v4);
+#endif
+#endif
     SET_IF_NOT_NULL(fn, fln, wifi_rtt_get_responder_info);
     SET_IF_NOT_NULL(fn, fln, wifi_enable_responder);
     SET_IF_NOT_NULL(fn, fln, wifi_disable_responder);
@@ -140,12 +152,7 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     SET_IF_NOT_NULL(fn, fln, wifi_nan_data_interface_delete);
     SET_IF_NOT_NULL(fn, fln, wifi_nan_data_request_initiator);
     SET_IF_NOT_NULL(fn, fln, wifi_nan_data_indication_response);
-    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_request);
-    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_indication_response);
-    SET_IF_NOT_NULL(fn, fln, wifi_nan_bootstrapping_request);
-    SET_IF_NOT_NULL(fn, fln, wifi_nan_bootstrapping_indication_response);
     SET_IF_NOT_NULL(fn, fln, wifi_nan_data_end);
-    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_end);
     SET_IF_NOT_NULL(fn, fln, wifi_get_packet_filter_capabilities);
     SET_IF_NOT_NULL(fn, fln, wifi_set_packet_filter);
     SET_IF_NOT_NULL(fn, fln, wifi_read_packet_filter);
@@ -169,6 +176,16 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     SET_IF_NOT_NULL(fn, fln, wifi_multi_sta_set_use_case);
     SET_IF_NOT_NULL(fn, fln, wifi_set_coex_unsafe_channels);
     SET_IF_NOT_NULL(fn, fln, wifi_set_voip_mode);
+#ifndef USE_PRE_U_QPR2_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_get_capabilities);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_register_events);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_setup);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_update);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_suspend);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_resume);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_teardown);
+    SET_IF_NOT_NULL(fn, fln, wifi_twt_session_get_stats);
+#endif
     SET_IF_NOT_NULL(fn, fln, wifi_twt_register_handler);
     SET_IF_NOT_NULL(fn, fln, wifi_twt_get_capability);
     SET_IF_NOT_NULL(fn, fln, wifi_twt_setup_request);
@@ -187,12 +204,20 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     SET_IF_NOT_NULL(fn, fln, wifi_enable_tx_power_limits);
     SET_IF_NOT_NULL(fn, fln, wifi_get_cached_scan_results);
     SET_IF_NOT_NULL(fn, fln, wifi_get_chip_capabilities);
+    SET_IF_NOT_NULL(fn, fln, wifi_get_supported_iface_concurrency_matrix);
     SET_IF_NOT_NULL(fn, fln, wifi_enable_sta_channel_for_peer_network);
     SET_IF_NOT_NULL(fn, fln, wifi_nan_suspend_request);
     SET_IF_NOT_NULL(fn, fln, wifi_nan_resume_request);
+    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_request);
+    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_indication_response);
+    SET_IF_NOT_NULL(fn, fln, wifi_nan_bootstrapping_request);
+    SET_IF_NOT_NULL(fn, fln, wifi_nan_bootstrapping_indication_response);
     SET_IF_NOT_NULL(fn, fln, wifi_set_scan_mode);
+    SET_IF_NOT_NULL(fn, fln, wifi_nan_pairing_end);
     SET_IF_NOT_NULL(fn, fln, wifi_set_mlo_mode);
-    SET_IF_NOT_NULL(fn, fln, wifi_get_supported_iface_concurrency_matrix);
+#ifndef USE_PRE_U_QPR2_STRUCT
+    SET_IF_NOT_NULL(fn, fln, wifi_virtual_interface_create_with_vendor_data);
+#endif
 
 out:
     return ret;
