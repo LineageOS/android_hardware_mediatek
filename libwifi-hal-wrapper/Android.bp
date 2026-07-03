@@ -19,6 +19,13 @@ cc_library_shared {
         "liblog",
         "wifi_legacy",
     ],
+    cflags: select(soong_config_variable("mediatek_wifi_hal", "use_pre_u_qpr2_struct"), {
+        false: ["-DUSE_PRE_U_QPR2_STRUCT"],
+        default: [],
+    }) + select(soong_config_variable("mediatek_wifi_hal", "use_pre_baklava_qpr0_struct"), {
+        false: ["-DUSE_PRE_BAKLAVA_QPR0_STRUCT"],
+        default: [],
+    }),
 }
 
 prebuilt_etc {
