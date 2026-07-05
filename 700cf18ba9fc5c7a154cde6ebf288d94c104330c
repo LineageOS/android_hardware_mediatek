@@ -16,6 +16,23 @@
       "message": "Verified on Nothing Phone (2a) and (2a) Plus with prebuilt wifi HAL from MGVI Android 15",
       "revId": "700cf18ba9fc5c7a154cde6ebf288d94c104330c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee46c022_02f303e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-07-05T23:11:49Z",
+      "side": 1,
+      "message": "@me@r0rt1z2.com could you also test on lamu too ?",
+      "revId": "700cf18ba9fc5c7a154cde6ebf288d94c104330c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
