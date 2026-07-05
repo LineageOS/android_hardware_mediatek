@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f52aa63_3544b5b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-07-05T23:10:04Z",
+      "side": 1,
+      "message": "Verified on Nothing Phone (2a) and (2a) Plus with prebuilt wifi HAL from MGVI Android 15",
+      "revId": "700cf18ba9fc5c7a154cde6ebf288d94c104330c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
