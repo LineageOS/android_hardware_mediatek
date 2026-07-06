@@ -33,6 +33,24 @@
       "message": "@me@r0rt1z2.com could you also test on lamu too ?",
       "revId": "700cf18ba9fc5c7a154cde6ebf288d94c104330c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7432aff8_f22724dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32620
+      },
+      "writtenOn": "2026-07-06T16:16:48Z",
+      "side": 1,
+      "message": "Just tried it. I\u0027m able to use the prebuilt Wi-Fi HAL with this change. I wasn\u0027t able to before, so it fixed the issue for me.",
+      "parentUuid": "ee46c022_02f303e6",
+      "revId": "700cf18ba9fc5c7a154cde6ebf288d94c104330c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
