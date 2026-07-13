@@ -16,6 +16,23 @@
       "message": "We got engineering mode on Xaga I wanted to upstream the definition",
       "revId": "0f7e7f71122d329afd0239a529fdbefd900ce4e6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a0a15ff_e8fa3cf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-07-13T16:25:33Z",
+      "side": 1,
+      "message": "Not a fan of this considering that mtk engineering mode can do irremediable damage to critical components, such as modem, nvram, nvcfg. Especially when users don\u0027t know what they are doing",
+      "revId": "0f7e7f71122d329afd0239a529fdbefd900ce4e6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
