@@ -33,6 +33,24 @@
       "message": "Not a fan of this considering that mtk engineering mode can do irremediable damage to critical components, such as modem, nvram, nvcfg. Especially when users don\u0027t know what they are doing",
       "revId": "0f7e7f71122d329afd0239a529fdbefd900ce4e6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a513a1cb_2b4712db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 36983
+      },
+      "writtenOn": "2026-07-13T17:26:53Z",
+      "side": 1,
+      "message": "Oh ok, I never thought that",
+      "parentUuid": "9a0a15ff_e8fa3cf4",
+      "revId": "0f7e7f71122d329afd0239a529fdbefd900ce4e6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ],
   "submitRequirementResults": [
