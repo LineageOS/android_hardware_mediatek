@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "924fe435_9db03c77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 36983
+      },
+      "writtenOn": "2026-07-13T07:22:11Z",
+      "side": 1,
+      "message": "We got engineering mode on Xaga I wanted to upstream the definition",
+      "revId": "0f7e7f71122d329afd0239a529fdbefd900ce4e6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
