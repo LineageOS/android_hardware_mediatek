@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d3f6a4e_58fdf24c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-07-16T17:50:50Z",
+      "side": 1,
+      "message": "In which case this logtag spams ? And does it spam also on whatever stock rom you have",
+      "revId": "7d762045ff73901bef9db963e49cf72973152855",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
