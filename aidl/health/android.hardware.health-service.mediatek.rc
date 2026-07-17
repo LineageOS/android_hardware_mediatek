@@ -9,7 +9,7 @@ service vendor.charger /vendor/bin/hw/android.hardware.health-service.mediatek -
     class charger
     seclabel u:r:charger_vendor:s0
     user system
-    group system wakelock input
+    group system graphics wakelock input
     capabilities SYS_BOOT
     file /dev/kmsg w
     file /sys/fs/pstore/console-ramoops-0 r
