@@ -1,4 +1,4 @@
-on post-fs
+on boot
     start create_pl_dev
 
     wait /dev/block/mapper/preloader_raw_a
