@@ -551,6 +551,13 @@
         </interface>
     </hal>
     <hal format="aidl">
+        <name>vendor.mediatek.hardware.neuropilot.neuronservice</name>
+        <interface>
+            <name>INeuronService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl">
         <name>vendor.mediatek.hardware.nps.nos.fastswitch</name>
         <interface>
             <name>INativeFastSwitch</name>
