@@ -185,6 +185,13 @@
             <instance>default</instance>
         </interface>
     </hal>
+    <hal format="aidl">
+        <name>vendor.mediatek.hardware.apuware.aiste</name>
+        <interface>
+            <name>IAisteService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
     <hal format="hidl">
         <name>vendor.mediatek.hardware.apuware.apusys</name>
         <version>1.0</version>
