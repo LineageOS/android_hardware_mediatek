@@ -1,0 +1,17 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_binary {
+    name: "wlan_assistant",
+    srcs: ["main.cpp"],
+    shared_libs: [
+        "libbase",
+        "libcutils",
+        "liblog",
+    ],
+
+    vendor: true,
+    init_rc: ["wlan_assistant.rc"],
+}
