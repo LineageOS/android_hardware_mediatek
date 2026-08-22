@@ -34,6 +34,24 @@
       "parentUuid": "34227869_ab6afd16",
       "revId": "880fd2f12eb8b6474163f542966430a519ba8a8c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e94f7b6_fd45cd57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-08-22T01:15:58Z",
+      "side": 1,
+      "message": "Well, after further check, aee_dump_cooler and aee_dump are directly defined on the concerned thermal_core binaries. aee_modem_warning however was still missing from this lib, as the only way to verify AEE in mtkfusionrild would be to trigger a modem error.",
+      "parentUuid": "dedca8fe_726348cb",
+      "revId": "880fd2f12eb8b6474163f542966430a519ba8a8c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
