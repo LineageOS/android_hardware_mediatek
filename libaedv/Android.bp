@@ -8,3 +8,9 @@ cc_library_shared {
     vendor: true,
     srcs: ["aee.c"],
 }
+
+cc_library_shared {
+    name: "libladder",
+    vendor: true,
+    srcs: ["libladder.cpp"],
+}
