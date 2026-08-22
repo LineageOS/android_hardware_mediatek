@@ -16,6 +16,24 @@
       "message": "aee_dump_cooler, aee_dump (present on some thermal_core binaries) and aee_modem_warning (present on mtkfusionrild dependencies) functions might be needed too, on hold until it\u0027s verified on other devices",
       "revId": "880fd2f12eb8b6474163f542966430a519ba8a8c",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dedca8fe_726348cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37785
+      },
+      "writtenOn": "2026-08-22T01:03:57Z",
+      "side": 1,
+      "message": "As far as i am aware, it\u0027s been tested on the following devices Xiaomi: fleur, sea, xaga, rodin, beryl, tanzanite and gold  Motorola: cancunf, nice, manaus, tesla and aion Nothing: Galaga, Galaxian and Tetris. Some Tecno/Infinix and others",
+      "parentUuid": "34227869_ab6afd16",
+      "revId": "880fd2f12eb8b6474163f542966430a519ba8a8c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
