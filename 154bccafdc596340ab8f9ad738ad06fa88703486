@@ -16,6 +16,24 @@
       "message": "Is this really needed over AOSP one",
       "revId": "154bccafdc596340ab8f9ad738ad06fa88703486",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5651ef3_c5ba1e68",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2026-08-24T22:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "897d9ee0_4d90160f",
+      "revId": "154bccafdc596340ab8f9ad738ad06fa88703486",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
