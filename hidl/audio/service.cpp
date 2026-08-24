@@ -88,38 +88,10 @@ int main(int /* argc */, char* /* argv */[]) {
         {
             "Audio Core API",
             "android.hardware.audio@7.1::IDevicesFactory",
-            "android.hardware.audio@7.0::IDevicesFactory",
-            "android.hardware.audio@6.0::IDevicesFactory",
-            "android.hardware.audio@5.0::IDevicesFactory",
-            "android.hardware.audio@4.0::IDevicesFactory",
         },
         {
             "Audio Effect API",
             "android.hardware.audio.effect@7.0::IEffectsFactory",
-            "android.hardware.audio.effect@6.0::IEffectsFactory",
-            "android.hardware.audio.effect@5.0::IEffectsFactory",
-            "android.hardware.audio.effect@4.0::IEffectsFactory",
-        }
-    };
-
-    const std::vector<InterfacesList> optionalInterfaces = {
-        {
-            "Soundtrigger API",
-            "android.hardware.soundtrigger@2.3::ISoundTriggerHw",
-            "android.hardware.soundtrigger@2.2::ISoundTriggerHw",
-            "android.hardware.soundtrigger@2.1::ISoundTriggerHw",
-            "android.hardware.soundtrigger@2.0::ISoundTriggerHw",
-        },
-        {
-            "Bluetooth Audio API",
-            "android.hardware.bluetooth.audio@2.2::IBluetoothAudioProvidersFactory",
-            "android.hardware.bluetooth.audio@2.1::IBluetoothAudioProvidersFactory",
-            "android.hardware.bluetooth.audio@2.0::IBluetoothAudioProvidersFactory",
-        },
-        // remove the old HIDL when Bluetooth Audio Hal V2 has offloading supported
-        {
-            "Bluetooth Audio Offload API",
-            "android.hardware.bluetooth.a2dp@1.0::IBluetoothAudioOffload"
         }
     };
 
@@ -127,10 +99,6 @@ int main(int /* argc */, char* /* argv */[]) {
         {
             "android.hardware.bluetooth.audio-impl-mediatek",
             "createIBluetoothAudioProviderFactory",
-        },
-        {
-            "android.hardware.audio.sounddose-vendor-impl",
-            "createISoundDoseFactory",
         },
     };
     // clang-format on
@@ -140,13 +108,6 @@ int main(int /* argc */, char* /* argv */[]) {
         const std::string& interfaceFamilyName = *iter++;
         LOG_ALWAYS_FATAL_IF(!registerPassthroughServiceImplementations(iter, listIter.end()),
                             "Could not register %s", interfaceFamilyName.c_str());
-    }
-
-    for (const auto& listIter : optionalInterfaces) {
-        auto iter = listIter.begin();
-        const std::string& interfaceFamilyName = *iter++;
-        ALOGW_IF(!registerPassthroughServiceImplementations(iter, listIter.end()),
-                 "Could not register %s", interfaceFamilyName.c_str());
     }
 
     for (const auto& interfacePair : optionalInterfaceSharedLibs) {
