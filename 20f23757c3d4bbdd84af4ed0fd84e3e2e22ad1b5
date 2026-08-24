@@ -16,6 +16,24 @@
       "message": "Is it really V3 for android U blobs ?",
       "revId": "20f23757c3d4bbdd84af4ed0fd84e3e2e22ad1b5",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17ef81df_bdead079",
+        "filename": "hidl/audio/Android.bp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2026-08-24T22:13:00Z",
+      "side": 1,
+      "message": "```\nneeded-libs vendor/bin/hw/android.hardware.audio.service.mediatek  | grep soundtrigger\nandroid.hardware.soundtrigger3-V1-ndk.so\nandroid.hardware.soundtrigger3-impl.so\n```\n\nFixed!",
+      "parentUuid": "95ec4933_e5472d2c",
+      "revId": "20f23757c3d4bbdd84af4ed0fd84e3e2e22ad1b5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
