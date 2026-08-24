@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ec4933_e5472d2c",
+        "filename": "hidl/audio/Android.bp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-08-24T21:45:03Z",
+      "side": 1,
+      "message": "Is it really V3 for android U blobs ?",
+      "revId": "20f23757c3d4bbdd84af4ed0fd84e3e2e22ad1b5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
