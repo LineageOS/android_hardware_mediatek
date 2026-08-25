@@ -16,6 +16,7 @@ PRODUCT_PACKAGES += \
 
 ifeq ($(ENABLE_VENDOR_RIL_SERVICE), true)
 PRODUCT_PACKAGES += \
+    MssiCarrierConfigOverlay \
     MssiFrameworkTelephonyOverlay \
     MssiTelephonyOverlay
 
