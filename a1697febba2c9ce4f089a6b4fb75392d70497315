@@ -16,6 +16,24 @@
       "message": "Any reason to just reversing this interface ?",
       "revId": "a1697febba2c9ce4f089a6b4fb75392d70497315",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65d2e142_8bf8b8a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-08-25T13:38:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a8b3cdd5_ce97fbe3",
+      "revId": "a1697febba2c9ce4f089a6b4fb75392d70497315",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ],
   "submitRequirementResults": [
