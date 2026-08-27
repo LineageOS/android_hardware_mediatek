@@ -3,12 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-soong_namespace {
-    imports: [
-        "hardware/mediatek",
-    ],
-}
-
 cc_binary {
     name: "android.hardware.audio.service.mediatek",
 
@@ -32,21 +26,7 @@ cc_binary {
         "liblog",
         "libutils",
         "libhardware",
-        "android.hardware.soundtrigger3-impl",
         "android.hardware.soundtrigger3-V1-ndk",
-        "vendor.mediatek.hardware.audio-impl",
         "vendor.mediatek.hardware.audio-V1-ndk",
     ],
-}
-
-cc_library_shared {
-    name: "android.hardware.soundtrigger3-impl",
-    relative_install_path: "hw",
-    soc_specific: true,
-}
-
-cc_library_shared {
-    name: "vendor.mediatek.hardware.audio-impl",
-    relative_install_path: "hw",
-    soc_specific: true,
 }
