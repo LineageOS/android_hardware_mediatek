@@ -1,0 +1,6 @@
+<manifest version="9.0" type="device">
+    <hal format="aidl">
+        <name>vendor.mediatek.hardware.mtkpower</name>
+        <fqname>IMtkPowerService/default</fqname>
+    </hal>
+</manifest>

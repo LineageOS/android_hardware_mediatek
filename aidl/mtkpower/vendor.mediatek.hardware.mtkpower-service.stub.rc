@@ -1,0 +1,4 @@
+service power-hal-aidl /vendor/bin/hw/vendor.mediatek.hardware.mtkpower-service.stub
+    class hal
+    user system
+    group system
