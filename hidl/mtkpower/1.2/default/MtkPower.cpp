@@ -43,20 +43,27 @@ Return<void> MtkPower::mtkCusPowerHint(int32_t hint, int32_t data) {
 }
 
 Return<void> MtkPower::mtkPowerHint(int32_t hint, int32_t data) {
-    // Forward AUDIO_POWER hints to libperfmgr
-    if (hint == MTKPOWER_HINT_AUDIO_POWER) {
-        // Enable the mode if data is non-zero
-        bool enabled = data != 0;
-        LOG(INFO) << "mtkPowerhint hint: MTKPOWER_HINT_AUDIO_POWER data: " << data
-                  << " enabled: " << enabled;
-        if (getAidlPowerHal()) {
-            gAidlPowerHal->setMode(
-                    aidl::android::hardware::power::Mode::AUDIO_STREAMING_LOW_LATENCY, enabled);
-        } else {
-            LOG(ERROR) << "mtkPowerHint: Can't get AIDL Power HAL!";
-        }
-    } else {
-        LOG(INFO) << "mtkPowerHint hint: " << hint << " data: " << data;
+    // Forward MTKPOWER_HINT_AUDIO hints to libperfmgr
+    switch (hint) {
+        case MTKPOWER_HINT_AUDIO_LATENCY_DL:
+        case MTKPOWER_HINT_AUDIO_LATENCY_UL:
+        case MTKPOWER_HINT_AUDIO_POWER_DL:
+        case MTKPOWER_HINT_AUDIO_POWER_UL:
+        case MTKPOWER_HINT_AUDIO_POWER:
+            // Enable the mode if data is non-zero
+            bool enabled = data != 0;
+            LOG(INFO) << "mtkPowerhint hint: " << hint << " data: " << data
+                      << " enabled: " << enabled;
+            if (getAidlPowerHal()) {
+                gAidlPowerHal->setMode(
+                        aidl::android::hardware::power::Mode::AUDIO_STREAMING_LOW_LATENCY, enabled);
+            } else {
+                LOG(ERROR) << "mtkPowerHint: Can't get AIDL Power HAL!";
+            }
+            break;
+        default:
+            LOG(INFO) << "mtkPowerHint hint: " << hint << " data: " << data;
+            break;
     }
     return Void();
 }
