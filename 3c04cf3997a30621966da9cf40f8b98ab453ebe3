@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5a54607_be8c774f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32253
+      },
+      "writtenOn": "2026-08-27T16:08:11Z",
+      "side": 1,
+      "message": "Works on peridotl (and it shouldn\u0027t break earth and rosemary), not sure if there is a better way, ideas are welcome!",
+      "revId": "3c04cf3997a30621966da9cf40f8b98ab453ebe3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
