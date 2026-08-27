@@ -10,6 +10,10 @@
 #include <hidl/Status.h>
 #include <vendor/mediatek/hardware/mtkpower/1.2/IMtkPower.h>
 
+#define MTKPOWER_HINT_AUDIO_LATENCY_DL 36
+#define MTKPOWER_HINT_AUDIO_LATENCY_UL 37
+#define MTKPOWER_HINT_AUDIO_POWER_DL 38
+#define MTKPOWER_HINT_AUDIO_POWER_UL 44
 #define MTKPOWER_HINT_AUDIO_POWER 47
 
 namespace vendor::mediatek::hardware::mtkpower::implementation {
