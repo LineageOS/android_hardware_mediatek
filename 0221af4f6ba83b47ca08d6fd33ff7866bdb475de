@@ -16,6 +16,23 @@
       "message": "I was able to use MediaTek audio service from hardware/mediatek on Xaga, which is an A12 vendor, with the help of Aristotle which got upgraded to A16 vendor and is also the same MT6895 platform as Xaga, but sadly migrating to the MediaTek Bluetooth service it has won\u0027t be possible due to kernel ABI incompatibility between Aristotle\u0027s 6.12 and our 5.10 kernel.",
       "revId": "0221af4f6ba83b47ca08d6fd33ff7866bdb475de",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf3c7ea8_90386b5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-09-04T19:57:36Z",
+      "side": 1,
+      "message": "This service is clearly targeted towards Android 14 vendors only, there is no benefit for targets with an older or newer vendor",
+      "revId": "0221af4f6ba83b47ca08d6fd33ff7866bdb475de",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
