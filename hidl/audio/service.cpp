@@ -57,7 +57,7 @@ static bool registerExternalServiceImplementation(const std::string& libName,
     handle = dlopen(libPath.c_str(), dlMode);
     if (handle == nullptr) {
         const char* error = dlerror();
-        ALOGE("Failed to dlopen %s: %s", libPath.c_str(),
+        ALOGW("Failed to dlopen %s: %s", libPath.c_str(),
               error != nullptr ? error : "unknown error");
         return false;
     }
@@ -139,9 +139,12 @@ int main(int /* argc */, char* /* argv */[]) {
         }
     };
 
-    const std::vector<std::pair<std::string,std::string>> optionalInterfaceSharedLibs = {
+    const std::vector<std::pair<std::vector<std::string>, std::string>> optionalInterfaceSharedLibs = {
         {
-            "android.hardware.bluetooth.audio-impl-mediatek",
+            {
+                "android.hardware.bluetooth.audio-impl-mediatek",
+                "android.hardware.bluetooth.audio-impl",
+            },
             "createIBluetoothAudioProviderFactory",
         },
     };
@@ -155,12 +158,18 @@ int main(int /* argc */, char* /* argv */[]) {
     }
 
     for (const auto& interfacePair : optionalInterfaceSharedLibs) {
-        const std::string& libraryName = interfacePair.first;
+        const auto& candidateLibs = interfacePair.first;
         const std::string& interfaceLoaderFuncName = interfacePair.second;
-        if (registerExternalServiceImplementation(libraryName, interfaceLoaderFuncName)) {
-            ALOGI("%s() from %s success", interfaceLoaderFuncName.c_str(), libraryName.c_str());
-        } else {
-            ALOGW("%s() from %s failed", interfaceLoaderFuncName.c_str(), libraryName.c_str());
+        bool registered = false;
+        for (const auto& libraryName : candidateLibs) {
+            if (registerExternalServiceImplementation(libraryName, interfaceLoaderFuncName)) {
+                ALOGI("%s() from %s success", interfaceLoaderFuncName.c_str(), libraryName.c_str());
+                registered = true;
+                break;
+            }
+        }
+        if (!registered) {
+            ALOGW("%s() failed for all candidate libraries", interfaceLoaderFuncName.c_str());
         }
     }
 
