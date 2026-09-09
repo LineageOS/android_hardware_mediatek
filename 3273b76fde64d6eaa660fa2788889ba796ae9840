@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691acb6e_b51f9a6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-09-09T10:54:06Z",
+      "side": 1,
+      "message": "```suggestion\n* Used by some camera stacks.\n```",
+      "revId": "3273b76fde64d6eaa660fa2788889ba796ae9840",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
