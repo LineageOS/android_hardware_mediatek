@@ -1,0 +1,18 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+java_library {
+    name: "mediatek-telephony-common",
+    installable: true,
+
+    srcs: [
+        "src/**/*.java",
+    ],
+
+    libs: [
+        "telephony-common",
+    ],
+}
