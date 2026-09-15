@@ -10,6 +10,6 @@ PRODUCT_PACKAGES += \
     mediatek-telephony-common
 
 PRODUCT_BOOT_JARS += \
-    mediatek-common \
-    mediatek-telecom-common \
-    mediatek-telephony-common
+    system_ext:mediatek-common \
+    system_ext:mediatek-telecom-common \
+    system_ext:mediatek-telephony-common
