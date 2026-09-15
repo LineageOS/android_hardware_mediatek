@@ -7,6 +7,7 @@
 java_library {
     name: "mediatek-telecom-common",
     installable: true,
+    system_ext_specific: true,
 
     srcs: [
         "src/**/*.java",
