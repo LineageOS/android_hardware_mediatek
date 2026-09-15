@@ -7,6 +7,8 @@
 java_library {
     name: "mediatek-common",
     installable: true,
+    system_ext_specific: true,
+    use_generic_config: true,
 
     srcs: [
         "src/**/*.java",
