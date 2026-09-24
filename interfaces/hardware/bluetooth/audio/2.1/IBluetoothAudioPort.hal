@@ -82,4 +82,6 @@ interface IBluetoothAudioPort {
      *    clients.
      */
     updateMetadata(SourceMetadata sourceMetadata);
+
+    enterGameMode(uint8_t enter);
 };

@@ -21,6 +21,7 @@ import @2.1::ChannelMode;
 import @2.1::CodecCapabilities;
 import @2.1::CodecConfiguration;
 import @2.1::CodecType;
+import @2.1::LowLatencyEnabled;
 import @2.1::PcmParameters;
 import @2.1::SampleRate;
 import @2.1::SessionType;
@@ -37,7 +38,7 @@ enum SessionType : @2.1::SessionType {
 };
 
 enum CodecType : @2.1::CodecType {
-    LC3 = 0x20,
+    LC3 = 0x40,
 };
 
 enum SampleRate : @2.1::SampleRate {
@@ -50,6 +51,7 @@ struct PcmParameters {
     SampleRate sampleRate;
     ChannelMode channelMode;
     BitsPerSample bitsPerSample;
+    LowLatencyEnabled isLowLatencyEnabled;
     /** Data interval for data transfer */
     uint32_t dataIntervalUs;
 };
@@ -78,7 +80,8 @@ struct Lc3Parameters {
 /**
  * Used to specify the capabilities of the LC3 codecs supported by Hardware Encoding.
  */
-struct Lc3CodecCapabilities {
+struct LeAudioCodecCapabilities {
+    CodecType codecType;
     /* This is bitfield, if bit N is set, HW Offloader supports N+1 channels at the same time.
      * Example: 0x27 = 0b00100111: One, two, three or six channels supported.*/
     uint8_t supportedChannelCounts;
@@ -89,16 +92,32 @@ struct Lc3CodecCapabilities {
 safe_union AudioCapabilities {
     PcmParameters pcmCapabilities;
     CodecCapabilities codecCapabilities;
-    Lc3CodecCapabilities leAudioCapabilities;
+    LeAudioCodecCapabilities leAudioCapabilities;
+};
+
+struct ConnParam {
+    int32_t conn_handle_R;
+    int32_t conn_handle_L;
+    int8_t bn;
+};
+
+enum PlcMethod : uint8_t {
+    STANDARD_PLC = 0x00,
+    ENHANCED_PLC = 0x01,
 };
 
 /**
  * Used to configure a LC3 Hardware Encoding session.
  */
-struct Lc3CodecConfiguration {
+struct LeAudioCodecConfiguration {
+    CodecType codecType;
     /* This is also bitfield, specifying how the channels are ordered in the outgoing media packet.
      * Bit meaning is defined in Bluetooth Assigned Numbers. */
     uint32_t audioChannelAllocation;
+    uint32_t encodedAudioBitrate;
+    uint8_t bfi_ext;
+    PlcMethod plc_method;
+    uint8_t le_audio_type;
     Lc3Parameters lc3Config;
 };
 
@@ -106,5 +125,5 @@ struct Lc3CodecConfiguration {
 safe_union AudioConfiguration {
     PcmParameters pcmConfig;
     CodecConfiguration codecConfig;
-    Lc3CodecConfiguration leAudioCodecConfig;
+    LeAudioCodecConfiguration leAudioCodecConfig;
 };
