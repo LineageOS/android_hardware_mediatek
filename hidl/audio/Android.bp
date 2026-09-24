@@ -3,12 +3,43 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
+soong_config_module_type {
+    name: "android_hardware_audio_config_mediatek_default",
+    module_type: "cc_defaults",
+    config_namespace: "android_hardware_audio_mediatek",
+    bool_variables: [
+        "run_32bit",
+    ],
+    properties: ["compile_multilib"],
+}
+
+android_hardware_audio_config_mediatek_default {
+    name: "android_hardware_audio_config_mediatek_defaults",
+
+    soong_config_variables: {
+        run_32bit: {
+            conditions_default: {
+                compile_multilib: "64",
+            },
+            // Prefer 32 bit as the binary must always be installed at the same
+            // location for init to start it and the build system does not support
+            // having two binaries installable to the same location even if they are
+            // not installed in the same build.
+            compile_multilib: "prefer32",
+        },
+    },
+}
+
 cc_binary {
     name: "android.hardware.audio.service.mediatek",
 
     init_rc: ["android.hardware.audio.service.mediatek.rc"],
     relative_install_path: "hw",
     vendor: true,
+
+    defaults: [
+        "android_hardware_audio_config_mediatek_defaults",
+    ],
 
     srcs: ["service.cpp"],
 
