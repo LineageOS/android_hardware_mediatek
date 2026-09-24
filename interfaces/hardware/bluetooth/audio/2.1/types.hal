@@ -57,6 +57,7 @@ enum CodecType : uint32_t {
     APTX = 0x04,
     APTX_HD = 0x08,
     LDAC = 0x10,
+    LHDC = 0x20,
 };
 
 enum SampleRate : uint32_t {
@@ -147,11 +148,22 @@ enum LdacQualityIndex : uint8_t {
     QUALITY_ABR = 0x7F,
 };
 
+enum LhdcLlSupport : uint8_t {
+    Unsupported = 0x00,
+    Supported = 0x01,
+};
+
+enum LowLatencyEnabled : uint8_t {
+    Disabled = 0x00,
+    Enabled = 0x01,
+};
+
 /** Used for Software Encoding audio feed parameters */
 struct PcmParameters {
     SampleRate sampleRate;
     ChannelMode channelMode;
     BitsPerSample bitsPerSample;
+    LowLatencyEnabled isLowLatencyEnabled;
 };
 
 /**
@@ -197,6 +209,14 @@ struct AptxParameters {
     BitsPerSample bitsPerSample;
 };
 
+struct LhdcParameters {
+    SampleRate sampleRate;
+    ChannelMode channelMode;
+    BitsPerSample bitsPerSample;
+    LowLatencyEnabled isLLEnabled;
+    LhdcLlSupport isLLSupported;
+};
+
 /**
  * Used to specify the capabilities of the codecs supported by Hardware Encoding.
  * AptX and AptX-HD both use the AptxParameters field.
@@ -209,6 +229,7 @@ struct CodecCapabilities {
       AacParameters aacCapabilities;
       LdacParameters ldacCapabilities;
       AptxParameters aptxCapabilities;
+      LhdcParameters lhdcCapabilities;
     } capabilities;
 };
 
@@ -242,6 +263,7 @@ struct CodecConfiguration {
         AacParameters aacConfig;
         LdacParameters ldacConfig;
         AptxParameters aptxConfig;
+        LhdcParameters lhdcConfig;
     } config;
 };
 
