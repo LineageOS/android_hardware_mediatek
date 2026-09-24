@@ -73,6 +73,21 @@ static bool registerExternalServiceImplementation(const std::string& libName,
     return ((*factoryFunction)() == STATUS_OK);
 }
 
+/** Try to register the provided factories in the provided order.
+ *  If any registers successfully, do not register any other and return true.
+ *  If all fail, return false.
+ */
+template <class Iter>
+static bool registerExternalServiceImplementations(Iter first, Iter last,
+                                                   const std::string& funcName) {
+    for (; first != last; ++first) {
+        if (registerExternalServiceImplementation(*first, funcName)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 template <typename T>
 static std::shared_ptr<T> loadVendorAidlImpl(const char* libPath, const char* ctorSymb,
                                              const char* dtorSymb) {
@@ -132,6 +147,7 @@ int main(int /* argc */, char* /* argv */[]) {
         {
             "Audio Core API",
             "android.hardware.audio@7.1::IDevicesFactory",
+            "android.hardware.audio@7.0::IDevicesFactory",
         },
         {
             "Audio Effect API",
@@ -139,11 +155,35 @@ int main(int /* argc */, char* /* argv */[]) {
         }
     };
 
+    const std::vector<InterfacesList> optionalInterfaces = {
+        {
+            "Soundtrigger API",
+            "android.hardware.soundtrigger@2.3::ISoundTriggerHw",
+            "android.hardware.soundtrigger@2.2::ISoundTriggerHw",
+            "android.hardware.soundtrigger@2.1::ISoundTriggerHw",
+            "android.hardware.soundtrigger@2.0::ISoundTriggerHw",
+        },
+        {
+            "Bluetooth Audio API",
+            "vendor.mediatek.hardware.bluetooth.audio@2.2::IBluetoothAudioProvidersFactory",
+            "vendor.mediatek.hardware.bluetooth.audio@2.1::IBluetoothAudioProvidersFactory",
+            "android.hardware.bluetooth.audio@2.2::IBluetoothAudioProvidersFactory",
+            "android.hardware.bluetooth.audio@2.1::IBluetoothAudioProvidersFactory",
+            "android.hardware.bluetooth.audio@2.0::IBluetoothAudioProvidersFactory",
+        }
+    };
+
     const std::vector<std::pair<std::string,std::string>> optionalInterfaceSharedLibs = {
         {
-            "android.hardware.bluetooth.audio-impl-mediatek",
-            "createIBluetoothAudioProviderFactory",
+            "android.hardware.audio.sounddose-vendor-impl",
+            "createISoundDoseFactory",
         },
+    };
+    const std::vector<std::string> optionalBluetoothSessionLibs = {
+            "android.hardware.bluetooth.audio-impl-mediatek",
+            "android.hardware.bluetooth.audio-impl-mediatek-aidl",
+            "android.hardware.bluetooth.audio-impl-mediatek-hidl",
+            "android.hardware.bluetooth.audio-impl",
     };
     // clang-format on
 
@@ -152,6 +192,13 @@ int main(int /* argc */, char* /* argv */[]) {
         const std::string& interfaceFamilyName = *iter++;
         LOG_ALWAYS_FATAL_IF(!registerPassthroughServiceImplementations(iter, listIter.end()),
                             "Could not register %s", interfaceFamilyName.c_str());
+    }
+
+    for (const auto& listIter : optionalInterfaces) {
+        auto iter = listIter.begin();
+        const std::string& interfaceFamilyName = *iter++;
+        ALOGW_IF(!registerPassthroughServiceImplementations(iter, listIter.end()),
+                 "Could not register %s", interfaceFamilyName.c_str());
     }
 
     for (const auto& interfacePair : optionalInterfaceSharedLibs) {
@@ -164,24 +211,36 @@ int main(int /* argc */, char* /* argv */[]) {
         }
     }
 
+    if (registerExternalServiceImplementations(optionalBluetoothSessionLibs.begin(),
+                                               optionalBluetoothSessionLibs.end(),
+                                               "createIBluetoothAudioProviderFactory")) {
+        ALOGI("Successfully registered bluetooth audio session AIDL");
+    } else {
+        ALOGW("Failed to register bluetooth audio session AIDL");
+    }
+
     auto mtkSoundTriggerHw = loadVendorAidlImpl<BnSoundTriggerHw>(
             "/vendor/lib64/hw/android.hardware.soundtrigger3-impl.so",
             "_ZN4aidl7android8hardware13soundtrigger314SoundTriggerHwC1Ev",
             "_ZN4aidl7android8hardware13soundtrigger314SoundTriggerHwD1Ev");
-    const std::string soundTriggerHw_instance =
-            std::string() + ISoundTriggerHw::descriptor + "/default";
-    binder_status_t soundTriggerHw_status = AServiceManager_addService(
-            mtkSoundTriggerHw->asBinder().get(), soundTriggerHw_instance.c_str());
-    CHECK_EQ(soundTriggerHw_status, STATUS_OK);
+    if (mtkSoundTriggerHw != nullptr) {
+        const std::string soundTriggerHw_instance =
+                std::string() + ISoundTriggerHw::descriptor + "/default";
+        binder_status_t soundTriggerHw_status = AServiceManager_addService(
+                mtkSoundTriggerHw->asBinder().get(), soundTriggerHw_instance.c_str());
+        CHECK_EQ(soundTriggerHw_status, STATUS_OK);
+    }
 
     auto mtkAudio = loadVendorAidlImpl<BnMtkAudio>(
             "/vendor/lib64/hw/vendor.mediatek.hardware.audio-impl.so",
             "_ZN4aidl6vendor8mediatek8hardware5audio8MtkAudioC1Ev",
             "_ZN4aidl6vendor8mediatek8hardware5audio8MtkAudioD1Ev");
-    const std::string instance = std::string() + IMtkAudio::descriptor + "/default";
-    binder_status_t mtkAudio_status =
-            AServiceManager_addService(mtkAudio->asBinder().get(), instance.c_str());
-    CHECK_EQ(mtkAudio_status, STATUS_OK);
+    if (mtkAudio != nullptr) {
+        const std::string instance = std::string() + IMtkAudio::descriptor + "/default";
+        binder_status_t mtkAudio_status =
+                AServiceManager_addService(mtkAudio->asBinder().get(), instance.c_str());
+        CHECK_EQ(mtkAudio_status, STATUS_OK);
+    }
 
     joinRpcThreadpool();
 }
