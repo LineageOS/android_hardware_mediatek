@@ -77,4 +77,6 @@ interface IBluetoothAudioProvider {
      * interface.
      */
     endSession();
+
+    enterGameMode(uint8_t enter);
 };

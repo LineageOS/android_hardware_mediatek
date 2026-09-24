@@ -59,4 +59,6 @@ interface IBluetoothAudioProvider extends @2.1::IBluetoothAudioProvider {
      */
     startSession_2_1(IBluetoothAudioPort hostIf, AudioConfiguration audioConfig)
                 generates (Status status, fmq_sync<uint8_t> dataMQ);
+
+    updataConnParam(ConnParam connPrameter);
 };
