@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f142d16_49f87270",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35850
+      },
+      "writtenOn": "2026-09-25T16:55:46Z",
+      "side": 1,
+      "message": "You should check what it does first, for example libion_exynos also handles DMA-BUF despite its name.",
+      "revId": "32b01e69789cfcda20099d0ebc0a8b45554b9e4a",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
