@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cee274d_76f70c7d",
+        "filename": "aidl/bluetooth_audio/adapter/Android.bp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-09-25T23:14:18Z",
+      "side": 1,
+      "message": "Maybe a different name ? Since this only targets legacy platforms and modern ones ship bluetooth audio impl from mediatek using this exact module name. Would avoid confusion imo and a soong namespace",
+      "revId": "aaf3144c91d9d46da08bb81bad7a38d15c3a5932",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
