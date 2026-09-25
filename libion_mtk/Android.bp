@@ -1,0 +1,14 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+soong_namespace {
+}
+
+cc_library_shared {
+    name: "libion_mtk",
+    vendor: true,
+    srcs: ["ion.c"],
+    header_libs: ["libion_headers"],
+}
