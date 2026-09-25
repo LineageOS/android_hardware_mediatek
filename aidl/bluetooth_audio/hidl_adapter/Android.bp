@@ -1,0 +1,24 @@
+cc_library_shared {
+    name: "android.hardware.bluetooth.audio-impl-mediatek-hidl",
+    vendor: true,
+    defaults: ["latest_android_hardware_bluetooth_audio_ndk_shared"],
+    srcs: [
+        "HidlToAidlMiddleware.cpp",
+        "MTKBluetoothAudioProvider.cpp",
+        "MTKBluetoothAudioProviderFactory.cpp",
+        "service.cpp",
+    ],
+    export_include_dirs: ["."],
+    header_libs: ["libhardware_headers"],
+    shared_libs: [
+        "libbase",
+        "libutils",
+        "libhidlbase",
+        "libbinder_ndk",
+        "liblog",
+        "libfmq",
+        "android.hardware.bluetooth.audio-impl",
+        "vendor.mediatek.hardware.bluetooth.audio@2.1",
+        "vendor.mediatek.hardware.bluetooth.audio@2.2",
+    ],
+}
