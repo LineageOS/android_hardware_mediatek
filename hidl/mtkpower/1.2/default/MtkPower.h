@@ -16,6 +16,11 @@
 #define MTKPOWER_HINT_AUDIO_POWER_UL 44
 #define MTKPOWER_HINT_AUDIO_POWER 47
 
+#define MTKPOWER_CMD_GET_CLUSTER_NUM 1
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_NUM 2
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MIN 3
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MAX 4
+
 namespace vendor::mediatek::hardware::mtkpower::implementation {
 
 using ::android::sp;
@@ -48,6 +53,17 @@ struct MtkPower : public V1_2::IMtkPower {
             int32_t hint,
             const sp<::vendor::mediatek::hardware::mtkpower::V1_2::IMtkPowerCallback>& callback)
             override;
+
+  private:
+    struct ClusterInfo {
+        int cpuNum;
+        int freqMin;
+        int freqMax;
+    };
+
+    std::vector<ClusterInfo> mClusters;
+
+    void loadClusters(void);
 };
 
 }  // namespace vendor::mediatek::hardware::mtkpower::implementation
