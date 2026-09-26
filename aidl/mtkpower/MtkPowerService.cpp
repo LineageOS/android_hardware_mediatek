@@ -67,8 +67,7 @@ ndk::ScopedAStatus MtkPowerService::perfLockReleaseSync(int handle, int reserved
     return ndk::ScopedAStatus::ok();
 }
 
-ndk::ScopedAStatus MtkPowerService::mtkPowerHint(int hint, int data) {
-    // Forward MTKPOWER_HINT_AUDIO hints to libperfmgr
+void MtkPowerService::forwardAudioHint(int hint, int data) {
     switch (hint) {
         case MTKPOWER_HINT_AUDIO_LATENCY_DL:
         case MTKPOWER_HINT_AUDIO_LATENCY_UL:
@@ -92,11 +91,15 @@ ndk::ScopedAStatus MtkPowerService::mtkPowerHint(int hint, int data) {
             break;
         }
     }
+}
+
+ndk::ScopedAStatus MtkPowerService::mtkPowerHint(int hint, int data) {
+    forwardAudioHint(hint, data);
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus MtkPowerService::mtkCusPowerHint(int hint, int data) {
-    LOG(INFO) << __func__ << ": hint=" << hint << ", data=" << data;
+    forwardAudioHint(hint, data);
     return ndk::ScopedAStatus::ok();
 }
 

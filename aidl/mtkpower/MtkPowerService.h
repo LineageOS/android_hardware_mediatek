@@ -42,6 +42,9 @@ class MtkPowerService : public BnMtkPowerService {
             const std::shared_ptr<::aidl::vendor::mediatek::hardware::mtkpower::IMtkPowerCallback>&
                     callback,
             int* _aidl_return) override;
+
+  private:
+    void forwardAudioHint(int hint, int data);
 };
 
 }  // namespace mtkpower

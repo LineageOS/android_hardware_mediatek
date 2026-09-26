@@ -5,6 +5,7 @@
 //
 
 soong_namespace {
+    imports: ["hardware/mediatek"],
 }
 
 cc_defaults {
@@ -39,6 +40,18 @@ cc_library_shared {
     name: "libpowerhalwrap_vendor",
     defaults: ["libpowerhalwrap_defaults"],
     vendor: true,
+    srcs: select(soong_config_variable("libmtkperf_client", "powerhalwrap_aidl"), {
+        true: ["powerhalwrap_vendor_aidl.cpp"],
+        default: [],
+    }),
+    shared_libs: select(soong_config_variable("libmtkperf_client", "powerhalwrap_aidl"), {
+        true: ["libbinder_ndk"],
+        default: [],
+    }),
+    static_libs: select(soong_config_variable("libmtkperf_client", "powerhalwrap_aidl"), {
+        true: ["vendor.mediatek.hardware.mtkpower-V1-ndk"],
+        default: [],
+    }),
 }
 
 cc_library_shared {
