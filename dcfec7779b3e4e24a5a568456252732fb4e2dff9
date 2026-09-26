@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "868d48c1_a7d302b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32620
+      },
+      "writtenOn": "2026-09-26T14:16:12Z",
+      "side": 1,
+      "message": "Verified on Moto G05 / G15 (V vendor, Linux 6.6)",
+      "revId": "dcfec7779b3e4e24a5a568456252732fb4e2dff9",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
