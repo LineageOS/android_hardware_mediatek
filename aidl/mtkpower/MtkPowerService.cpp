@@ -7,14 +7,36 @@
 
 #include <aidl/android/hardware/power/IPower.h>
 #include <aidl/android/hardware/power/Mode.h>
+#include <android-base/file.h>
 #include <android-base/logging.h>
+#include <android-base/parseint.h>
+#include <android-base/strings.h>
 #include <android/binder_manager.h>
 
+#include <algorithm>
+#include <filesystem>
+
 #include "MtkPowerService.h"
+
+using android::base::ParseInt;
+using android::base::ReadFileToString;
+using android::base::StartsWith;
+using android::base::Tokenize;
+using android::base::Trim;
 
 static std::shared_ptr<aidl::android::hardware::power::IPower> gAidlPowerHal;
 static const std::string kInstance =
         std::string(aidl::android::hardware::power::IPower::descriptor) + "/default";
+static const std::string kCpufreqPath = "/sys/devices/system/cpu/cpufreq";
+
+static int readInt(const std::string& path) {
+    std::string buf;
+    int value = -1;
+    if (ReadFileToString(path, &buf)) {
+        ParseInt(Trim(buf), &value);
+    }
+    return value;
+}
 
 namespace aidl {
 namespace vendor {
@@ -31,7 +53,37 @@ bool MtkPowerService::getAidlPowerHal(void) {
     return !!gAidlPowerHal;
 }
 
+void MtkPowerService::loadClusters(void) {
+    std::vector<std::pair<int, ClusterInfo>> policies;
+    std::error_code ec;
+
+    for (const auto& entry : std::filesystem::directory_iterator(kCpufreqPath, ec)) {
+        const std::string name = entry.path().filename();
+        int id;
+        if (!StartsWith(name, "policy") || !ParseInt(name.substr(6), &id)) {
+            continue;
+        }
+
+        std::string cpus;
+        ReadFileToString(entry.path() / "related_cpus", &cpus);
+
+        ClusterInfo info;
+        info.cpuNum = Tokenize(cpus, " \n").size();
+        info.freqMin = readInt(entry.path() / "cpuinfo_min_freq");
+        info.freqMax = readInt(entry.path() / "cpuinfo_max_freq");
+        policies.emplace_back(id, info);
+    }
+
+    std::sort(policies.begin(), policies.end(),
+              [](const auto& a, const auto& b) { return a.first < b.first; });
+    for (const auto& [id, info] : policies) {
+        mClusters.push_back(info);
+    }
+}
+
 MtkPowerService::MtkPowerService() {
+    loadClusters();
+
     if (!getAidlPowerHal()) {
         LOG(ERROR) << "Can't get AIDL Power HAL!";
     } else {
@@ -104,8 +156,27 @@ ndk::ScopedAStatus MtkPowerService::mtkCusPowerHint(int hint, int data) {
 }
 
 ndk::ScopedAStatus MtkPowerService::querySysInfo(int cmd, int param, int* _aidl_return) {
-    LOG(INFO) << __func__ << ": cmd=" << cmd << ", param=" << param;
-    *_aidl_return = 1;
+    bool validCluster = param >= 0 && param < static_cast<int>(mClusters.size());
+
+    switch (cmd) {
+        case MTKPOWER_CMD_GET_CLUSTER_NUM:
+            *_aidl_return = mClusters.size();
+            break;
+        case MTKPOWER_CMD_GET_CLUSTER_CPU_NUM:
+            *_aidl_return = validCluster ? mClusters[param].cpuNum : -1;
+            break;
+        case MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MIN:
+            *_aidl_return = validCluster ? mClusters[param].freqMin : -1;
+            break;
+        case MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MAX:
+            *_aidl_return = validCluster ? mClusters[param].freqMax : -1;
+            break;
+        default:
+            *_aidl_return = 1;
+            break;
+    }
+
+    LOG(DEBUG) << __func__ << ": cmd=" << cmd << ", param=" << param << ", ret=" << *_aidl_return;
     return ndk::ScopedAStatus::ok();
 }
 

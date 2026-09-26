@@ -13,6 +13,11 @@
 #define MTKPOWER_HINT_AUDIO_POWER_UL 44
 #define MTKPOWER_HINT_AUDIO_HAL_OPEN 55
 
+#define MTKPOWER_CMD_GET_CLUSTER_NUM 1
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_NUM 2
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MIN 3
+#define MTKPOWER_CMD_GET_CLUSTER_CPU_FREQ_MAX 4
+
 namespace aidl {
 namespace vendor {
 namespace mediatek {
@@ -44,7 +49,16 @@ class MtkPowerService : public BnMtkPowerService {
             int* _aidl_return) override;
 
   private:
+    struct ClusterInfo {
+        int cpuNum;
+        int freqMin;
+        int freqMax;
+    };
+
+    std::vector<ClusterInfo> mClusters;
+
     void forwardAudioHint(int hint, int data);
+    void loadClusters(void);
 };
 
 }  // namespace mtkpower
