@@ -1,0 +1,9 @@
+package vendor.mediatek.hardware.log@1.0;
+
+import ILogCallback;
+
+interface ILog {
+    setCallback(ILogCallback callback);
+
+    sendToServer(string data) generates (bool success);
+};
