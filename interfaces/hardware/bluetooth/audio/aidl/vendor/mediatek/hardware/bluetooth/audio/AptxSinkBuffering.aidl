@@ -25,4 +25,3 @@ parcelable AptxSinkBuffering {
     byte minTws;
     byte maxTws;
 }
-

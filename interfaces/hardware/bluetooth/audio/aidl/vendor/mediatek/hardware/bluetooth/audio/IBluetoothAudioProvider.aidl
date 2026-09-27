@@ -18,6 +18,7 @@ package vendor.mediatek.hardware.bluetooth.audio;
 
 import vendor.mediatek.hardware.bluetooth.audio.AudioConfiguration;
 import vendor.mediatek.hardware.bluetooth.audio.BluetoothAudioStatus;
+import vendor.mediatek.hardware.bluetooth.audio.ConnParam;
 import vendor.mediatek.hardware.bluetooth.audio.IBluetoothAudioPort;
 import vendor.mediatek.hardware.bluetooth.audio.LatencyMode;
 import android.hardware.common.fmq.MQDescriptor;
@@ -93,4 +94,8 @@ interface IBluetoothAudioProvider {
      * mode, the API will be called with supported is false.
      */
     void setLowLatencyModeAllowed(in boolean allowed);
+
+    void enterGameMode(in byte enter);
+
+    void updataConnParam(in ConnParam connPrameter);
 }
