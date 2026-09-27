@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.imsa@1.0;
+
+interface IImsaIndication {
+    oneway readEvent(vec<int8_t> data, int32_t offset, int32_t length);
+};
