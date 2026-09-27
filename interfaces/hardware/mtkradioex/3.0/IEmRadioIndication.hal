@@ -1,0 +1,13 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IEmRadioIndication {
+    oneway onTxPowerIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indPower);
+
+    oneway networkInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> networkinfo);
+
+    oneway oemHookRaw(android.hardware.radio@1.0::RadioIndicationType type, vec<uint8_t> data);
+};

@@ -1,0 +1,30 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IMwiRadioResponse {
+    oneway setWifiEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setWifiAssociatedResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setWfcConfigResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setWifiSignalLevelResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setWifiIpAddressResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setLocationInfoResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setEmergencyAddressIdResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setNattKeepAliveStatusResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setWifiPingResultResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway notifyEPDGScreenStateResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getWfcConfigResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        int32_t state);
+};

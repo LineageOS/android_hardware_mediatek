@@ -1,0 +1,7 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface ISERadioResponse {
+    oneway getATRResponse(android.hardware.radio@1.0::RadioResponseInfo info, string response);
+};

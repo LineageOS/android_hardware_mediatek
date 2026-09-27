@@ -1,0 +1,15 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface ICapRadioResponse {
+    oneway routeCertificateResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<uint8_t> rnd, int32_t custId);
+
+    oneway routeAuthMessageResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<uint8_t> devId, int32_t capMask);
+
+    oneway enableCapabilityResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway abortCertificateResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+};

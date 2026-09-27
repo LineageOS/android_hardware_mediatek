@@ -1,0 +1,164 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::CdmaSmsMessage;
+import android.hardware.radio@1.0::RadioIndicationType;
+import android.hardware.radio@1.0::SuppSvcNotification;
+
+interface IImsRadioIndication {
+    oneway incomingCallIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        IncomingCallNotification inCallNotify);
+
+    oneway callInfoIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> data);
+
+    oneway econfResultIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string confCallId, string op, string num, string result, string cause,
+        string joinedCallId);
+
+    oneway sipCallProgressIndicator(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId, string dir, string sipMsgType, string method, string responseCode,
+        string reasonText);
+
+    oneway callmodChangeIndicator(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId, string callMode, string videoState, string audioDirection, string pau);
+
+    oneway videoCapabilityIndicator(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId, string localVideoCap, string remoteVideoCap);
+
+    oneway onUssi(android.hardware.radio@1.0::RadioIndicationType type, int32_t modeType,
+        string msg);
+
+    oneway getProvisionDone(android.hardware.radio@1.0::RadioIndicationType type, string result1,
+        string result2);
+
+    oneway onXui(android.hardware.radio@1.0::RadioIndicationType type, string accountId,
+        string broadcastFlag, string xuiInfo);
+
+    oneway onVolteSubscription(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t status);
+
+    oneway suppSvcNotify(android.hardware.radio@1.0::RadioIndicationType type,
+        android.hardware.radio@1.0::SuppSvcNotification suppSvc);
+
+    oneway imsEventPackageIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId, string ptype, string urcIdx, string totalUrcCount, string rawData);
+
+    oneway imsRegistrationInfo(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t registerState, int32_t capability);
+
+    oneway imsEnableDone(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsDisableDone(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsEnableStart(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsDisableStart(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway ectIndication(android.hardware.radio@1.0::RadioIndicationType type, int32_t call_id,
+        int32_t ectResult, int32_t cause);
+
+    oneway volteSetting(android.hardware.radio@1.0::RadioIndicationType type, bool isEnable);
+
+    oneway imsBearerStateNotify(android.hardware.radio@1.0::RadioIndicationType type, int32_t aid,
+        int32_t action, string capability);
+
+    oneway imsBearerInit(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsDeregDone(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsSupportEcc(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t supportLteEcc);
+
+    oneway imsRadioInfoChange(android.hardware.radio@1.0::RadioIndicationType type, string iid,
+        string info);
+
+    oneway speechCodecInfoIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t info);
+
+    oneway imsConferenceInfoIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<ImsConfParticipant> participants);
+
+    oneway lteMessageWaitingIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId, string ptype, string urcIdx, string totalUrcCount, string rawData);
+
+    oneway imsDialogIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<Dialog> dialogList);
+
+    oneway imsCfgDynamicImsSwitchComplete(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsCfgFeatureChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t phoneId, int32_t featureId, int32_t value);
+
+    oneway imsCfgConfigChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t phoneId, string configId, string value);
+
+    oneway imsCfgConfigLoaded(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsDataInfoNotify(android.hardware.radio@1.0::RadioIndicationType type,
+        string capability, string event, string extra);
+
+    oneway newSmsEx(android.hardware.radio@1.0::RadioIndicationType type, vec<uint8_t> pdu);
+
+    oneway newSmsStatusReportEx(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<uint8_t> pdu);
+
+    oneway cdmaNewSmsEx(android.hardware.radio@1.0::RadioIndicationType type,
+        android.hardware.radio@1.0::CdmaSmsMessage msg);
+
+    oneway noEmergencyCallbackMode(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway imsRedialEmergencyIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string callId);
+
+    oneway imsRtpInfo(android.hardware.radio@1.0::RadioIndicationType type, string pdnId,
+        string networkId, string timer, string sendPktLost, string recvPktLost, string jitter,
+        string delay);
+
+    oneway rttCapabilityIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t callId, int32_t localCap, int32_t remoteCap, int32_t localStatus,
+        int32_t remoteStatus);
+
+    oneway rttModifyResponse(android.hardware.radio@1.0::RadioIndicationType type, int32_t callId,
+        int32_t result);
+
+    oneway rttTextReceive(android.hardware.radio@1.0::RadioIndicationType type, int32_t callId,
+        int32_t lenOfString, string text);
+
+    oneway rttModifyRequestReceive(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t callId, int32_t rttType);
+
+    oneway audioIndication(android.hardware.radio@1.0::RadioIndicationType type, int32_t callId,
+        int32_t audio);
+
+    oneway sendVopsIndication(android.hardware.radio@1.0::RadioIndicationType type, int32_t vops);
+
+    oneway callAdditionalInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        CallInfoType ciType, vec<string> info);
+
+    oneway sipHeaderReport(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> data);
+
+    oneway callRatIndication(android.hardware.radio@1.0::RadioIndicationType type, int32_t domain,
+        int32_t rat);
+
+    oneway sipRegInfoInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t account_id,
+        int32_t response_code, vec<string> info);
+
+    oneway imsRegStatusReport(android.hardware.radio@1.0::RadioIndicationType type,
+        ImsRegStatusInfo report);
+
+    oneway imsRegInfoInd(android.hardware.radio@1.0::RadioIndicationType type, vec<int32_t> info);
+
+    oneway onSsacStatus(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> status);
+
+    oneway eregrtInfoInd(android.hardware.radio@1.0::RadioIndicationType type, vec<int32_t> info);
+
+    oneway videoRingtoneEventInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> event);
+
+    oneway onMDInternetUsageInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> info);
+
+    oneway imsRegFlagInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t flag);
+};
