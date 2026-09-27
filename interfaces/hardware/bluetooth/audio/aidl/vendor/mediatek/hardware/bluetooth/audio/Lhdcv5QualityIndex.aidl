@@ -18,17 +18,16 @@ package vendor.mediatek.hardware.bluetooth.audio;
 
 @VintfStability
 @Backing(type="int")
-enum CodecType {
-    UNKNOWN,
-    SBC,
-    AAC,
-    APTX,
-    APTX_HD,
-    LDAC,
-    LC3,
-    VENDOR,
-    APTX_ADAPTIVE,
-    LHDCV3,
-    LHDCV2,
-    LHDCV5,
+enum Lhdcv5QualityIndex {
+    UNKNOWN = 0,
+    QUALITY_LOW0 = 1, // 64
+    QUALITY_LOW1 = 2, // 128
+    QUALITY_LOW2 = 3, // 192
+    QUALITY_LOW3 = 4, // 256
+    QUALITY_LOW4 = 5, // 320
+    QUALITY_LOW = 6, // 400
+    QUALITY_MID = 7, // 500
+    QUALITY_HIGH = 8, // 900
+    QUALITY_HIGH1 = 9, // 1000 (supported in LHDCV5+)
+    QUALITY_ABR = 10, // ABR mode
 }

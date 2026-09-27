@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,8 @@
 package vendor.mediatek.hardware.bluetooth.audio;
 
 @VintfStability
-@Backing(type="int")
-enum CodecType {
-    UNKNOWN,
-    SBC,
-    AAC,
-    APTX,
-    APTX_HD,
-    LDAC,
-    LC3,
-    VENDOR,
-    APTX_ADAPTIVE,
-    LHDCV3,
-    LHDCV2,
-    LHDCV5,
+@Backing(type="byte")
+enum LowLatencyEnabled {
+    Disabled = 0,
+    Enabled = 1,
 }
