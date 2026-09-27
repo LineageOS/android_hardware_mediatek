@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.lbs@1.0;
+
+interface ILbsCallback {
+    callbackToClient(vec<uint8_t> data) generates (bool success);
+};

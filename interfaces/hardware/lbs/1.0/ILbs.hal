@@ -1,0 +1,11 @@
+package vendor.mediatek.hardware.lbs@1.0;
+
+import ILbsCallback;
+
+interface ILbs {
+    setCallback(ILbsCallback callback);
+
+    sendToServer(vec<uint8_t> data) generates (bool success);
+
+    sendToServerWithCallback(ILbsCallback callback, vec<uint8_t> data) generates (bool success);
+};
