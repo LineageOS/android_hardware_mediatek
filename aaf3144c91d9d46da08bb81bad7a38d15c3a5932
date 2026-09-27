@@ -16,6 +16,24 @@
       "message": "Maybe a different name ? Since this only targets legacy platforms and modern ones ship bluetooth audio impl from mediatek using this exact module name. Would avoid confusion imo and a soong namespace",
       "revId": "aaf3144c91d9d46da08bb81bad7a38d15c3a5932",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36a2e423_7d6f4fed",
+        "filename": "aidl/bluetooth_audio/adapter/Android.bp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-09-27T22:18:07Z",
+      "side": 1,
+      "message": "Made it -impl-mediatek-{h,a}idl for S and T vendor respectively and edited audio hal to load these (and aosp -impl one as well for socs where offload isnt compiled in / supported and this isnt needed at all)",
+      "parentUuid": "6cee274d_76f70c7d",
+      "revId": "aaf3144c91d9d46da08bb81bad7a38d15c3a5932",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
