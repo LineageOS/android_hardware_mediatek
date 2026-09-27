@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75b94231_f2bf3c82",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-09-27T22:15:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef54da85_a9933500",
+      "revId": "93e5d4aabd3fb51f752fdd6a788461e40d2cd6f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2eec3ad_e05009fd",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-25T23:09:37Z",
       "side": 1,
       "message": "Same for audio effect",
+      "revId": "93e5d4aabd3fb51f752fdd6a788461e40d2cd6f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea88aec_dda2294b",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-09-27T22:15:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2eec3ad_e05009fd",
       "revId": "93e5d4aabd3fb51f752fdd6a788461e40d2cd6f5",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
