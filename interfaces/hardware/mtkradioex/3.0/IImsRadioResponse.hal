@@ -1,0 +1,148 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+import android.hardware.radio@1.0::SendSmsResult;
+
+interface IImsRadioResponse {
+    oneway hangupAllResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setCallIndicationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway videoCallAcceptResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway imsEctCommandResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway controlCallResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway imsDeregNotificationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsEnableResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImscfgResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getProvisionValueResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setProvisionValueResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway controlImsConferenceCallMemberResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setWfcProfileResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway conferenceDialResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway vtDialWithSipUriResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway vtDialResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway dialWithSipUriResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway sendUssiResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway cancelUssiResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getXcapStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway resetSuppServResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setupXcapUserAgentStringResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway forceReleaseCallResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway imsBearerStateConfirmResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsCallStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway updateImsRegistrationStatusResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsRtpReportResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway pullCallResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsRegistrationReportResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setVoiceDomainPreferenceResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setClipResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getColpResponse(android.hardware.radio@1.0::RadioResponseInfo info, int32_t n,
+        int32_t m);
+
+    oneway getColrResponse(android.hardware.radio@1.0::RadioResponseInfo info, int32_t n);
+
+    oneway setColpResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setColrResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway queryCallForwardInTimeSlotStatusResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<CallForwardInfoEx> callForwardInfoExs);
+
+    oneway setCallForwardInTimeSlotResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway runGbaAuthenticationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> resList);
+
+    oneway setModemImsCfgResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string results);
+
+    oneway sendImsSmsExResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        android.hardware.radio@1.0::SendSmsResult sms);
+
+    oneway acknowledgeLastIncomingGsmSmsExResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway acknowledgeLastIncomingCdmaSmsExResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsBearerNotificationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsCfgFeatureValueResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getImsCfgFeatureValueResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t value);
+
+    oneway setImsCfgProvisionValueResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getImsCfgProvisionValueResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string value);
+
+    oneway getImsCfgResourceCapValueResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t value);
+
+    oneway hangupWithReasonResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setRttModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway sendRttModifyRequestResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway sendRttTextResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway rttModifyRequestResponseResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway toggleRttAudioIndicationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway queryVopsStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t vops);
+
+    oneway getVoiceDomainPreferenceResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t vdp);
+
+    oneway setSipHeaderResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setSipHeaderReportResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setImsCallModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setVendorSettingResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway querySsacStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> status);
+
+    oneway eccRedialApproveResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setCallAdditionalInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway videoRingtoneEventResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+};

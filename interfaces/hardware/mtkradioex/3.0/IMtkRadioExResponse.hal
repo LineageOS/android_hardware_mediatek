@@ -1,0 +1,401 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IMtkRadioExResponse {
+    oneway sendEmbmsAtCommandResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        string data);
+
+    oneway setRoamingEnableResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway getRoamingEnableResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<int32_t> data);
+
+    oneway queryPhbStorageInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> storageInfo);
+
+    oneway writePhbEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway readPhbEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<PhbEntryStructure> phbEntries);
+
+    oneway queryUPBCapabilityResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> upbCapability);
+
+    oneway editUPBEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway deleteUPBEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway readUPBGasListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> gasList);
+
+    oneway readUPBGrpEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> grpEntries);
+
+    oneway writeUPBGrpEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getPhoneBookStringsLengthResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> stringLengthInfo);
+
+    oneway getPhoneBookMemStorageResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        PhbMemStorageResponse phbMemStorage);
+
+    oneway setPhoneBookMemStorageResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway readPhoneBookEntryExtResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<PhbEntryExt> phbEntryExts);
+
+    oneway writePhoneBookEntryExtResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway queryUPBAvailableResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> upbAvailable);
+
+    oneway readUPBEmailEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string email);
+
+    oneway readUPBSneEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string sne);
+
+    oneway readUPBAnrEntryResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<PhbEntryStructure> anrs);
+
+    oneway readUPBAasListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> aasList);
+
+    oneway setPhonebookReadyResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setClipResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getColpResponse(android.hardware.radio@1.0::RadioResponseInfo info, int32_t n,
+        int32_t m);
+
+    oneway getColrResponse(android.hardware.radio@1.0::RadioResponseInfo info, int32_t n);
+
+    oneway sendCnapResponse(android.hardware.radio@1.0::RadioResponseInfo info, int32_t n,
+        int32_t m);
+
+    oneway setColpResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setColrResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway queryCallForwardInTimeSlotStatusResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<CallForwardInfoEx> callForwardInfoExs);
+
+    oneway setCallForwardInTimeSlotResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway runGbaAuthenticationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> resList);
+
+    oneway hangupAllResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setCallIndicationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setEccModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setEccNumResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getEccNumResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setCallSubAddressResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getCallSubAddressResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t enable);
+
+    oneway setModemPowerResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway triggerModeSwitchByEccResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getATRResponse(android.hardware.radio@1.0::RadioResponseInfo info, string response);
+
+    oneway getIccidResponse(android.hardware.radio@1.0::RadioResponseInfo info, string response);
+
+    oneway setSimPowerResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway activateUiccCardRsp(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t simPowerOnOffResponse);
+
+    oneway deactivateUiccCardRsp(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t simPowerOnOffResponse);
+
+    oneway getCurrentUiccCardProvisioningStatusRsp(
+        android.hardware.radio@1.0::RadioResponseInfo info, int32_t simPowerOnOffStatus);
+
+    oneway queryNetworkLockResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t catagory, int32_t state, int32_t retry_cnt, int32_t autolock_cnt, int32_t num_set,
+        int32_t total_set, int32_t key_state);
+
+    oneway setNetworkLockResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway supplyDepersonalizationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t remainingRetries);
+
+    oneway vsimNotificationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        VsimEvent event);
+
+    oneway vsimOperationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getSmsParametersResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        SmsParams param);
+
+    oneway setSmsParametersResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getSmsMemStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        SmsMemStatus status);
+
+    oneway setEtwsResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway removeCbMsgResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setGsmBroadcastLangsResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getGsmBroadcastLangsResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string langs);
+
+    oneway getGsmBroadcastActivationRsp(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t active);
+
+    oneway sendRequestRawResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<uint8_t> data);
+
+    oneway sendRequestStringsResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> data);
+
+    oneway setResumeRegistrationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway modifyModemTypeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t applyType);
+
+    oneway getSmsRuimMemoryStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        SmsMemStatus memStatus);
+
+    oneway setNetworkSelectionModeManualWithActResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getAvailableNetworksWithActResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<OperatorInfoWithAct> networkInfosWithAct);
+
+    oneway getSignalStrengthWithWcdmaEcioResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info,
+        SignalStrengthWithWcdmaEcio signalStrength);
+
+    oneway cancelAvailableNetworksResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getFemtocellListResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<string> femtoList);
+
+    oneway abortFemtocellListResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway selectFemtocellResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway queryFemtoCellSystemSelectionModeResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo, int32_t mode);
+
+    oneway setFemtoCellSystemSelectionModeResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setServiceStateToModemResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway cfgA2offsetResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway cfgB1offsetResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway enableSCGfailureResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setTxPowerResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setSearchStoredFreqInfoResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setSearchRatResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setBgsrchDeltaSleepTimerResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setRxTestConfigResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<int32_t> respAntConf);
+
+    oneway getRxTestResultResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<int32_t> respAntInfo);
+
+    oneway getPOLCapabilityResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<int32_t> polCapability);
+
+    oneway getCurrentPOLListResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<string> polList);
+
+    oneway setPOLEntryResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setFdModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setTrmResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway handleStkCallSetupRequestFromSimWithResCodeResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway restartRILDResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway syncDataSettingsToMdResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway resetMdDataRetryCountResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setRemoveRestrictEutranModeResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setApcModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getApcInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> cellInfo);
+
+    oneway dataConnectionAttachResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway dataConnectionDetachResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway resetAllConnectionsResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setLteReleaseVersionResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getLteReleaseVersionResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t mode);
+
+    oneway setTxPowerStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setSuppServPropertyResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway supplyDeviceNetworkDepersonalizationResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info, int32_t remainingRetries);
+
+    oneway hangupWithReasonResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setVendorSettingResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getPlmnNameFromSE13TableResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        string name);
+
+    oneway enableCAPlusBandWidthFilterResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setGwsdModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setCallValidTimerResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setIgnoreSameNumberIntervalResponse(
+        android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setKeepAliveByPDCPCtrlPDUResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway setKeepAliveByIpDataResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway enableDsdaIndicationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getDsdaStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t mode);
+
+    oneway registerCellQltyReportResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getSuggestedPlmnListResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        vec<string> plmnList);
+
+    oneway deactivateNrScgCommunicationResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway getDeactivateNrScgCommunicationResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo, int32_t deactivate,
+        int32_t allowSCGAdd);
+
+    oneway setMaxUlSpeedResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway sendSarIndicatorResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway sendRsuRequestResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        RsuResponseInfo rri);
+
+    oneway sendWifiEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway sendWifiAssociatedResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway sendWifiIpAddressResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway setNROptionResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway getTOEInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info, string longName,
+        string shortName, string numeric);
+
+    oneway disableAllCALinksResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getCALinkEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        bool status);
+
+    oneway setCALinkEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getCALinkCapabilityListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> linkCapabilityList);
+
+    oneway getLteDataResponse(android.hardware.radio@1.0::RadioResponseInfo info, LteData data);
+
+    oneway getLteRRCStateResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t state);
+
+    oneway setLteBandEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getBandPriorityListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> bandPriList);
+
+    oneway setBandPriorityListResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway set4x4MimoEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway get4x4MimoEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t enabled_bitmask);
+
+    oneway setLteBsrTimerResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getLteBsrTimerResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t timer);
+
+    oneway getLte1xRttCellListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<Lte1xRttCellInfo> list);
+
+    oneway clearLteAvailableFileResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> data);
+
+    oneway getCaBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> data);
+
+    oneway getCampedFemtoCellInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> femto);
+
+    oneway setQamEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getQamEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info, bool ulOrDl,
+        bool enabled);
+
+    oneway setTm9EnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getTm9EnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info, bool fddOrTdd,
+        bool enabled);
+
+    oneway setLteScanDurationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getLteScanDurationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t duration);
+
+    oneway setDisable2GResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo);
+
+    oneway getDisable2GResponse(android.hardware.radio@1.0::RadioResponseInfo responseInfo,
+        int32_t mode);
+
+    oneway getEngineeringModeInfoResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo, vec<string> result);
+
+    oneway getIWlanRegistrationStateResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo, int32_t state);
+
+    oneway getAllBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        BandModeInfo data);
+
+    oneway setNrBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+};

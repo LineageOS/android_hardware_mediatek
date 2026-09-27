@@ -1,0 +1,7 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IAtciIndication {
+    oneway atciInd(android.hardware.radio@1.0::RadioIndicationType type, vec<uint8_t> data);
+};

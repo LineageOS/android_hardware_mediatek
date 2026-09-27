@@ -1,0 +1,37 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IMwiRadioIndication {
+    oneway onWifiMonitoringThreshouldChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onWifiPdnActivate(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onWfcPdnError(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onPdnHandover(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onWifiRoveout(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> indStgs);
+
+    oneway onLocationRequest(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> indStgs);
+
+    oneway onWfcPdnStateChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onNattKeepAliveChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> indStgs);
+
+    oneway onWifiPingRequest(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway onWifiPdnOOS(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> indStgs);
+
+    oneway onWifiLock(android.hardware.radio@1.0::RadioIndicationType type, vec<string> indStgs);
+};

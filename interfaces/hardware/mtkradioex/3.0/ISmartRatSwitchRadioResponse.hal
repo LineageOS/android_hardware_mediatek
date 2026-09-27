@@ -1,0 +1,12 @@
+package vendor.mediatek.hardware.mtkradioex@3.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface ISmartRatSwitchRadioResponse {
+    oneway smartRatSwitchResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getSmartRatSwitchResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t state);
+
+    oneway setSmartSceneSwitchResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+};
