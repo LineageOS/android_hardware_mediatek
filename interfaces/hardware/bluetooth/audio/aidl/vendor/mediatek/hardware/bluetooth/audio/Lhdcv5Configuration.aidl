@@ -17,19 +17,24 @@
 package vendor.mediatek.hardware.bluetooth.audio;
 
 import vendor.mediatek.hardware.bluetooth.audio.ChannelMode;
-import vendor.mediatek.hardware.bluetooth.audio.LowLatencyEnabled;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5DataInterval;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5FrameDuration;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5QualityIndex;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5Specific;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5Version;
 
-/**
- * Used for Software Encoding audio feed configuration
- */
 @VintfStability
-parcelable PcmConfiguration {
+parcelable Lhdcv5Configuration {
     int sampleRateHz;
     ChannelMode channelMode;
     byte bitsPerSample;
-    /**
-     * Data interval for data transfer
-     */
-    int dataIntervalUs;
-    LowLatencyEnabled isLowLatencyEnabled;
+    Lhdcv5Version codecVersion;
+    Lhdcv5QualityIndex qualityIndex;
+    Lhdcv5QualityIndex maxQualityIndex;
+    Lhdcv5QualityIndex minQualityIndex;
+    Lhdcv5FrameDuration frameDuration;
+    Lhdcv5DataInterval dataInterval;
+    Lhdcv5Specific codecSpecific_1;
+    Lhdcv5Specific codecSpecific_2;
+    byte[] metaData;
 }

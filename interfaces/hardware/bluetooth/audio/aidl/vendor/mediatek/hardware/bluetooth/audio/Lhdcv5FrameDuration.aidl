@@ -17,18 +17,8 @@
 package vendor.mediatek.hardware.bluetooth.audio;
 
 @VintfStability
-@Backing(type="int")
-enum CodecType {
-    UNKNOWN,
-    SBC,
-    AAC,
-    APTX,
-    APTX_HD,
-    LDAC,
-    LC3,
-    VENDOR,
-    APTX_ADAPTIVE,
-    LHDCV3,
-    LHDCV2,
-    LHDCV5,
+@Backing(type="byte")
+enum Lhdcv5FrameDuration {
+    UNKNOWN = 0,
+    DURATION_5000US = 1,
 }
