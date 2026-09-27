@@ -1,0 +1,13 @@
+package vendor.mediatek.hardware.imsa@1.0;
+
+import IImsaIndication;
+
+interface IImsa {
+    setResponseFunctions(IImsaIndication imsaIndication);
+
+    oneway writeEvent(int32_t request_id, int32_t length, vec<int8_t> value);
+
+    oneway writeBytes(vec<int8_t> value);
+
+    oneway writeInt(int32_t value);
+};
