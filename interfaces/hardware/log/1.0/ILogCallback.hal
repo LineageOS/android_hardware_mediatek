@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.log@1.0;
+
+interface ILogCallback {
+    callbackToClient(string data) generates (bool success);
+};
