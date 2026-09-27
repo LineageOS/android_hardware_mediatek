@@ -38,4 +38,23 @@ aidl_interface {
             min_sdk_version: "31",
         },
     },
+    versions_with_info: [
+        {
+            version: "1",
+            imports: [
+                "android.hardware.common-V2",
+                "android.hardware.common.fmq-V1",
+                "android.hardware.audio.common-V1",
+            ],
+        },
+    ],
+    frozen: false,
+}
+
+// Note: This should always be one version ahead of the last frozen version
+cc_defaults {
+    name: "latest_vendor_mediatek_hardware_bluetooth_audio_ndk_shared",
+    shared_libs: [
+        "vendor.mediatek.hardware.bluetooth.audio-V2-ndk",
+    ],
 }

@@ -90,4 +90,6 @@ interface IBluetoothAudioPort {
      * @param latencyMode latency mode from audio
      */
     void setLatencyMode(in LatencyMode latencyMode);
+
+    void enterGameMode(in byte enter);
 }

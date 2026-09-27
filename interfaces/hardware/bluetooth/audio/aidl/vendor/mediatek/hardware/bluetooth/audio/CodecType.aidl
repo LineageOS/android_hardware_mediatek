@@ -28,4 +28,7 @@ enum CodecType {
     LC3,
     VENDOR,
     APTX_ADAPTIVE,
+    LHDCV3,
+    LHDCV2,
+    LHDCV5,
 }

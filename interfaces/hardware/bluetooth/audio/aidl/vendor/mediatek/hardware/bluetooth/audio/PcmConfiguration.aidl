@@ -17,6 +17,7 @@
 package vendor.mediatek.hardware.bluetooth.audio;
 
 import vendor.mediatek.hardware.bluetooth.audio.ChannelMode;
+import vendor.mediatek.hardware.bluetooth.audio.LowLatencyEnabled;
 
 /**
  * Used for Software Encoding audio feed configuration
@@ -30,4 +31,5 @@ parcelable PcmConfiguration {
      * Data interval for data transfer
      */
     int dataIntervalUs;
+    LowLatencyEnabled isLowLatencyEnabled;
 }

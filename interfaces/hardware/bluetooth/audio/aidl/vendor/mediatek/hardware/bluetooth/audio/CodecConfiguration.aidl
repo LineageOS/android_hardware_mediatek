@@ -22,6 +22,7 @@ import vendor.mediatek.hardware.bluetooth.audio.AptxAdaptiveConfiguration;
 import vendor.mediatek.hardware.bluetooth.audio.CodecType;
 import vendor.mediatek.hardware.bluetooth.audio.Lc3Configuration;
 import vendor.mediatek.hardware.bluetooth.audio.LdacConfiguration;
+import vendor.mediatek.hardware.bluetooth.audio.Lhdcv5Configuration;
 import vendor.mediatek.hardware.bluetooth.audio.SbcConfiguration;
 
 /**
@@ -45,6 +46,7 @@ parcelable CodecConfiguration {
         AptxAdaptiveConfiguration aptxAdaptiveConfig;
         Lc3Configuration lc3Config;
         VendorConfiguration vendorConfig;
+        Lhdcv5Configuration lhdcv5Config;
     }
     CodecType codecType;
     /**
