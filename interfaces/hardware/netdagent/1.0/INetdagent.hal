@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.netdagent@1.0;
+
+interface INetdagent {
+    dispatchNetdagentCmd(string cmd) generates (bool result);
+};
