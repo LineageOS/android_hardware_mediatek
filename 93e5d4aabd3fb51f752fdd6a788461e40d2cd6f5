@@ -86,6 +86,24 @@
       "message": "I don\u0027t recall any mtk device making use of sounddose so far",
       "revId": "93e5d4aabd3fb51f752fdd6a788461e40d2cd6f5",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb58c29_79b847ff",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-10-02T20:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4f65313_80f34b4b",
+      "revId": "93e5d4aabd3fb51f752fdd6a788461e40d2cd6f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
