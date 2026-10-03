@@ -47,6 +47,14 @@ aidl_interface {
                 "android.hardware.audio.common-V1",
             ],
         },
+        {
+            version: "2",
+            imports: [
+                "android.hardware.common-V2",
+                "android.hardware.common.fmq-V1",
+                "android.hardware.audio.common-V2",
+            ],
+        },
     ],
     frozen: false,
 }
@@ -55,6 +63,6 @@ aidl_interface {
 cc_defaults {
     name: "latest_vendor_mediatek_hardware_bluetooth_audio_ndk_shared",
     shared_libs: [
-        "vendor.mediatek.hardware.bluetooth.audio-V2-ndk",
+        "vendor.mediatek.hardware.bluetooth.audio-V3-ndk",
     ],
 }
