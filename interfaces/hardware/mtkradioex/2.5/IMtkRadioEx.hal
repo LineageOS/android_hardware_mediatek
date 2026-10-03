@@ -1,0 +1,7 @@
+package vendor.mediatek.hardware.mtkradioex@2.5;
+
+import @2.4::IMtkRadioEx;
+
+interface IMtkRadioEx extends @2.4::IMtkRadioEx {
+    oneway getEngineeringModeInfo(int32_t serial, int32_t index);
+};

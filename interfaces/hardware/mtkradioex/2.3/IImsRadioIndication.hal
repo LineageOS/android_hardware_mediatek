@@ -1,0 +1,8 @@
+package vendor.mediatek.hardware.mtkradioex@2.3;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+import @2.2::IImsRadioIndication;
+
+interface IImsRadioIndication extends @2.2::IImsRadioIndication {
+    oneway eregrtInfoInd(android.hardware.radio@1.0::RadioIndicationType type, vec<int32_t> info);
+};

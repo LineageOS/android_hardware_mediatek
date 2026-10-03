@@ -1,0 +1,12 @@
+package vendor.mediatek.hardware.mtkradioex@2.4;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+import @2.0::IMtkRadioExIndication;
+
+interface IMtkRadioExIndication extends @2.0::IMtkRadioExIndication {
+    oneway toeInfoInd(android.hardware.radio@1.0::RadioIndicationType type, string longName,
+        string shortName, string numeric);
+
+    oneway sib16TimeInfoInd(android.hardware.radio@1.0::RadioIndicationType type, string sib16Time,
+        int64_t receivedTime);
+};

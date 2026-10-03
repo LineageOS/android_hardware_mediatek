@@ -1,0 +1,8 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IRsuRadioResponse {
+    oneway sendRsuResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        RsuResponseInfo rri);
+};

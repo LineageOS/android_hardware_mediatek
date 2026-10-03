@@ -1,0 +1,7 @@
+package vendor.mediatek.hardware.mtkradioex@2.2;
+
+import @2.1::IMtkRadioEx;
+
+interface IMtkRadioEx extends @2.1::IMtkRadioEx {
+    oneway videoRingtoneEventRequest(int32_t serial, vec<string> event);
+};
