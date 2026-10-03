@@ -1,3 +1,9 @@
+soong_namespace {
+    imports: [
+        "hardware/mediatek/interfaces/hardware/bluetooth/audio/aidl",
+    ],
+}
+
 cc_library_shared {
     name: "android.hardware.bluetooth.audio-impl-mediatek-aidl",
     vendor: true,
