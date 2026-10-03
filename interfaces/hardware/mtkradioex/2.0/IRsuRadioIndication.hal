@@ -1,0 +1,8 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IRsuRadioIndication {
+    oneway onRsuEvent(android.hardware.radio@1.0::RadioIndicationType type, int32_t eventId,
+        string eventString);
+};

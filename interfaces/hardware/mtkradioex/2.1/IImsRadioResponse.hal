@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.mtkradioex@2.1;
+
+import @2.0::IImsRadioResponse;
+
+interface IImsRadioResponse extends @2.0::IImsRadioResponse {};

@@ -1,0 +1,485 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import IAssistRadioResponse;
+import IAtciIndication;
+import IAtciResponse;
+import ICapRadioResponse;
+import IEmRadioIndication;
+import IEmRadioResponse;
+import IImsRadioIndication;
+import IImsRadioResponse;
+import IMtkRadioExIndication;
+import IMtkRadioExResponse;
+import IMwiRadioIndication;
+import IMwiRadioResponse;
+import IRcsRadioIndication;
+import IRcsRadioResponse;
+import IRsuRadioIndication;
+import IRsuRadioResponse;
+import ISERadioIndication;
+import ISERadioResponse;
+import ISmartRatSwitchRadioIndication;
+import ISmartRatSwitchRadioResponse;
+import ISubsidyLockIndication;
+import ISubsidyLockResponse;
+import android.hardware.radio@1.0::CdmaSmsAck;
+import android.hardware.radio@1.0::Dial;
+import android.hardware.radio@1.0::ImsSmsMessage;
+
+interface IMtkRadioEx {
+    oneway responseAcknowledgementMtk();
+
+    setResponseFunctionsMtk(IMtkRadioExResponse radioResponse,
+        IMtkRadioExIndication radioIndication);
+
+    setResponseFunctionsIms(IImsRadioResponse radioResponse, IImsRadioIndication radioIndication);
+
+    setResponseFunctionsMwi(IMwiRadioResponse radioResponse, IMwiRadioIndication radioIndication);
+
+    setResponseFunctionsSE(ISERadioResponse radioResponse, ISERadioIndication radioIndication);
+
+    setResponseFunctionsEm(IEmRadioResponse radioResponse, IEmRadioIndication radioIndication);
+
+    setResponseFunctionsAssist(IAssistRadioResponse radioResponse);
+
+    setResponseFunctionsCap(ICapRadioResponse radioResponse);
+
+    setResponseFunctionsRsu(IRsuRadioResponse radioResponse, IRsuRadioIndication radioIndication);
+
+    oneway videoCallAccept(int32_t serial, int32_t videoMode, int32_t callId);
+
+    oneway imsEctCommand(int32_t serial, string number, int32_t type);
+
+    oneway controlCall(int32_t serial, int32_t controlType, int32_t callId);
+
+    oneway imsDeregNotification(int32_t serial, int32_t cause);
+
+    oneway setImsEnable(int32_t serial, bool isOn);
+
+    oneway setImsVideoEnable(int32_t serial, bool isOn);
+
+    oneway setImscfg(int32_t serial, bool volteEnable, bool vilteEnable, bool vowifiEnable,
+        bool viwifiEnable, bool smsEnable, bool eimsEnable);
+
+    oneway getProvisionValue(int32_t serial, string provisionstring);
+
+    oneway setProvisionValue(int32_t serial, string provisionstring, string provisionValue);
+
+    oneway controlImsConferenceCallMember(int32_t serial, int32_t controlType, int32_t confCallId,
+        string address, int32_t callId);
+
+    oneway setWfcProfile(int32_t serial, int32_t wfcPreference);
+
+    oneway conferenceDial(int32_t serial, ConferenceDial dailInfo);
+
+    oneway setModemImsCfg(int32_t serial, string keys, string values, int32_t type);
+
+    oneway dialWithSipUri(int32_t serial, string address);
+
+    oneway vtDialWithSipUri(int32_t serial, string address);
+
+    oneway vtDial(int32_t serial, android.hardware.radio@1.0::Dial dialInfo);
+
+    oneway forceReleaseCall(int32_t serial, int32_t callId);
+
+    oneway imsBearerStateConfirm(int32_t serial, int32_t aid, int32_t action, int32_t status);
+
+    oneway setImsRtpReport(int32_t serial, int32_t pdnId, int32_t networkId, int32_t timer);
+
+    oneway pullCall(int32_t serial, string target, bool isVideoCall);
+
+    oneway setImsRegistrationReport(int32_t serial);
+
+    oneway sendEmbmsAtCommand(int32_t serial, string data);
+
+    oneway setRoamingEnable(int32_t serial, vec<int32_t> config);
+
+    oneway getRoamingEnable(int32_t serial, int32_t phoneId);
+
+    oneway setBarringPasswordCheckedByNW(int32_t serial, string facility, string oldPassword,
+        string newPassword, string cfmPassword);
+
+    oneway setClip(int32_t serial, int32_t clipEnable);
+
+    oneway getColp(int32_t serial);
+
+    oneway getColr(int32_t serial);
+
+    oneway sendCnap(int32_t serial, string cnapssMessage);
+
+    oneway setColp(int32_t serial, int32_t colpEnable);
+
+    oneway setColr(int32_t serial, int32_t colrEnable);
+
+    oneway queryCallForwardInTimeSlotStatus(int32_t serial, CallForwardInfoEx callInfoEx);
+
+    oneway setCallForwardInTimeSlot(int32_t serial, CallForwardInfoEx callInfoEx);
+
+    oneway runGbaAuthentication(int32_t serial, string nafFqdn, string nafSecureProtocolId,
+        bool forceRun, int32_t netId);
+
+    oneway sendUssi(int32_t serial, string ussiString);
+
+    oneway cancelUssi(int32_t serial);
+
+    oneway getXcapStatus(int32_t serial);
+
+    oneway resetSuppServ(int32_t serial);
+
+    oneway setupXcapUserAgentString(int32_t serial, string userAgent);
+
+    oneway hangupAll(int32_t serial);
+
+    oneway setCallIndication(int32_t serial, int32_t mode, int32_t callId, int32_t seqNumber,
+        int32_t cause);
+
+    oneway setEccMode(int32_t serial, string number, int32_t enable, int32_t airplaneMode,
+        int32_t imsReg);
+
+    oneway eccPreferredRat(int32_t serial, int32_t phoneType);
+
+    oneway setVoicePreferStatus(int32_t serial, int32_t status);
+
+    oneway setEccNum(int32_t serial, string ecc_list_with_card, string ecc_list_no_card);
+
+    oneway getEccNum(int32_t serial);
+
+    oneway setCallSubAddress(int32_t serial, bool enable);
+
+    oneway getCallSubAddress(int32_t serial);
+
+    oneway queryPhbStorageInfo(int32_t serial, int32_t type);
+
+    oneway writePhbEntry(int32_t serial, PhbEntryStructure phbEntry);
+
+    oneway readPhbEntry(int32_t serial, int32_t type, int32_t bIndex, int32_t eIndex);
+
+    oneway queryUPBCapability(int32_t serial);
+
+    oneway editUPBEntry(int32_t serial, vec<string> data);
+
+    oneway deleteUPBEntry(int32_t serial, int32_t entryType, int32_t adnIndex,
+        int32_t entryIndex);
+
+    oneway readUPBGasList(int32_t serial, int32_t startIndex, int32_t endIndex);
+
+    oneway readUPBGrpEntry(int32_t serial, int32_t adnIndex);
+
+    oneway writeUPBGrpEntry(int32_t serial, int32_t adnIndex, vec<int32_t> grpIds);
+
+    oneway getPhoneBookStringsLength(int32_t serial);
+
+    oneway getPhoneBookMemStorage(int32_t serial);
+
+    oneway setPhoneBookMemStorage(int32_t serial, string storage, string password);
+
+    oneway readPhoneBookEntryExt(int32_t serial, int32_t index1, int32_t index2);
+
+    oneway writePhoneBookEntryExt(int32_t serial, PhbEntryExt phbEntryExt);
+
+    oneway queryUPBAvailable(int32_t serial, int32_t eftype, int32_t fileIndex);
+
+    oneway readUPBEmailEntry(int32_t serial, int32_t adnIndex, int32_t fileIndex);
+
+    oneway readUPBSneEntry(int32_t serial, int32_t adnIndex, int32_t fileIndex);
+
+    oneway readUPBAnrEntry(int32_t serial, int32_t adnIndex, int32_t fileIndex);
+
+    oneway readUPBAasList(int32_t serial, int32_t startIndex, int32_t endIndex);
+
+    oneway setPhonebookReady(int32_t serial, int32_t ready);
+
+    oneway setModemPower(int32_t serial, bool isOn);
+
+    oneway triggerModeSwitchByEcc(int32_t serial, int32_t mode);
+
+    oneway getATR(int32_t serial);
+
+    oneway getIccid(int32_t serial);
+
+    oneway setSimPower(int32_t serial, int32_t mode);
+
+    oneway activateUiccCard(int32_t serial);
+
+    oneway deactivateUiccCard(int32_t serial);
+
+    oneway getCurrentUiccCardProvisioningStatus(int32_t serial);
+
+    oneway doGeneralSimAuthentication(int32_t serial, SimAuthStructure simAuth);
+
+    oneway queryNetworkLock(int32_t serial, int32_t category);
+
+    oneway setNetworkLock(int32_t serial, int32_t category, int32_t lockop, string password,
+        string data_imsi, string gid1, string gid2);
+
+    oneway supplyDepersonalization(int32_t serial, string netPin, int32_t type);
+
+    oneway sendVsimNotification(int32_t serial, uint32_t transactionId, uint32_t eventId,
+        uint32_t simType);
+
+    oneway sendVsimOperation(int32_t serial, uint32_t transactionId, uint32_t eventId,
+        int32_t result, int32_t dataLength, vec<uint8_t> data);
+
+    oneway getSmsParameters(int32_t serial);
+
+    oneway setSmsParameters(int32_t serial, SmsParams message);
+
+    oneway getSmsMemStatus(int32_t serial);
+
+    oneway setEtws(int32_t serial, int32_t mode);
+
+    oneway removeCbMsg(int32_t serial, int32_t channelId, int32_t serialId);
+
+    oneway setGsmBroadcastLangs(int32_t serial, string langs);
+
+    oneway getGsmBroadcastLangs(int32_t serial);
+
+    oneway getGsmBroadcastActivation(int32_t serial);
+
+    oneway sendImsSmsEx(int32_t serial, android.hardware.radio@1.0::ImsSmsMessage message);
+
+    oneway acknowledgeLastIncomingGsmSmsEx(int32_t serial, bool success, int32_t cause);
+
+    oneway acknowledgeLastIncomingCdmaSmsEx(int32_t serial,
+        android.hardware.radio@1.0::CdmaSmsAck smsAck);
+
+    oneway sendRequestRaw(int32_t serial, vec<int8_t> data);
+
+    oneway sendRequestStrings(int32_t serial, vec<string> data);
+
+    oneway setResumeRegistration(int32_t serial, int32_t sessionId);
+
+    oneway modifyModemType(int32_t serial, int32_t applyType, int32_t modemType);
+
+    oneway getSmsRuimMemoryStatus(int32_t serial);
+
+    oneway setNetworkSelectionModeManualWithAct(int32_t serial, string operatorNumeric, string act,
+        string mode);
+
+    oneway getAvailableNetworksWithAct(int32_t serial);
+
+    oneway getSignalStrengthWithWcdmaEcio(int32_t serial);
+
+    oneway cancelAvailableNetworks(int32_t serial);
+
+    oneway getFemtocellList(int32_t serial);
+
+    oneway abortFemtocellList(int32_t serial);
+
+    oneway selectFemtocell(int32_t serial, string operatorNumeric, string act, string csgId);
+
+    oneway queryFemtoCellSystemSelectionMode(int32_t serial);
+
+    oneway setFemtoCellSystemSelectionMode(int32_t serial, int32_t mode);
+
+    oneway setServiceStateToModem(int32_t serial, int32_t voiceRegState, int32_t dataRegState,
+        int32_t voiceRoamingType, int32_t dataRoamingType, int32_t rilVoiceRegState,
+        int32_t rilDataRegState);
+
+    oneway cfgA2offset(int32_t serial, int32_t offset, int32_t threshBound);
+
+    oneway cfgB1offset(int32_t serial, int32_t offset, int32_t threshBound);
+
+    oneway enableSCGfailure(int32_t serial, bool enable, int32_t T1, int32_t P1, int32_t T2);
+
+    oneway disableNR(int32_t serial, bool enable);
+
+    oneway setTxPower(int32_t serial, int32_t limitpower);
+
+    oneway setSearchStoredFreqInfo(int32_t serial, int32_t operation, int32_t plmn_id, int32_t rat,
+        vec<int32_t> freq);
+
+    oneway setSearchRat(int32_t serial, vec<int32_t> rat);
+
+    oneway setBgsrchDeltaSleepTimer(int32_t serial, int32_t sleepDuration);
+
+    oneway setRxTestConfig(int32_t serial, int32_t antType);
+
+    oneway getRxTestResult(int32_t serial, int32_t mode);
+
+    oneway getPOLCapability(int32_t serial);
+
+    oneway getCurrentPOLList(int32_t serial);
+
+    oneway setPOLEntry(int32_t serial, int32_t index, string numeric, int32_t nAct);
+
+    oneway setFdMode(int32_t serial, int32_t mode, int32_t param1, int32_t param2);
+
+    oneway setTrm(int32_t serial, int32_t mode);
+
+    oneway handleStkCallSetupRequestFromSimWithResCode(int32_t serial, int32_t resultCode);
+
+    oneway setResponseFunctionsForAtci(IAtciResponse atciResponse,
+        IAtciIndication atciIndication);
+
+    oneway sendAtciRequest(int32_t serial, vec<int8_t> data);
+
+    oneway restartRILD(int32_t serial);
+
+    oneway syncDataSettingsToMd(int32_t serial, vec<int32_t> settings);
+
+    oneway resetMdDataRetryCount(int32_t serial, string apn);
+
+    oneway setRemoveRestrictEutranMode(int32_t serial, int32_t type);
+
+    oneway setVoiceDomainPreference(int32_t serial, int32_t vdp);
+
+    oneway setWifiEnabled(int32_t serial, string ifName, int32_t isWifiEnabled,
+        int32_t isFlightModeOn);
+
+    oneway setWifiAssociated(int32_t serial, string ifName, int32_t associated, string ssid,
+        string apMac, int32_t mtuSize, string ueMac);
+
+    oneway setWifiSignalLevel(int32_t serial, int32_t rssi, int32_t snr);
+
+    oneway setWifiIpAddress(int32_t serial, string ifName, string ipv4Addr, string ipv6Addr,
+        int32_t ipv4PrefixLen, int32_t ipv6PrefixLen, string ipv4Gateway, string ipv6Gateway,
+        int32_t dnsCount, string dnsServers);
+
+    oneway setWfcConfig(int32_t serial, int32_t setting, string ifName, string value);
+
+    oneway querySsacStatus(int32_t serial);
+
+    oneway setLocationInfo(int32_t serial, string accountId, string broadcastFlag, string latitude,
+        string longitude, string accuracy, string method, string city, string state, string zip,
+        string countryCode, string ueWlanMac);
+
+    oneway setEmergencyAddressId(int32_t serial, string aid);
+
+    oneway setNattKeepAliveStatus(int32_t serial, string ifName, bool enable, string srcIp,
+        int32_t srcPort, string dstIp, int32_t dstPort);
+
+    oneway setWifiPingResult(int32_t serial, int32_t rat, int32_t latency, int32_t pktloss);
+
+    oneway setApcMode(int32_t serial, int32_t mode, int32_t reportMode, int32_t interval);
+
+    oneway getApcInfo(int32_t serial);
+
+    oneway setImsBearerNotification(int32_t serial, int32_t enable);
+
+    oneway setImsCfgFeatureValue(int32_t serial, int32_t featureId, int32_t network, int32_t value,
+        int32_t isLast);
+
+    oneway getImsCfgFeatureValue(int32_t serial, int32_t featureId, int32_t network);
+
+    oneway setImsCfgProvisionValue(int32_t serial, int32_t configId, string value);
+
+    oneway getImsCfgProvisionValue(int32_t serial, int32_t configId);
+
+    oneway getImsCfgResourceCapValue(int32_t serial, int32_t featureId);
+
+    oneway dataConnectionAttach(int32_t serial, int32_t type);
+
+    oneway dataConnectionDetach(int32_t serial, int32_t type);
+
+    oneway resetAllConnections(int32_t serial);
+
+    oneway setLteReleaseVersion(int32_t serial, int32_t mode);
+
+    oneway getLteReleaseVersion(int32_t serial);
+
+    oneway setTxPowerStatus(int32_t serial, int32_t mode);
+
+    oneway setSuppServProperty(int32_t serial, string name, string value);
+
+    oneway supplyDeviceNetworkDepersonalization(int32_t serial, string pwd);
+
+    oneway notifyEPDGScreenState(int32_t serial, int32_t state);
+
+    oneway hangupWithReason(int32_t serial, int32_t callId, int32_t reason);
+
+    oneway setResponseFunctionsSubsidyLock(ISubsidyLockResponse sublockResp,
+        ISubsidyLockIndication sublockInd);
+
+    oneway setResponseFunctionsRcs(IRcsRadioResponse radioResponse,
+        IRcsRadioIndication radioIndication);
+
+    oneway sendSubsidyLockRequest(int32_t serial, int32_t reqType, vec<int8_t> data);
+
+    oneway setVendorSetting(int32_t serial, int32_t setting, string value);
+
+    oneway setRttMode(int32_t serial, int32_t mode);
+
+    oneway sendRttModifyRequest(int32_t serial, int32_t callId, int32_t newMode);
+
+    oneway sendRttText(int32_t serial, int32_t callId, int32_t lenOfString, string text);
+
+    oneway rttModifyRequestResponse(int32_t serial, int32_t callId, int32_t result);
+
+    oneway toggleRttAudioIndication(int32_t serial, int32_t callId, int32_t audio);
+
+    oneway queryVopsStatus(int32_t serial);
+
+    oneway notifyImsServiceReady();
+
+    oneway getPlmnNameFromSE13Table(int32_t serial, int32_t mcc, int32_t mnc);
+
+    oneway enableCAPlusBandWidthFilter(int32_t serial, bool enable);
+
+    oneway getVoiceDomainPreference(int32_t serial);
+
+    oneway setSipHeader(int32_t serial, vec<string> data);
+
+    oneway setSipHeaderReport(int32_t serial, vec<string> data);
+
+    oneway setImsCallMode(int32_t serial, int32_t mode);
+
+    oneway setGwsdMode(int32_t serial, vec<string> data);
+
+    oneway setCallValidTimer(int32_t serial, int32_t timer);
+
+    oneway setIgnoreSameNumberInterval(int32_t serial, int32_t interval);
+
+    oneway setKeepAliveByPDCPCtrlPDU(int32_t serial, string config);
+
+    oneway setKeepAliveByIpData(int32_t serial, string config);
+
+    oneway enableDsdaIndication(int32_t serial, bool enable);
+
+    oneway getDsdaStatus(int32_t serial);
+
+    oneway registerCellQltyReport(int32_t serial, string registerQuality, string type,
+        string thresholdValues, string triggerTime);
+
+    oneway getSuggestedPlmnList(int32_t serial, int32_t rat, int32_t num, int32_t timer);
+
+    oneway routeCertificate(int32_t serial, int32_t uid, vec<int8_t> cert, vec<int8_t> msg);
+
+    oneway routeAuthMessage(int32_t serial, int32_t uid, vec<int8_t> msg);
+
+    oneway enableCapabaility(int32_t serial, string id, int32_t uid, int32_t toActive);
+
+    oneway abortCertificate(int32_t serial, int32_t uid);
+
+    oneway eccRedialApprove(int32_t serial, int32_t approve, int32_t callId);
+
+    oneway deactivateNrScgCommunication(int32_t serial, bool deactivate, bool allowSCGAdd);
+
+    oneway getDeactivateNrScgCommunication(int32_t serial);
+
+    oneway setMaxUlSpeed(int32_t serial, int32_t ulSpeed);
+
+    setResponseFunctionsSmartRatSwitch(ISmartRatSwitchRadioResponse radioResponse,
+        ISmartRatSwitchRadioIndication radioIndication);
+
+    oneway smartRatSwitch(int32_t serial, int32_t mode, int32_t rat);
+
+    oneway getSmartRatSwitch(int32_t serial, int32_t mode);
+
+    oneway setSmartSceneSwitch(int32_t serial, int32_t mode, int32_t tGear, int32_t lGear);
+
+    oneway sendSarIndicator(int32_t serial, int32_t sar_cmd_type, string sar_parameter);
+
+    oneway setCallAdditionalInfo(int32_t serial, vec<string> info);
+
+    oneway sendRsuRequest(int32_t serial, RsuRequestInfo rri);
+
+    oneway sendWifiEnabled(int32_t serial, string ifName, int32_t isWifiEnabled);
+
+    oneway sendWifiAssociated(int32_t serial, string ifName, int32_t associated, string ssid,
+        string apMac, int32_t mtuSize);
+
+    oneway sendWifiIpAddress(int32_t serial, string ifName, string ipv4Addr, string ipv6Addr,
+        int32_t ipv4PrefixLen, int32_t ipv6PrefixLen, string ipv4Gateway, string ipv6Gateway,
+        int32_t dnsCount, string dnsServers);
+};

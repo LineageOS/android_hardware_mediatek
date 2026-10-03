@@ -1,0 +1,189 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::SuppSvcNotification;
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IMtkRadioExIndication {
+    oneway eMBMSAtInfoIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string info);
+
+    oneway eMBMSSessionStatusIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t status);
+
+    oneway phbReadyNotification(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t isPhbReady);
+
+    oneway cfuStatusNotify(android.hardware.radio@1.0::RadioIndicationType type,
+        CfuStatusNotification cfuStatus);
+
+    oneway incomingCallIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        IncomingCallNotification inCallNotify);
+
+    oneway callAdditionalInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t ciType, vec<string> info);
+
+    oneway cipherIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        CipherNotification cipherNotify);
+
+    oneway suppSvcNotifyEx(android.hardware.radio@1.0::RadioIndicationType type,
+        android.hardware.radio@1.0::SuppSvcNotification suppSvc);
+
+    oneway crssIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        CrssNotification crssNotify);
+
+    oneway cdmaCallAccepted(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway eccNumIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        string ecc_list_with_card, string ecc_list_no_card);
+
+    oneway onVirtualSimStatusChanged(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t simInserted);
+
+    oneway onImeiLock(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onImsiRefreshDone(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onSimHotSwapInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t event,
+        string info);
+
+    oneway onSimMeLockEvent(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onRsuSimLockEvent(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t eventId);
+
+    oneway onCardDetectedInd(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onVsimEventIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        VsimOperationEvent event);
+
+    oneway newEtwsInd(android.hardware.radio@1.0::RadioIndicationType type,
+        EtwsNotification etws);
+
+    oneway meSmsStorageFullInd(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway smsReadyInd(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway oemHookRaw(android.hardware.radio@1.0::RadioIndicationType type, vec<int8_t> data);
+
+    oneway plmnChangedIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> plmns);
+
+    oneway registrationSuspendedIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> sessionIds);
+
+    oneway gmssRatChangedIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> gmsss);
+
+    oneway worldModeChangedIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> modes);
+
+    oneway esnMeidChangeInd(android.hardware.radio@1.0::RadioIndicationType type, string esnMeid);
+
+    oneway responseCsNetworkStateChangeInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> state);
+
+    oneway responsePsNetworkStateChangeInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> state);
+
+    oneway responseInvalidSimInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> state);
+
+    oneway responseNetworkEventInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> event);
+
+    oneway responseModulationInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> modulation);
+
+    oneway dataAllowedNotification(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t allowed);
+
+    oneway responseFemtocellInfo(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> info);
+
+    oneway networkInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> networkinfo);
+
+    oneway currentSignalStrengthWithWcdmaEcioInd(
+        android.hardware.radio@1.0::RadioIndicationType type,
+        SignalStrengthWithWcdmaEcio signalStrength);
+
+    oneway responseLteNetworkInfo(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t lteBand);
+
+    oneway dedicatedBearerActivationInd(android.hardware.radio@1.0::RadioIndicationType type,
+        DedicateDataCall ddcData);
+
+    oneway dedicatedBearerModificationInd(android.hardware.radio@1.0::RadioIndicationType type,
+        DedicateDataCall ddcData);
+
+    oneway dedicatedBearerDeactivationInd(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t cid);
+
+    oneway bipProactiveCommand(android.hardware.radio@1.0::RadioIndicationType type, string cmd);
+
+    oneway triggerOtaSP(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onStkMenuReset(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway resetAttachApnInd(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway mdChangedApnInd(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t apnClassType);
+
+    oneway pcoDataAfterAttached(android.hardware.radio@1.0::RadioIndicationType type,
+        PcoDataAttachedInfo pcoData);
+
+    oneway confSRVCC(android.hardware.radio@1.0::RadioIndicationType type, vec<int32_t> callIds);
+
+    oneway onMdDataRetryCountReset(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onRemoveRestrictEutran(android.hardware.radio@1.0::RadioIndicationType type);
+
+    oneway onTxPowerIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indPower);
+
+    oneway onPseudoCellInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> cellInfo);
+
+    oneway onMccMncChanged(android.hardware.radio@1.0::RadioIndicationType type, string mccmnc);
+
+    oneway onTxPowerStatusIndication(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indPower);
+
+    oneway networkRejectCauseInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> data);
+
+    oneway dsbpStateChanged(int32_t indicationType, int32_t dsbpState);
+
+    oneway smlSlotLockInfoChangedInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> info);
+
+    oneway onSimPowerChangedInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> info);
+
+    oneway networkBandInfoInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> state);
+
+    oneway smsInfoExtInd(android.hardware.radio@1.0::RadioIndicationType type, string info);
+
+    oneway onDsdaChangedInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t mode);
+
+    oneway qualifiedNetworkTypesChangedInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> data);
+
+    oneway onCellularQualityChangedInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> indStgs);
+
+    oneway mobileDataUsageInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<int32_t> data);
+
+    oneway onNwLimitInd(android.hardware.radio@1.0::RadioIndicationType type, vec<int32_t> state);
+
+    oneway iccidChanged(android.hardware.radio@1.0::RadioIndicationType type, string iccid);
+
+    oneway onPlmnDataInd(android.hardware.radio@1.0::RadioIndicationType type,
+        PlmnMvnoInfo plmnMvnoInfo);
+
+    oneway onRsuEvent(android.hardware.radio@1.0::RadioIndicationType type, int32_t eventId,
+        string eventString);
+};

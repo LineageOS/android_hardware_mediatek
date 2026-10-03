@@ -1,0 +1,19 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface ISmartRatSwitchRadioIndication {
+    oneway smartRatSwitchInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t info);
+
+    oneway codecActiveInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t instanceId,
+        bool use);
+
+    oneway codecFpsInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t instanceId,
+        int32_t fps);
+
+    oneway codecResolutionInd(android.hardware.radio@1.0::RadioIndicationType type,
+        int32_t instanceId, int32_t w, int32_t h);
+
+    oneway codecEmptyInd(android.hardware.radio@1.0::RadioIndicationType type, int32_t instanceId,
+        bool empty);
+};

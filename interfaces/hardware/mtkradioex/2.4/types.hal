@@ -1,0 +1,35 @@
+package vendor.mediatek.hardware.mtkradioex@2.4;
+
+struct Lte1xRttCellInfo {
+    int32_t sid;
+
+    int32_t nid;
+
+    int32_t bsid;
+};
+
+struct LteData {
+    int32_t state;
+
+    int32_t mcc;
+
+    int32_t mnc;
+
+    int32_t cellId;
+
+    int32_t band;
+
+    int32_t bandwidth;
+
+    int32_t ulChannel;
+
+    int32_t dlChannel;
+
+    uint32_t rssi;
+
+    uint32_t rsrq;
+
+    uint32_t rsrp;
+
+    int32_t txPower;
+};

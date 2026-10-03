@@ -1,0 +1,9 @@
+package vendor.mediatek.hardware.mtkradioex@2.5;
+
+import @2.4::IMtkRadioExResponse;
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IMtkRadioExResponse extends @2.4::IMtkRadioExResponse {
+    oneway getEngineeringModeInfoResponse(
+        android.hardware.radio@1.0::RadioResponseInfo responseInfo, vec<string> result);
+};

@@ -1,0 +1,11 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IEmRadioResponse {
+    oneway sendRequestRawResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int8_t> data);
+
+    oneway sendRequestStringsResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> data);
+};

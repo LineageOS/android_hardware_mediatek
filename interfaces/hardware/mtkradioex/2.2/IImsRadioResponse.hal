@@ -1,0 +1,8 @@
+package vendor.mediatek.hardware.mtkradioex@2.2;
+
+import @2.1::IImsRadioResponse;
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IImsRadioResponse extends @2.1::IImsRadioResponse {
+    oneway videoRingtoneEventResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+};

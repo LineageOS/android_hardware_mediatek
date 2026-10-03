@@ -1,0 +1,7 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+
+interface IRcsRadioIndication {
+    oneway sendVopsIndication(android.hardware.radio@1.0::RadioIndicationType type, int32_t vops);
+};

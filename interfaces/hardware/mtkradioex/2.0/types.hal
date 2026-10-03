@@ -1,0 +1,519 @@
+package vendor.mediatek.hardware.mtkradioex@2.0;
+
+import android.hardware.radio@1.0::CallForwardInfoStatus;
+import android.hardware.radio@1.0::Clir;
+import android.hardware.radio@1.0::OperatorInfo;
+import android.hardware.radio@1.0::SetupDataCallResult;
+import android.hardware.radio@1.5::ApnTypes;
+
+struct CallForwardInfoEx {
+    android.hardware.radio@1.0::CallForwardInfoStatus status;
+
+    int32_t reason;
+
+    int32_t serviceClass;
+
+    int32_t toa;
+
+    string number;
+
+    int32_t timeSeconds;
+
+    string timeSlotBegin;
+
+    string timeSlotEnd;
+};
+
+enum CallInfoType : int32_t {
+    MT_CALL_NONE = 0,
+    MT_CALL_REJECTED = 1,
+    MT_CALL_MISSED = 2,
+    MT_CALL_NUMREDIRECT = 3,
+    MT_CALL_RQ = 4,
+    MT_CALL_GWSD = 10,
+    MT_CALL_DIAL_IMS_STK = 100,
+};
+
+struct CfuStatusNotification {
+    int32_t status;
+
+    int32_t lineId;
+};
+
+struct CipherNotification {
+    string simCipherStatus;
+
+    string sessionStatus;
+
+    string csStatus;
+
+    string psStatus;
+};
+
+struct ConferenceDial {
+    android.hardware.radio@1.0::Clir clir;
+
+    bool isVideoCall;
+
+    vec<string> dialNumbers;
+};
+
+struct CrssNotification {
+    int32_t code;
+
+    int32_t type;
+
+    string number;
+
+    string alphaid;
+
+    int32_t cli_validity;
+};
+
+struct Dialog {
+    int32_t dialogId;
+
+    int32_t callState;
+
+    int32_t callType;
+
+    bool isPullable;
+
+    bool isCallHeld;
+
+    bool isMt;
+
+    string address;
+
+    string remoteAddress;
+};
+
+enum DsbpState : int32_t {
+    DSBP_ENHANCEMENT_END = 0,
+    DSBP_ENHANCEMENT_START = 1,
+};
+
+struct EtwsNotification {
+    int32_t warningType;
+
+    int32_t messageId;
+
+    int32_t serialNumber;
+
+    string plmnId;
+
+    string securityInfo;
+};
+
+struct ImsConfParticipant {
+    string user_addr;
+
+    string end_point;
+
+    string entity;
+
+    string display_text;
+
+    string status;
+};
+
+struct ImsRegStatusInfo {
+    int32_t report_type;
+
+    int32_t account_id;
+
+    int32_t expire_time;
+
+    int32_t error_code;
+
+    string uri;
+
+    string error_msg;
+};
+
+enum ImsRegStatusReportType : int32_t {
+    IMS_REGISTERING = 0,
+    IMS_REGISTERED = 1,
+    IMS_REGISTER_FAIL = 2,
+};
+
+struct IncomingCallNotification {
+    string callId;
+
+    string number;
+
+    string type;
+
+    string callMode;
+
+    string seqNo;
+
+    string redirectNumber;
+
+    string toNumber;
+};
+
+enum MtkApnTypes : android.hardware.radio@1.5::ApnTypes {
+    RCS = 1 << 12,
+    BIP = 1 << 13,
+    VSIM = 1 << 14,
+    MTKALL = ALL | MCX | XCAP | RCS | BIP | VSIM,
+};
+
+struct MtkSetupDataCallResult {
+    android.hardware.radio@1.0::SetupDataCallResult dcr;
+
+    int32_t rat;
+};
+
+struct OperatorInfoWithAct {
+    android.hardware.radio@1.0::OperatorInfo base;
+
+    string lac;
+
+    string act;
+};
+
+struct PcoDataAttachedInfo {
+    int32_t cid;
+
+    string apnName;
+
+    string bearerProto;
+
+    int32_t pcoId;
+
+    vec<int8_t> contents;
+};
+
+struct PhbEntryExt {
+    int32_t index;
+
+    string number;
+
+    int32_t type;
+
+    string text;
+
+    int32_t hidden;
+
+    string group;
+
+    string adnumber;
+
+    string adnumber_a;
+
+    string adnumber_b;
+
+    int32_t adtype;
+
+    string secondtext;
+
+    string email;
+
+    int32_t secondtext_dcs;
+
+    int32_t email_dcs;
+
+    int32_t text_dcs;
+};
+
+struct PhbEntryStructure {
+    int32_t type;
+
+    int32_t index;
+
+    string number;
+
+    int32_t ton;
+
+    string alphaId;
+};
+
+struct PhbMemStorageResponse {
+    string storage;
+
+    int32_t used;
+
+    int32_t total;
+};
+
+struct PktFilter {
+    int32_t id;
+
+    int32_t precedence;
+
+    int32_t direction;
+
+    int32_t networkPfIdentifier;
+
+    int32_t bitmap;
+
+    string address;
+
+    string mask;
+
+    int32_t protocolNextHeader;
+
+    int32_t localPortLow;
+
+    int32_t localPortHigh;
+
+    int32_t remotePortLow;
+
+    int32_t remotePortHigh;
+
+    int32_t spi;
+
+    int32_t tos;
+
+    int32_t tosMask;
+
+    int32_t flowLabel;
+};
+
+struct PlmnMvnoInfo {
+    string gsmPlmn;
+
+    string cdmaPlmn;
+
+    string gsmSpn;
+
+    string cdmaSpn;
+
+    string gsmImsi;
+
+    string cdmaImsi;
+
+    string gid1;
+
+    string pnn;
+
+    string impi;
+};
+
+struct Qos {
+    int32_t qci;
+
+    int32_t dlGbr;
+
+    int32_t ulGbr;
+
+    int32_t dlMbr;
+
+    int32_t ulMbr;
+};
+
+enum RsuRequest : int32_t {
+    RSU_REQUEST_INIT_REQUEST = 0,
+    RSU_REQUEST_GET_SHARED_KEY = 1,
+    RSU_REQUEST_UPDATE_LOCK_DATA = 2,
+    RSU_REQUEST_GET_LOCK_VERSION = 3,
+    RSU_REQUEST_RESET_LOCK_DATA = 4,
+    RSU_REQUEST_GET_LOCK_STATUS = 5,
+    RSU_REQUEST_UNLOCK_TIMER = 50,
+};
+
+struct RsuRequestInfo {
+    int32_t opId;
+
+    int32_t requestId;
+
+    int32_t requestType;
+
+    string data;
+
+    int32_t reserveInt1;
+
+    int32_t reserveInt2;
+
+    string reserveString1;
+};
+
+struct RsuResponseInfo {
+    int32_t opId;
+
+    int32_t requestId;
+
+    int32_t errCode;
+
+    string data;
+
+    int64_t time;
+
+    int32_t version;
+
+    int32_t status;
+
+    int32_t reserveInt1;
+
+    int32_t reserveInt2;
+
+    string reserveString1;
+};
+
+struct SignalStrengthWithWcdmaEcio {
+    uint32_t gsm_signalStrength;
+
+    uint32_t gsm_bitErrorRate;
+
+    uint32_t wcdma_rscp;
+
+    uint32_t wcdma_ecio;
+
+    uint32_t cdma_dbm;
+
+    uint32_t cdma_ecio;
+
+    uint32_t evdo_dbm;
+
+    uint32_t evdo_ecio;
+
+    uint32_t evdo_signalNoiseRatio;
+
+    uint32_t lte_signalStrength;
+
+    uint32_t lte_rsrp;
+
+    uint32_t lte_rsrq;
+
+    int32_t lte_rssnr;
+
+    uint32_t lte_cqi;
+
+    uint32_t tdscdma_rscp;
+};
+
+struct SimAuthStructure {
+    int32_t sessionId;
+
+    int32_t mode;
+
+    string param1;
+
+    string param2;
+
+    int32_t tag;
+};
+
+enum SimHotSwap : int32_t {
+    SIM_HOTSWAP_PLUG_IN = 0,
+    SIM_HOTSWAP_PLUG_OUT = 1,
+    SIM_HOTSWAP_RECOVERY = 2,
+    SIM_HOTSWAP_MISSING = 3,
+    SIM_HOTSWAP_TRAY_PLUG_IN = 4,
+    SIM_HOTSWAP_TRAY_PLUG_OUT = 5,
+    SIM_HOTSWAP_COMMONSLOT_NO_CHANGED = 6,
+};
+
+struct SmsMemStatus {
+    int32_t used;
+
+    int32_t total;
+};
+
+struct SmsParams {
+    int32_t format;
+
+    int32_t vp;
+
+    int32_t pid;
+
+    int32_t dcs;
+};
+
+struct TftParameter {
+    int32_t linkedPfNumber;
+
+    vec<int32_t> linkedPfList;
+};
+
+struct Tft {
+    int32_t operation;
+
+    int32_t pfNumber;
+
+    vec<PktFilter> pfList;
+
+    TftParameter tftParameter;
+};
+
+struct DedicateDataCall {
+    int32_t ddcId;
+
+    int32_t interfaceId;
+
+    int32_t primaryCid;
+
+    int32_t cid;
+
+    int32_t active;
+
+    int32_t signalingFlag;
+
+    int32_t bearerId;
+
+    int32_t failCause;
+
+    int32_t hasQos;
+
+    Qos qos;
+
+    int32_t hasTft;
+
+    Tft tft;
+
+    int32_t hasPcscf;
+
+    string pcscf;
+};
+
+enum VendorSetting : int32_t {
+    VENDOR_SETTING_CXP_CONFIG_OPTR = 0,
+    VENDOR_SETTING_CXP_CONFIG_SPEC = 1,
+    VENDOR_SETTING_CXP_CONFIG_SEG = 2,
+    VENDOR_SETTING_CXP_CONFIG_SBP = 3,
+    VENDOR_SETTING_CXP_CONFIG_SUBID = 4,
+    VENDOR_SETTING_BIP_PDN_REUSE = 5,
+    VENDOR_SETTING_BIP_OVERRIDE_APN = 6,
+    VENDOR_SETTING_BIP_PDN_NAME_REUSE = 7,
+    VENDOR_SETTING_RADIO_AIRPLANE_MODE = 8,
+    VENDOR_SETTING_RADIO_SIM_MODE = 9,
+    VENDOR_SETTING_RADIO_SILENT_REBOOT = 10,
+    VENDOR_SETTING_VOLTE_ENABLE = 11,
+    VENDOR_SETTING_VILTE_ENABLE = 12,
+    VENDOR_SETTING_VIWIFI_ENABLE = 13,
+    VENDOR_SETTING_RCS_UA_ENABLE = 14,
+    VENDOR_SETTING_DATA_SSC_MODE = 15,
+    VENDOR_SETTING_WFC_ENABLE = 16,
+};
+
+struct VsimEvent {
+    uint32_t transactionId;
+
+    uint32_t eventId;
+
+    uint32_t simType;
+};
+
+struct VsimMessage {
+    uint32_t transactionId;
+
+    uint32_t messageId;
+
+    uint32_t slotId;
+
+    uint32_t length;
+};
+
+struct VsimOperationEvent {
+    uint32_t transactionId;
+
+    uint32_t eventId;
+
+    int32_t result;
+
+    uint32_t dataLength;
+
+    string data;
+};

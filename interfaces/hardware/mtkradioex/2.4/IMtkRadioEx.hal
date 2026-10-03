@@ -1,0 +1,56 @@
+package vendor.mediatek.hardware.mtkradioex@2.4;
+
+import @2.3::IMtkRadioEx;
+
+interface IMtkRadioEx extends @2.3::IMtkRadioEx {
+    oneway getTOEInfo(int32_t serial);
+
+    oneway disableAllCALinks(int32_t serial, int32_t linkType);
+
+    oneway getCALinkEnableStatus(int32_t serial, string bandsCombo, int32_t linkType);
+
+    oneway setCALinkEnableStatus(int32_t serial, bool status, string bandsCombo,
+        int32_t linkType);
+
+    oneway getCALinkCapabilityList(int32_t serial, int32_t linkType);
+
+    oneway getLteData(int32_t serial);
+
+    oneway getLteRRCState(int32_t serial);
+
+    oneway setLteBandEnableStatus(int32_t serial, int32_t bandId, bool status);
+
+    oneway getBandPriorityList(int32_t serial);
+
+    oneway setBandPriorityList(int32_t serial, vec<int32_t> bandPriList);
+
+    oneway set4x4MimoEnabled(int32_t serial, int32_t enabled_bitmask);
+
+    oneway get4x4MimoEnabled(int32_t serial);
+
+    oneway setLteBsrTimer(int32_t serial, int32_t timer);
+
+    oneway getLteBsrTimer(int32_t serial);
+
+    oneway getLte1xRttCellList(int32_t serial, bool available);
+
+    oneway clearLteAvailableFile(int32_t serial);
+
+    oneway getBandMode(int32_t serial);
+
+    oneway getCaBandMode(int32_t serial, int32_t primaryBandId);
+
+    oneway getCampedFemtoCellInfo(int32_t serial);
+
+    oneway setQamEnabled(int32_t serial, bool ulOrDl, bool enabled);
+
+    oneway getQamEnabled(int32_t serial, bool ulOrDl);
+
+    oneway setTm9Enabled(int32_t serial, bool fddOrTdd, bool enabled);
+
+    oneway getTm9Enabled(int32_t serial, bool fddOrTdd);
+
+    oneway setLteScanDuration(int32_t serial, int32_t duration);
+
+    oneway getLteScanDuration(int32_t serial);
+};

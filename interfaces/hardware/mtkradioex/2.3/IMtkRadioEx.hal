@@ -1,0 +1,5 @@
+package vendor.mediatek.hardware.mtkradioex@2.3;
+
+import @2.2::IMtkRadioEx;
+
+interface IMtkRadioEx extends @2.2::IMtkRadioEx {};

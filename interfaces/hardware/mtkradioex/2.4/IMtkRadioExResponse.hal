@@ -1,0 +1,70 @@
+package vendor.mediatek.hardware.mtkradioex@2.4;
+
+import @2.0::IMtkRadioExResponse;
+import android.hardware.radio@1.0::RadioResponseInfo;
+
+interface IMtkRadioExResponse extends @2.0::IMtkRadioExResponse {
+    oneway getTOEInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info, string longName,
+        string shortName, string numeric);
+
+    oneway disableAllCALinksResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getCALinkEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        bool status);
+
+    oneway setCALinkEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getCALinkCapabilityListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> linkCapabilityList);
+
+    oneway getLteDataResponse(android.hardware.radio@1.0::RadioResponseInfo info, LteData data);
+
+    oneway getLteRRCStateResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t state);
+
+    oneway setLteBandEnableStatusResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getBandPriorityListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> bandPriList);
+
+    oneway setBandPriorityListResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway set4x4MimoEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway get4x4MimoEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t enabled_bitmask);
+
+    oneway setLteBsrTimerResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getLteBsrTimerResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t timer);
+
+    oneway getLte1xRttCellListResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<Lte1xRttCellInfo> list);
+
+    oneway clearLteAvailableFileResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> data);
+
+    oneway getCaBandModeResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<int32_t> data);
+
+    oneway getCampedFemtoCellInfoResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        vec<string> femto);
+
+    oneway setQamEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getQamEnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info, bool ulOrDl,
+        bool enabled);
+
+    oneway setTm9EnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getTm9EnabledResponse(android.hardware.radio@1.0::RadioResponseInfo info, bool fddOrTdd,
+        bool enabled);
+
+    oneway setLteScanDurationResponse(android.hardware.radio@1.0::RadioResponseInfo info);
+
+    oneway getLteScanDurationResponse(android.hardware.radio@1.0::RadioResponseInfo info,
+        int32_t duration);
+};

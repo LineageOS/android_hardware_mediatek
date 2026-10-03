@@ -1,0 +1,9 @@
+package vendor.mediatek.hardware.mtkradioex@2.2;
+
+import android.hardware.radio@1.0::RadioIndicationType;
+import @2.1::IImsRadioIndication;
+
+interface IImsRadioIndication extends @2.1::IImsRadioIndication {
+    oneway videoRingtoneEventInd(android.hardware.radio@1.0::RadioIndicationType type,
+        vec<string> event);
+};
