@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1bbae10_bbf898a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-10-03T18:27:12Z",
+      "side": 1,
+      "message": "You may want to add the lore to commit msg (basically that mtk treats it as unfrozen and hence we need to invent our own versions based on diff version vendors), but it looks fine to me.",
+      "revId": "e803763ab3220194ccaa13aa4f002178d0bfa641",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
