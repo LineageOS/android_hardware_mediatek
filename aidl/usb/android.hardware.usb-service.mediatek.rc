@@ -2,3 +2,30 @@ service vendor.usb_default /vendor/bin/hw/android.hardware.usb-service.mediatek
     class hal
     user system
     group system
+
+on post-fs-data
+    setprop sys.usb.controller ${vendor.usb.controller:-16751000.usb0}
+
+    # Set permissions for USB service
+    chown root system /sys/class/typec/port0/power_role
+    chown root system /sys/class/typec/port0/data_role
+    chown root system /sys/class/typec/port0/port_type
+    chown root system /sys/class/udc/${sys.usb.controller}/device/mode
+    chown root system /sys/class/udc/${sys.usb.controller}/device/saving
+    chmod 664 /sys/class/typec/port0/power_role
+    chmod 664 /sys/class/typec/port0/data_role
+    chmod 664 /sys/class/typec/port0/port_type
+    chmod 664 /sys/class/udc/${sys.usb.controller}/device/mode
+    chmod 664 /sys/class/udc/${sys.usb.controller}/device/saving
+
+    # Set permissions for MediaTek USB devices
+    chmod 0640 /dev/mtk_usb_offload
+    chmod 0660 /dev/ttyGS0
+    chmod 0660 /dev/ttyGS1
+    chmod 0660 /dev/ttyGS2
+    chmod 0660 /dev/ttyGS3
+    chown media media /dev/mtk_usb_offload
+    chown system radio /dev/ttyGS0
+    chown system radio /dev/ttyGS1
+    chown system radio /dev/ttyGS2
+    chown system radio /dev/ttyGS3
