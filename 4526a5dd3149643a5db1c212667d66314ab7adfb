@@ -34,6 +34,24 @@
       "parentUuid": "05f03958_62bd1834",
       "revId": "4526a5dd3149643a5db1c212667d66314ab7adfb",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c715be2_24d76312",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-05T02:52:05Z",
+      "side": 1,
+      "message": "Beside, marking it as midi is by design wrong. It\u0027s power-off charging mode, not an actual MIDI mode",
+      "parentUuid": "e9d9c300_8e2cc398",
+      "revId": "4526a5dd3149643a5db1c212667d66314ab7adfb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
