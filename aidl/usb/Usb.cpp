@@ -13,6 +13,7 @@
 #include <android-base/strings.h>
 #include <assert.h>
 #include <dirent.h>
+#include <inttypes.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -71,7 +72,7 @@ ScopedAStatus Usb::enableUsbData(const string& in_portName, bool in_enable,
     string pullup, controller;
     bool result = true;
 
-    ALOGI("Userspace turn %s USB data signaling. opID:%ld", in_enable ? "on" : "off",
+    ALOGI("Userspace turn %s USB data signaling. opID:%" PRId64, in_enable ? "on" : "off",
           in_transactionId);
 
     controller = GetProperty("sys.usb.controller", "");
