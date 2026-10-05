@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "663287f6_9365c4f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-10-05T16:28:37Z",
+      "side": 1,
+      "message": "Made it generic",
+      "parentUuid": "d027d86b_ef1525bb",
+      "revId": "e92c25fd3f9af0c2c8c1ca9d57f29b6d29fe97d1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b07c043_790bec1b",
@@ -35,6 +53,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2467134_72b9834c",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-10-05T16:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b07c043_790bec1b",
+      "revId": "e92c25fd3f9af0c2c8c1ca9d57f29b6d29fe97d1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01427abe_9ec92ded",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-04T21:53:24Z",
       "side": 1,
       "message": "Isn\u0027t HIDL 2.2 not a thing for AOSP IBluetoothAudioProvidersFactory ?",
+      "revId": "e92c25fd3f9af0c2c8c1ca9d57f29b6d29fe97d1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0958bce_4d044b06",
+        "filename": "hidl/audio/service.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 24262
+      },
+      "writtenOn": "2026-10-05T16:28:37Z",
+      "side": 1,
+      "message": "Removed all of these as they aren\u0027t allowed by FCM anyway and no reason to use them now.",
+      "parentUuid": "01427abe_9ec92ded",
       "revId": "e92c25fd3f9af0c2c8c1ca9d57f29b6d29fe97d1",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
