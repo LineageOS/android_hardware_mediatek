@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05f03958_62bd1834",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37952
+      },
+      "writtenOn": "2026-10-05T02:25:47Z",
+      "side": 1,
+      "message": "Aosp uses sys.usb.config as midi name instead of charger. Any advantages?\nhttps://github.com/LineageOS/android_system_core/blob/eb2de7321317226bbc1951382b3171fa59bb4d1d/rootdir/init.usb.configfs.rc#L108",
+      "revId": "4526a5dd3149643a5db1c212667d66314ab7adfb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
