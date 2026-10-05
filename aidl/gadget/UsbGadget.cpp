@@ -285,7 +285,7 @@ Status UsbGadget::setupFunctions(long functions, const shared_ptr<IUsbGadgetCall
     return Status::SUCCESS;
 }
 
-ScopedAStatus UsbGadget::setCurrentUsbFunctions(long functions,
+ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
                                                 const shared_ptr<IUsbGadgetCallback>& callback,
                                                 int64_t timeout, int64_t in_transactionId) {
     std::unique_lock<std::mutex> lk(mLockSetCurrentFunction);
