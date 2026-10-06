@@ -1,4 +1,4 @@
-on early-init && property:vendor.usb.controller=musb-hdrc
+on early-init && property:sys.usb.controller=musb-hdrc
     write /sys/module/musb_hdrc/parameters/kernel_init_done 1
 
 on early-boot
