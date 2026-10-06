@@ -4,8 +4,6 @@ service vendor.usb_default /vendor/bin/hw/android.hardware.usb-service.mediatek
     group system
 
 on post-fs-data
-    setprop sys.usb.controller ${vendor.usb.controller:-16751000.usb0}
-
     # Set permissions for USB service
     chown root system /sys/class/typec/port0/power_role
     chown root system /sys/class/typec/port0/data_role
