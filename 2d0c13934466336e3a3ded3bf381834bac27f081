@@ -16,6 +16,23 @@
       "message": "Tested fine on ellis, DNM until more people test + it would break existing devices.",
       "revId": "2d0c13934466336e3a3ded3bf381834bac27f081",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2688dc3_c3f6ae66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-07T19:33:02Z",
+      "side": 1,
+      "message": "Will verify later, code looks fine to me",
+      "revId": "2d0c13934466336e3a3ded3bf381834bac27f081",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
