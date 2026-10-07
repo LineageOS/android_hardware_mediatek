@@ -16,6 +16,23 @@
       "message": "Tested fine on ellis, DNM until more people test + it would break existing devices.",
       "revId": "8e93a92f38f7889cfd0b998858866b108f15d2e7",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0837af_e6aa7662",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-07T19:17:32Z",
+      "side": 1,
+      "message": "Can\u0027t review this, Pacman and PacmanPro mtkradioex interfaces are AIDL",
+      "revId": "8e93a92f38f7889cfd0b998858866b108f15d2e7",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
