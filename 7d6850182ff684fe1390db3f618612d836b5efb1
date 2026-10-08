@@ -34,6 +34,24 @@
       "parentUuid": "6420b580_f21a59d7",
       "revId": "7d6850182ff684fe1390db3f618612d836b5efb1",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf951027_bb5c9ed2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 35565
+      },
+      "writtenOn": "2026-10-08T11:12:50Z",
+      "side": 1,
+      "message": "You\u0027re right. I used the wrong branch and submitted this. I\u0027ll abandon the change. Sorry🙏",
+      "parentUuid": "7c84df0f_884a2460",
+      "revId": "7d6850182ff684fe1390db3f618612d836b5efb1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
