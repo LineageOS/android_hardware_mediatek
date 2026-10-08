@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e4b289d_5d34b251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 34203
+      },
+      "writtenOn": "2026-10-08T13:20:41Z",
+      "side": 1,
+      "message": "It spams on xaga",
+      "revId": "2ae2373cc8b7db68679cb261af436d385d22f2f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
