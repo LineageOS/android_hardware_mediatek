@@ -16,6 +16,24 @@
       "message": "Could you review this commit...?",
       "revId": "7d6850182ff684fe1390db3f618612d836b5efb1",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c84df0f_884a2460",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-08T10:46:30Z",
+      "side": 1,
+      "message": "Why is the commit needed ? Last time I built 23.2 I didn\u0027t needed that and they aren\u0027t guarded by any soong namespace unlike 24.0",
+      "parentUuid": "6420b580_f21a59d7",
+      "revId": "7d6850182ff684fe1390db3f618612d836b5efb1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
