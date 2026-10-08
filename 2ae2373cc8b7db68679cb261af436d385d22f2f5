@@ -16,6 +16,23 @@
       "message": "It spams on xaga",
       "revId": "2ae2373cc8b7db68679cb261af436d385d22f2f5",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05108ed6_3f760e0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-08T16:58:50Z",
+      "side": 1,
+      "message": "Forwading this from the 23.2 patch:\n\nIn which case this logtag spams ? And does it spam also on whatever stock rom you have",
+      "revId": "2ae2373cc8b7db68679cb261af436d385d22f2f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
