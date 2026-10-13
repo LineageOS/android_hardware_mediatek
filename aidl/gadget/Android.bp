@@ -68,6 +68,9 @@ cc_binary {
     export_shared_lib_headers: [
         "android.frameworks.stats-V2-ndk",
     ],
+    required: [
+        "aoad",
+    ],
 }
 
 target_board_platform_prebuilt_etc {
