@@ -1,7 +1,7 @@
 service vendor.usb-gadget-hal /vendor/bin/hw/android.hardware.usb.gadget-service.mediatek
     class hal
     user system
-    group system shell mtp
+    group system shell mtp aoad
     disabled
 
 on property:sys.usb.configfs=2
