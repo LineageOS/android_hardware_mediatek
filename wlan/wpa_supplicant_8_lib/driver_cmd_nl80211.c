@@ -24,11 +24,7 @@
 #endif
 
 typedef struct android_wifi_priv_cmd {
-#ifdef BCMDHD_64_BIT_IPC
-    u64 bufaddr;
-#else
     char* bufaddr;
-#endif
     int used_len;
     int total_len;
 } android_wifi_priv_cmd;
@@ -114,11 +110,7 @@ int wpa_driver_nl80211_driver_cmd(void* priv, char* cmd, char* buf, size_t buf_l
         memset(&priv_cmd, 0, sizeof(priv_cmd));
         os_strlcpy(ifr.ifr_name, bss->ifname, IFNAMSIZ);
 
-#ifdef BCMDHD_64_BIT_IPC
-        priv_cmd.bufaddr = (u64)(uintptr_t)buf;
-#else
         priv_cmd.bufaddr = buf;
-#endif
         priv_cmd.used_len = buf_len;
         priv_cmd.total_len = buf_len;
         ifr.ifr_data = &priv_cmd;
