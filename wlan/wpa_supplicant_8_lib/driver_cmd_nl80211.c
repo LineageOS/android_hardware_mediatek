@@ -23,15 +23,13 @@
 #include "android_drv.h"
 #endif
 
-typedef struct android_wifi_priv_cmd {
-#ifdef BCMDHD_64_BIT_IPC
-    u64 bufaddr;
-#else
-    char* bufaddr;
-#endif
+#define PRIV_CMD_SIZE 512
+
+typedef struct priv_driver_cmd_s {
+    char buf[PRIV_CMD_SIZE];
     int used_len;
     int total_len;
-} android_wifi_priv_cmd;
+} priv_driver_cmd_s;
 
 static int drv_errors = 0;
 
@@ -66,7 +64,7 @@ int wpa_driver_nl80211_driver_cmd(void* priv, char* cmd, char* buf, size_t buf_l
     struct i802_bss* bss = priv;
     struct wpa_driver_nl80211_data* drv = bss->drv;
     struct ifreq ifr;
-    android_wifi_priv_cmd priv_cmd;
+    priv_driver_cmd_s priv_cmd;
     int ret = 0;
 
     if (bss->ifindex <= 0 && bss->wdev_id > 0) {
@@ -109,18 +107,15 @@ int wpa_driver_nl80211_driver_cmd(void* priv, char* cmd, char* buf, size_t buf_l
         ret = linux_get_ifhwaddr(drv->global->ioctl_sock, bss->ifname, macaddr);
         if (!ret) ret = os_snprintf(buf, buf_len, "Macaddr = " MACSTR "\n", MAC2STR(macaddr));
     } else { /* Use private command */
-        os_memcpy(buf, cmd, strlen(cmd) + 1);
         memset(&ifr, 0, sizeof(ifr));
         memset(&priv_cmd, 0, sizeof(priv_cmd));
         os_strlcpy(ifr.ifr_name, bss->ifname, IFNAMSIZ);
 
-#ifdef BCMDHD_64_BIT_IPC
-        priv_cmd.bufaddr = (u64)(uintptr_t)buf;
-#else
-        priv_cmd.bufaddr = buf;
-#endif
-        priv_cmd.used_len = buf_len;
-        priv_cmd.total_len = buf_len;
+        os_memcpy(priv_cmd.buf, cmd,
+                  buf_len < sizeof(priv_cmd.buf) ? buf_len : sizeof(priv_cmd.buf));
+        priv_cmd.buf[sizeof(priv_cmd.buf) - 1] = '\0';
+        priv_cmd.used_len = sizeof(priv_cmd.buf);
+        priv_cmd.total_len = sizeof(priv_cmd.buf);
         ifr.ifr_data = &priv_cmd;
 
         if ((ret = ioctl(drv->global->ioctl_sock, SIOCDEVPRIVATE + 1, &ifr)) < 0) {
@@ -129,6 +124,8 @@ int wpa_driver_nl80211_driver_cmd(void* priv, char* cmd, char* buf, size_t buf_l
         } else {
             drv_errors = 0;
             ret = 0;
+            os_memcpy(buf, priv_cmd.buf,
+                      buf_len < sizeof(priv_cmd.buf) ? buf_len : sizeof(priv_cmd.buf));
             if ((os_strcasecmp(cmd, "LINKSPEED") == 0) || (os_strcasecmp(cmd, "RSSI") == 0) ||
                 (os_strcasecmp(cmd, "GETBAND") == 0) ||
                 (os_strncasecmp(cmd, "WLS_BATCHING", 12) == 0))
