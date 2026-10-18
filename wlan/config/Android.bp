@@ -1,0 +1,14 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "wpa_supplicant.conf",
+    src: "wpa_supplicant.conf",
+    sub_dir: "wifi",
+    vendor: true,
+    licenses: [
+        "external_wpa_supplicant_8_license",
+    ],
+}
