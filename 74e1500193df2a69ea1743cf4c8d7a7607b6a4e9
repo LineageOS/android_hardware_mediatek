@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85aa7ea3_dd8ff624",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-10-19T23:26:11Z",
+      "side": 1,
+      "message": "No issue with the changes on 64bo targets",
+      "revId": "74e1500193df2a69ea1743cf4c8d7a7607b6a4e9",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
