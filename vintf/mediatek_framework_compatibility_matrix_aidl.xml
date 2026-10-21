@@ -385,7 +385,7 @@
     </hal>
     <hal format="aidl">
         <name>vendor.mediatek.hardware.mmlpq</name>
-        <version>2-4</version>
+        <version>2-5</version>
         <interface>
             <name>IMmlpq</name>
             <instance>default</instance>
