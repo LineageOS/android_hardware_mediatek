@@ -16,6 +16,23 @@
       "message": "I don\u0027t really have any R devices to test this on. Starting with S mtk upreved to 3.0 so this is really optional.",
       "revId": "ef42f5282fac7af8cccc37a6161ee9b5a093ddd1",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a59da735_2391266f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-10-21T16:22:53Z",
+      "side": 1,
+      "message": "Works fine on Q25 I\u0027m told.",
+      "revId": "ef42f5282fac7af8cccc37a6161ee9b5a093ddd1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
