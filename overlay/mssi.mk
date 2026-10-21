@@ -10,6 +10,7 @@ MTK_NON_6GHZ_PLATFORMS := $(MTK_NON_MULTISTA_PLATFORMS) mt6779 mt6853 mt6873 mt6
 MTK_NON_CONNAC3_PLATFORMS := $(MTK_NON_6GHZ_PLATFORMS) mt6878 mt6879 mt6886 mt6895 mt6897 mt6899 mt6983
 
 PRODUCT_PACKAGES += \
+    MssiDeviceAsWebcamOverlay \
     MssiFrameworkOverlay \
     MssiNetworkStackOverlay \
     MssiWifiOverlay
