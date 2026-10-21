@@ -33,6 +33,24 @@
       "message": "Will verify later, code looks fine to me",
       "revId": "3bbb7dd0e879d296ebbd7b124f650ea11b522194",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98a2632d_9406de05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16185
+      },
+      "writtenOn": "2026-10-21T16:22:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56a5ef8a_1670bc33",
+      "revId": "3bbb7dd0e879d296ebbd7b124f650ea11b522194",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
