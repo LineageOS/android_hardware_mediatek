@@ -1,0 +1,9 @@
+service vendor.conninfra_loader /vendor/bin/conninfra_loader
+    class core
+    user system
+    group system
+    oneshot
+
+on property:vendor.connsys.driver.ready=yes && property:persist.vendor.connsys.coredump.mode=*
+    write /proc/driver/conninfra_dbg "0x13 ${persist.vendor.connsys.coredump.mode:-0}"
+    write /dev/conn_dbg_dev "0x13 ${persist.vendor.connsys.coredump.mode:-0}"
