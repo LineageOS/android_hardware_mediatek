@@ -1,0 +1,4 @@
+service vendor.wmt_loader /vendor/bin/wmt_loader
+    class early_hal
+    user system
+    group system
