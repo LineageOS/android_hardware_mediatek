@@ -34,12 +34,4 @@
         <item>"NR_SA:2097152,6291456,16777216,512000,2097152,8388608"</item>
         <item>"NR_SA_MMWAVE:2097152,6291456,16777216,512000,2097152,8388608"</item>
     </string-array>
-
-    <!-- IWLAN data service class name to bind to by default. If none is specified in an overlay, an
-         empty string is passed in -->
-    <string name="config_wlan_data_service_class" translatable="false">com.mediatek.internal.telephony.data.IwlanDataService</string>
-
-    <!-- IWLAN network service class name to bind to by default. If none is specified in an overlay,
-         an empty string is passed in -->
-    <string name="config_wlan_network_service_class" translatable="false">com.mediatek.internal.telephony.IWlanNetworkService</string>
 </resources>
