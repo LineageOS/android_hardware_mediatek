@@ -1,0 +1,14 @@
+package vendor.mediatek.hardware.power@2.1;
+
+import @2.0::IPower;
+import @2.0::MtkActState;
+
+interface IPower extends @2.0::IPower {
+    oneway notifyAppState_2_1(string pack, string act, int32_t pid, MtkActState state,
+        int32_t uid);
+
+    oneway scnConfig_2_1(int32_t hdl, MtkPowerCmd cmd, int32_t param1, int32_t param2,
+        int32_t param3, int32_t param4);
+
+    oneway setSysInfo(int32_t type, string data);
+};

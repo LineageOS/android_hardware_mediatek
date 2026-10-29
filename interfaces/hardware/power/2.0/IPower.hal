@@ -1,0 +1,27 @@
+package vendor.mediatek.hardware.power@2.0;
+
+import android.hardware.power@1.2::IPower;
+
+interface IPower extends android.hardware.power@1.2::IPower {
+    oneway mtkPowerHint(MtkPowerHint hint, int32_t data);
+
+    oneway mtkCusPowerHint(int32_t hint, int32_t data);
+
+    oneway notifyAppState(string pack, string act, int32_t pid, MtkActState state);
+
+    querySysInfo(MtkQueryCmd cmd, int32_t param) generates (int32_t data);
+
+    scnReg() generates (int32_t hdl);
+
+    oneway scnConfig(int32_t hdl, MtkPowerCmd cmd, int32_t param1, int32_t param2, int32_t param3,
+        int32_t param4);
+
+    oneway scnUnreg(int32_t hdl);
+
+    oneway scnEnable(int32_t hdl, int32_t timeout);
+
+    oneway scnDisable(int32_t hdl);
+
+    oneway scnUltraCfg(int32_t hdl, int32_t ultracmd, int32_t param1, int32_t param2,
+        int32_t param3, int32_t param4);
+};
