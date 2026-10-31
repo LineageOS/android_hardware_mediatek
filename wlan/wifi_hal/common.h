@@ -47,7 +47,7 @@
  */
 
 const uint32_t GOOGLE_OUI = 0x001A11;
-const uint32_t BRCM_OUI =  0x001018;
+const uint32_t MTK_OUI =  0x000CE7;
 /* TODO: define vendor OUI here */
 
 #define MAC2STR(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
@@ -287,8 +287,8 @@ typedef enum {
 } WIFI_SUB_COMMAND;
 
 typedef enum {
-    BRCM_RESERVED1                          = 0,
-    BRCM_RESERVED2                          = 1,
+    MTK_RESERVED1                           = 0,
+    MTK_RESERVED2                           = 1,
     GSCAN_EVENT_SIGNIFICANT_CHANGE_RESULTS	= 2,
     GSCAN_EVENT_HOTLIST_RESULTS_FOUND       = 3,
     GSCAN_EVENT_SCAN_RESULTS_AVAILABLE      = 4,
@@ -304,7 +304,7 @@ typedef enum {
     GOOGLE_MKEEP_ALIVE                      = 14,
 
     /*
-     * BRCM specific events should be placed after the Generic events
+     * MTK specific events should be placed after the Generic events
      * in order to match between the DHD and HAL
      */
     NAN_EVENT_ENABLED                      = 15,
@@ -324,13 +324,13 @@ typedef enum {
     NAN_EVENT_TCA                          = 29,
     NAN_EVENT_SUBSCRIBE_UNMATCH            = 30,
     NAN_EVENT_UNKNOWN                      = 31,
-    BRCM_VENDOR_EVENT_HANGED               = 33,
+    MTK_VENDOR_EVENT_HANGED                = 33,
  
     ROAM_EVENT_START,
     GOOGLE_FILE_DUMP_EVENT                 = 37,
     NAN_ASYNC_RESPONSE_DISABLED            = 40,
-    BRCM_VENDOR_EVENT_TWT                  = 43,
-    BRCM_TPUT_DUMP_EVENT                   = 44,
+    MTK_VENDOR_EVENT_TWT                   = 43,
+    MTK_TPUT_DUMP_EVENT                    = 44,
     NAN_EVENT_MATCH_EXPIRY                 = 45,
     NAN_EVENT_SUSPENSION_STATUS            = 49,
     NAN_EVENT_PAIRING_REQUEST              = 50,

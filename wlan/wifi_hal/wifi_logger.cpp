@@ -47,7 +47,7 @@
 #include "common.h"
 #include "cpp_bindings.h"
 #include <sys/stat.h>
-#include "brcm_version.h"
+#include "mtk_version.h"
 #define WIFI_HAL_EVENT_SOCK_PORT     645
 
 typedef enum {
@@ -1174,14 +1174,14 @@ public:
     { }
     int start() {
         ALOGI("Start Restart Handler handler");
-        registerVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_HANGED);
+        registerVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_HANGED);
         return WIFI_SUCCESS;
     }
     virtual int cancel() {
         ALOGI("Clear Restart Handler");
 
         /* unregister alert handler */
-        unregisterVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_HANGED);
+        unregisterVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_HANGED);
         wifi_unregister_cmd(wifiHandle(), id());
         ALOGI("Success to clear restarthandler");
         return WIFI_SUCCESS;
@@ -1202,7 +1202,7 @@ public:
             ALOGE("No Debug data found");
             return NL_SKIP;
         }
-        if (event_id == BRCM_VENDOR_EVENT_HANGED) {
+        if (event_id == MTK_VENDOR_EVENT_HANGED) {
             for (nl_iterator it(vendor_data); it.has_next(); it.next()) {
                 if (it.get_type() == LOGGER_ATTRIBUTE_HANG_REASON) {
                     mBuff = (char *)it.get_data();
