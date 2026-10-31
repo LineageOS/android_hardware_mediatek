@@ -2,8 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 
 # Exclude HALs which see upstream merges
-exclude: ^aidl/thermal/
-
+exclude: ^(aidl/thermal/|wlan/wifi_hal/)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
