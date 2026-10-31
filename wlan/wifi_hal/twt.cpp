@@ -484,12 +484,12 @@ public:
 
     void registerTwtVendorEvents()
     {
-        registerVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT);
+        registerVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT);
     }
 
     void unregisterTwtVendorEvents()
     {
-        unregisterVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT);
+        unregisterVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT);
     }
 
     int handleEvent(WifiEvent& event) {
@@ -511,7 +511,7 @@ public:
         }
 
         switch (event_id) {
-            case BRCM_VENDOR_EVENT_TWT: {
+            case MTK_VENDOR_EVENT_TWT: {
                 HandleTwtEvent(vendor_data);
                 break;
             }
@@ -937,12 +937,12 @@ public:
 
     void registerTwtVendorEvents()
     {
-        registerVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT);
+        registerVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT);
     }
 
     void unregisterTwtVendorEvents()
     {
-        unregisterVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT);
+        unregisterVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT);
     }
 
 protected:
@@ -998,7 +998,7 @@ protected:
         }
 
         switch (event_id) {
-            case BRCM_VENDOR_EVENT_TWT: {
+            case MTK_VENDOR_EVENT_TWT: {
                 HandleTwtEvent(vendor_data);
                 break;
             }
