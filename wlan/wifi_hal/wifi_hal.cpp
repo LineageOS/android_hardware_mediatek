@@ -378,30 +378,6 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn *fn)
     fn->wifi_nan_pairing_end = nan_pairing_end;
     return WIFI_SUCCESS;
 }
-#ifdef GOOGLE_WIFI_FW_CONFIG_VERSION_C_WRAPPER
-#include <google_wifi_firmware_config_version_info.h>
-
-static void
-wifi_check_valid_ota_version(wifi_interface_handle handle)
-{
-    bool valid = false;
-    int32_t default_ver = get_google_default_vendor_wifi_config_version();
-    int32_t ota_ver = get_google_ota_updated_wifi_config_version();
-    ALOGE("default_ver %d, ota_ver %d", default_ver, ota_ver);
-
-    if (ota_ver > default_ver) {
-        valid = verify_google_ota_updated_wifi_config_integrity();
-    }
-
-    if (valid) {
-        ALOGE("Valid config files of OTA.");
-        wifi_hal_ota_update(handle, ota_ver);
-    }
-    else {
-        ALOGE("Do not valid config files of OTA.");
-    }
-}
-#endif // GOOGLE_WIFI_FW_CONFIG_VERSION_C_WRAPPER
 
 hal_info *halInfo = NULL;
 wifi_error wifi_pre_initialize(void)
@@ -560,9 +536,6 @@ wifi_error wifi_pre_initialize(void)
     if (wlan0Handle != NULL) {
         ALOGE("Calling preInit");
         if (!get_halutil_mode()) {
-#ifdef GOOGLE_WIFI_FW_CONFIG_VERSION_C_WRAPPER
-            (void) wifi_check_valid_ota_version(wlan0Handle);
-#endif // GOOGLE_WIFI_FW_CONFIG_VERSION_C_WRAPPER
             result = wifi_hal_preInit(wlan0Handle);
             if (result != WIFI_SUCCESS) {
                 ALOGE("wifi_hal_preInit failed");
