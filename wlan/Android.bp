@@ -1,0 +1,17 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_defaults {
+    name: "libwifi-hal-mediatek",
+    whole_static_libs: [
+        "//hardware/mediatek/wlan/wifi_hal:libwifi-hal-mediatek",
+    ],
+    shared_libs: [
+        "libcrypto",
+        "liblog",
+        "libnl",
+        "libutils",
+    ],
+}
