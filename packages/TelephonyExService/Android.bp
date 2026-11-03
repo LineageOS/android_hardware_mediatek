@@ -1,0 +1,35 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app {
+    name: "MtkTelephonyExService",
+
+    srcs: [
+        "src/**/*.java",
+        "src/**/*.aidl",
+    ],
+
+    libs: [
+        "telephony-common",
+    ],
+
+    system_ext_specific: true,
+    certificate: "platform",
+    platform_apis: true,
+    privileged: true,
+
+    optimize: {
+        enabled: false,
+    },
+    required: ["org.lineageos.mediatek.telephonyexservice_whitelist"],
+}
+
+prebuilt_etc {
+    name: "org.lineageos.mediatek.telephonyexservice_whitelist",
+    system_ext_specific: true,
+    relative_install_path: "sysconfig",
+    src: "org.lineageos.mediatek.telephonyexservice_whitelist.xml",
+    filename_from_src: true,
+}

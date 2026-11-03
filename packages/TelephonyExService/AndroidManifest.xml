@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.mediatek.telephonyexservice"
+    android:sharedUserId="android.uid.phone"
+    coreApp="true">
+
+    <protected-broadcast android:name="org.lineageos.mediatek.telephonyexservice.action.SIM_TYPE_CHANGED" />
+
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+
+    <application
+        android:name=".MtkTelephonyExService"
+        android:process="com.android.phone"
+        android:persistent="true"
+        android:directBootAware="true"
+        android:defaultToDeviceProtectedStorage="true">
+    </application>
+</manifest>
