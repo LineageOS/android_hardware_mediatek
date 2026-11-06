@@ -50,6 +50,7 @@ class BluetoothDeathRecipient {
     void LinkToDeath(const std::shared_ptr<IBluetoothHciCallbacks>& cb) {
         mCb = cb;
         clientDeathRecipient_ = AIBinder_DeathRecipient_new(OnDeath);
+        AIBinder_DeathRecipient_setOnUnlinked(clientDeathRecipient_, [](void*) {});
         auto linkToDeathReturnStatus = AIBinder_linkToDeath(
                 mCb->asBinder().get(), clientDeathRecipient_, this /* cookie */);
         LOG_ALWAYS_FATAL_IF(linkToDeathReturnStatus != STATUS_OK,
@@ -142,6 +143,7 @@ ndk::ScopedAStatus BluetoothHci::initialize(const std::shared_ptr<IBluetoothHciC
     }
 
     mCb = cb;
+    mDeathRecipient->LinkToDeath(mCb);
     {
         std::lock_guard<std::mutex> guard(mStateMutex);
         mState = HalState::ONE_CLIENT;
