@@ -11,12 +11,14 @@
 #include <fcntl.h>
 #include <libdm/dm.h>
 #include <log/log.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #define BLOCK_SIZE 512
 
@@ -30,23 +32,44 @@
 #define EMMC_HEADER "EMMC"
 #define COMBO_HEADER "COMB"
 
+#define BRLYT_OFFSET 0x200
+#define BRLYT_ID "BRLYT"
+#define BRLYT_DESC_OFFSET 0x214
+#define BRLYT_DESC_COUNT 8
+#define BL_EXIST_MAGIC 0x42424242
+
+#define BL_TYPE_PRELOADER 0x1
+#define BL_TYPE_ROT_BOOT_FW 0xb
+#define BL_TYPE_ROT_BOOT_FMC 0xd
+
 using android::base::unique_fd;
 using namespace android::dm;
 
+struct bl_descriptor {
+    uint32_t magic;
+    uint8_t dev;
+    uint8_t reserved;
+    uint16_t type;
+    uint32_t begin;
+    uint32_t boundary;
+    uint32_t attr;
+} __attribute__((packed));
+
 struct pl_device {
-    const char* dm_name;
+    const char* suffix;
     const char* dev;
     int lun;
 };
 
 static struct pl_device pl_devices[] = {
-        {"preloader_raw_a", "/dev/block/sda", 0},
-        {"preloader_raw_b", "/dev/block/sdb", 1},
-        {"preloader_raw_a", "/dev/block/mmcblk0boot0", -1},
-        {"preloader_raw_b", "/dev/block/mmcblk0boot1", -1},
+        {"_a", "/dev/block/sda", 0},
+        {"_b", "/dev/block/sdb", 1},
+        {"_a", "/dev/block/mmcblk0boot0", -1},
+        {"_b", "/dev/block/mmcblk0boot1", -1},
 };
 
-static void create_dm_device(const char* name, const char* dev, int start, int count) {
+static void create_dm_device(const std::string& name, const char* dev, uint64_t start,
+                             uint64_t count) {
     DeviceMapper& dm = DeviceMapper::Instance();
     DmTable table;
     std::unique_ptr<DmTarget> target;
@@ -54,16 +77,16 @@ static void create_dm_device(const char* name, const char* dev, int start, int c
 
     target = std::make_unique<DmTargetLinear>(0, count, dev, start);
     if (!table.AddTarget(std::move(target))) {
-        ALOGE("Failed to add target for %s.", name);
+        ALOGE("Failed to add target for %s.", name.c_str());
         return;
     }
 
     if (!dm.CreateDevice(name, table, &path, std::chrono::milliseconds(500))) {
-        ALOGE("Failed to create device %s.", name);
+        ALOGE("Failed to create device %s.", name.c_str());
         return;
     }
 
-    ALOGI("Created DM device %s at %s.", name, path.c_str());
+    ALOGI("Created DM device %s at %s.", name.c_str(), path.c_str());
 }
 
 static int get_header_size(const char* dev) {
@@ -115,6 +138,75 @@ static std::string get_lun_device(int lun) {
     return "";
 }
 
+static const char* get_region_name(uint16_t type) {
+    switch (type) {
+        case BL_TYPE_PRELOADER:
+            return "preloader_raw";
+        case BL_TYPE_ROT_BOOT_FMC:
+            return "rot_boot_fmc";
+        case BL_TYPE_ROT_BOOT_FW:
+            return "rot_boot_fw";
+        default:
+            return nullptr;
+    }
+}
+
+static bool create_region_devices(int fd, const char* dev, const char* suffix, uint64_t size) {
+    char id[sizeof(BRLYT_ID)];
+    bl_descriptor descs[BRLYT_DESC_COUNT];
+    std::vector<bl_descriptor> regions;
+    bool has_preloader = false;
+    bool has_rot_boot = false;
+
+    if (pread(fd, id, sizeof(id), BRLYT_OFFSET) != sizeof(id) ||
+        memcmp(id, BRLYT_ID, sizeof(id)) != 0) {
+        return false;
+    }
+
+    if (pread(fd, descs, sizeof(descs), BRLYT_DESC_OFFSET) != sizeof(descs)) {
+        return false;
+    }
+
+    for (const auto& desc : descs) {
+        if (desc.magic != BL_EXIST_MAGIC) {
+            continue;
+        }
+
+        has_preloader |= desc.type == BL_TYPE_PRELOADER;
+        has_rot_boot |= desc.type == BL_TYPE_ROT_BOOT_FMC;
+        regions.push_back(desc);
+    }
+
+    if (!has_preloader || !has_rot_boot) {
+        return false;
+    }
+
+    for (const auto& region : regions) {
+        const char* name = get_region_name(region.type);
+        if (name == nullptr) {
+            continue;
+        }
+
+        uint64_t begin = region.begin;
+        uint64_t end = size;
+        for (const auto& other : regions) {
+            if (other.begin > begin && other.begin < end) {
+                end = other.begin;
+            }
+        }
+
+        if (begin >= end || begin % BLOCK_SIZE || end % BLOCK_SIZE) {
+            ALOGE("Invalid %s region on %s.", name, dev);
+            continue;
+        }
+
+        create_dm_device(std::string(name) + suffix, dev, begin / BLOCK_SIZE,
+                         (end - begin) / BLOCK_SIZE);
+    }
+
+    return true;
+}
+
 int main() {
     for (int i = 0; i < sizeof(pl_devices) / sizeof(pl_device); i++) {
         pl_device* device = &pl_devices[i];
@@ -149,7 +241,12 @@ int main() {
             continue;
         }
 
-        create_dm_device(device->dm_name, dev.c_str(), hsz / BLOCK_SIZE, (size - hsz) / BLOCK_SIZE);
+        if (create_region_devices(fd, dev.c_str(), device->suffix, size)) {
+            continue;
+        }
+
+        create_dm_device(std::string("preloader_raw") + device->suffix, dev.c_str(),
+                         hsz / BLOCK_SIZE, (size - hsz) / BLOCK_SIZE);
     }
 
     return 0;
