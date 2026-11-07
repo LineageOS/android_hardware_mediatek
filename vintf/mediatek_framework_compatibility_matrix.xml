@@ -1074,7 +1074,7 @@
     </hal>
     <hal format="aidl">
         <name>vendor.mediatek.hardware.pq_aidl</name>
-        <version>1-7</version>
+        <version>1-10</version>
         <interface>
             <name>IPictureQuality_AIDL</name>
             <instance>default</instance>
