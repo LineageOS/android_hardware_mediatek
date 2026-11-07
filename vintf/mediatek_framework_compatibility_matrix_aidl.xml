@@ -492,6 +492,7 @@
     </hal>
     <hal format="aidl">
         <name>vendor.mediatek.hardware.mtkradioex.ntn</name>
+        <version>1-2</version>
         <interface>
             <name>IMtkRadioExNtn</name>
             <instance>slot1</instance>
