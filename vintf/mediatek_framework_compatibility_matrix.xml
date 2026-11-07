@@ -267,6 +267,7 @@
     </hal>
     <hal format="aidl">
         <name>vendor.mediatek.hardware.audio</name>
+        <version>1-2</version>
         <interface>
             <name>IMtkAudio</name>
             <instance>default</instance>
