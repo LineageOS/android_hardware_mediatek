@@ -16,27 +16,26 @@
  * limitations under the License.
  */
 
-#include <stdint.h>
 #include <fcntl.h>
-#include <sys/socket.h>
-#include <netlink/genl/genl.h>
-#include <netlink/genl/family.h>
-#include <netlink/genl/ctrl.h>
-#include <linux/rtnetlink.h>
-#include <netpacket/packet.h>
-#include <linux/filter.h>
 #include <linux/errqueue.h>
+#include <linux/filter.h>
+#include <linux/rtnetlink.h>
+#include <netlink/genl/ctrl.h>
+#include <netlink/genl/family.h>
+#include <netlink/genl/genl.h>
+#include <netpacket/packet.h>
+#include <stdint.h>
+#include <sys/socket.h>
 
 #include <linux/pkt_sched.h>
-#include <netlink/object-api.h>
 #include <netlink/netlink.h>
+#include <netlink/object-api.h>
 #include <netlink/socket.h>
-
 
 #include "nl80211_copy.h"
 #include "sync.h"
 
-#define LOG_TAG  "WifiHAL"
+#define LOG_TAG "WifiHAL"
 
 #include <log/log.h>
 
@@ -50,14 +49,14 @@ typedef enum {
 } WIFI_OFFLOAD_SUB_COMMAND;
 
 typedef enum {
-    MKEEP_ALIVE_ATTRIBUTE_INVALID               = 0,
-    MKEEP_ALIVE_ATTRIBUTE_ID                    = 1,
-    MKEEP_ALIVE_ATTRIBUTE_IP_PKT                = 2,
-    MKEEP_ALIVE_ATTRIBUTE_IP_PKT_LEN		= 3,
-    MKEEP_ALIVE_ATTRIBUTE_SRC_MAC_ADDR		= 4,
-    MKEEP_ALIVE_ATTRIBUTE_DST_MAC_ADDR		= 5,
-    MKEEP_ALIVE_ATTRIBUTE_PERIOD_MSEC		= 6,
-    MKEEP_ALIVE_ATTRIBUTE_ETHER_TYPE		= 7,
+    MKEEP_ALIVE_ATTRIBUTE_INVALID = 0,
+    MKEEP_ALIVE_ATTRIBUTE_ID = 1,
+    MKEEP_ALIVE_ATTRIBUTE_IP_PKT = 2,
+    MKEEP_ALIVE_ATTRIBUTE_IP_PKT_LEN = 3,
+    MKEEP_ALIVE_ATTRIBUTE_SRC_MAC_ADDR = 4,
+    MKEEP_ALIVE_ATTRIBUTE_DST_MAC_ADDR = 5,
+    MKEEP_ALIVE_ATTRIBUTE_PERIOD_MSEC = 6,
+    MKEEP_ALIVE_ATTRIBUTE_ETHER_TYPE = 7,
     /* Add new attributes just above this */
     MKEEP_ALIVE_ATTRIBUTE_MAX
 } WIFI_MKEEP_ALIVE_ATTRIBUTE;
@@ -68,31 +67,34 @@ typedef enum {
 } GetCmdType;
 
 ///////////////////////////////////////////////////////////////////////////////
-class MKeepAliveCommand : public WifiCommand
-{
+class MKeepAliveCommand : public WifiCommand {
     u8 mIndex;
-    u8 *mIpPkt;
+    u8* mIpPkt;
     u16 mIpPktLen;
-    u8 *mSrcMacAddr;
-    u8 *mDstMacAddr;
+    u8* mSrcMacAddr;
+    u8* mDstMacAddr;
     u32 mPeriodMsec;
     GetCmdType mType;
     u16 mEther_type;
 
-public:
-
+  public:
     // constructor for start sending
-    MKeepAliveCommand(wifi_interface_handle iface, u8 index, u16 ether_type, u8 *ip_packet, u16 ip_packet_len,
-            u8 *src_mac_addr, u8 *dst_mac_addr, u32 period_msec, GetCmdType cmdType)
-        : WifiCommand("MKeepAliveCommand", iface, 0), mIndex(index), mEther_type(ether_type), mIpPkt(ip_packet),
-        mIpPktLen(ip_packet_len), mSrcMacAddr(src_mac_addr), mDstMacAddr(dst_mac_addr),
-        mPeriodMsec(period_msec), mType(cmdType)
-    { }
+    MKeepAliveCommand(wifi_interface_handle iface, u8 index, u16 ether_type, u8* ip_packet,
+                      u16 ip_packet_len, u8* src_mac_addr, u8* dst_mac_addr, u32 period_msec,
+                      GetCmdType cmdType)
+        : WifiCommand("MKeepAliveCommand", iface, 0),
+          mIndex(index),
+          mEther_type(ether_type),
+          mIpPkt(ip_packet),
+          mIpPktLen(ip_packet_len),
+          mSrcMacAddr(src_mac_addr),
+          mDstMacAddr(dst_mac_addr),
+          mPeriodMsec(period_msec),
+          mType(cmdType) {}
 
     // constructor for stop sending
     MKeepAliveCommand(wifi_interface_handle iface, u8 index, GetCmdType cmdType)
-        : WifiCommand("MKeepAliveCommand", iface, 0), mIndex(index), mType(cmdType)
-    {
+        : WifiCommand("MKeepAliveCommand", iface, 0), mIndex(index), mType(cmdType) {
         mIpPkt = NULL;
         mIpPktLen = 0;
         mSrcMacAddr = NULL;
@@ -101,19 +103,18 @@ public:
         mEther_type = 0;
     }
 
-    int createRequest(WifiRequest &request) {
+    int createRequest(WifiRequest& request) {
         int result = WIFI_SUCCESS;
 
         switch (mType) {
-            case START_MKEEP_ALIVE:
-            {
+            case START_MKEEP_ALIVE: {
                 result = request.create(GOOGLE_OUI, WIFI_OFFLOAD_START_MKEEP_ALIVE);
                 if (result != WIFI_SUCCESS) {
                     ALOGE("Failed to create start keep alive request; result = %d", result);
                     return result;
                 }
 
-                nlattr *data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
+                nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
 
                 result = request.put_u8(MKEEP_ALIVE_ATTRIBUTE_ID, mIndex);
                 if (result < 0) {
@@ -160,15 +161,14 @@ public:
                 break;
             }
 
-            case STOP_MKEEP_ALIVE:
-            {
+            case STOP_MKEEP_ALIVE: {
                 result = request.create(GOOGLE_OUI, WIFI_OFFLOAD_STOP_MKEEP_ALIVE);
                 if (result != WIFI_SUCCESS) {
                     ALOGE("Failed to create stop keep alive request; result = %d", result);
                     return result;
                 }
 
-                nlattr *data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
+                nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
 
                 result = request.put_u8(MKEEP_ALIVE_ATTRIBUTE_ID, mIndex);
                 if (result < 0) {
@@ -228,39 +228,37 @@ public:
     }
 };
 
-
 /* API to send specified mkeep_alive packet periodically. */
 wifi_error wifi_start_sending_offloaded_packet(wifi_request_id index, wifi_interface_handle iface,
-        u16 ether_type, u8 *ip_packet, u16 ip_packet_len, u8 *src_mac_addr, u8 *dst_mac_addr,
-        u32 period_msec)
-{
-    if ((index > 0 && index <= N_AVAIL_ID) && (ip_packet != NULL) && (src_mac_addr != NULL)
-            && (dst_mac_addr != NULL) && (period_msec > 0)
-            && (ip_packet_len <= MKEEP_ALIVE_IP_PKT_MAX) && ((ether_type == ETHERTYPE_IP) ||
-            (ether_type == ETHERTYPE_IPV6))) {
-        MKeepAliveCommand *cmd = new MKeepAliveCommand(iface, index, ether_type, ip_packet, ip_packet_len,
-                src_mac_addr, dst_mac_addr, period_msec, START_MKEEP_ALIVE);
+                                               u16 ether_type, u8* ip_packet, u16 ip_packet_len,
+                                               u8* src_mac_addr, u8* dst_mac_addr,
+                                               u32 period_msec) {
+    if ((index > 0 && index <= N_AVAIL_ID) && (ip_packet != NULL) && (src_mac_addr != NULL) &&
+        (dst_mac_addr != NULL) && (period_msec > 0) && (ip_packet_len <= MKEEP_ALIVE_IP_PKT_MAX) &&
+        ((ether_type == ETHERTYPE_IP) || (ether_type == ETHERTYPE_IPV6))) {
+        MKeepAliveCommand* cmd =
+                new MKeepAliveCommand(iface, index, ether_type, ip_packet, ip_packet_len,
+                                      src_mac_addr, dst_mac_addr, period_msec, START_MKEEP_ALIVE);
         NULL_CHECK_RETURN(cmd, "memory allocation failure", WIFI_ERROR_OUT_OF_MEMORY);
         wifi_error result = (wifi_error)cmd->start();
         cmd->releaseRef();
         return result;
     } else {
         ALOGE("Invalid mkeep_alive parameters");
-        return  WIFI_ERROR_INVALID_ARGS;
+        return WIFI_ERROR_INVALID_ARGS;
     }
 }
 
 /* API to stop sending mkeep_alive packet. */
-wifi_error wifi_stop_sending_offloaded_packet(wifi_request_id index, wifi_interface_handle iface)
-{
+wifi_error wifi_stop_sending_offloaded_packet(wifi_request_id index, wifi_interface_handle iface) {
     if (index > 0 && index <= N_AVAIL_ID) {
-        MKeepAliveCommand *cmd = new MKeepAliveCommand(iface, index, STOP_MKEEP_ALIVE);
+        MKeepAliveCommand* cmd = new MKeepAliveCommand(iface, index, STOP_MKEEP_ALIVE);
         NULL_CHECK_RETURN(cmd, "memory allocation failure", WIFI_ERROR_OUT_OF_MEMORY);
         wifi_error result = (wifi_error)cmd->start();
         cmd->releaseRef();
         return result;
     } else {
         ALOGE("Invalid mkeep_alive parameters");
-        return  WIFI_ERROR_INVALID_ARGS;
+        return WIFI_ERROR_INVALID_ARGS;
     }
 }
