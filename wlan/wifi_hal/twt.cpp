@@ -465,9 +465,9 @@ class TwtEventCap : public WifiCommand {
 
     int handleResponse(WifiEvent& reply) { return NL_SKIP; }
 
-    void registerTwtVendorEvents() { registerVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT); }
+    void registerTwtVendorEvents() { registerVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT); }
 
-    void unregisterTwtVendorEvents() { unregisterVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT); }
+    void unregisterTwtVendorEvents() { unregisterVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT); }
 
     int handleEvent(WifiEvent& event) {
         u16 attr_type;
@@ -488,7 +488,7 @@ class TwtEventCap : public WifiCommand {
         }
 
         switch (event_id) {
-            case BRCM_VENDOR_EVENT_TWT: {
+            case MTK_VENDOR_EVENT_TWT: {
                 HandleTwtEvent(vendor_data);
                 break;
             }
@@ -879,9 +879,9 @@ class TwtFeatureRequest : public WifiCommand {
         return WIFI_SUCCESS;
     }
 
-    void registerTwtVendorEvents() { registerVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT); }
+    void registerTwtVendorEvents() { registerVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT); }
 
-    void unregisterTwtVendorEvents() { unregisterVendorHandler(BRCM_OUI, BRCM_VENDOR_EVENT_TWT); }
+    void unregisterTwtVendorEvents() { unregisterVendorHandler(MTK_OUI, MTK_VENDOR_EVENT_TWT); }
 
   protected:
     virtual int handleResponse(WifiEvent& reply) {
@@ -935,7 +935,7 @@ class TwtFeatureRequest : public WifiCommand {
         }
 
         switch (event_id) {
-            case BRCM_VENDOR_EVENT_TWT: {
+            case MTK_VENDOR_EVENT_TWT: {
                 HandleTwtEvent(vendor_data);
                 break;
             }
