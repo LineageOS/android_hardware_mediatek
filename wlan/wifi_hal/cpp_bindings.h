@@ -20,62 +20,44 @@
 #include "common.h"
 #include "sync.h"
 
-class WifiEvent
-{
+class WifiEvent {
     /* TODO: remove this when nl headers are updated */
     static const unsigned NL80211_ATTR_MAX_INTERNAL = 256;
-private:
-    struct nl_msg *mMsg;
-    struct genlmsghdr *mHeader;
-    struct nlattr *mAttributes[NL80211_ATTR_MAX_INTERNAL + 1];
 
-public:
-    WifiEvent(nl_msg *msg) {
+  private:
+    struct nl_msg* mMsg;
+    struct genlmsghdr* mHeader;
+    struct nlattr* mAttributes[NL80211_ATTR_MAX_INTERNAL + 1];
+
+  public:
+    WifiEvent(nl_msg* msg) {
         mMsg = msg;
         mHeader = NULL;
         memset(mAttributes, 0, sizeof(mAttributes));
     }
-    ~WifiEvent() {
-        /* don't destroy mMsg; it doesn't belong to us */
-    }
+    ~WifiEvent() { /* don't destroy mMsg; it doesn't belong to us */ }
 
     void log();
 
     int parse();
 
-    genlmsghdr *header() {
-        return mHeader;
-    }
+    genlmsghdr* header() { return mHeader; }
 
-    int get_cmd() {
-        return mHeader->cmd;
-    }
+    int get_cmd() { return mHeader->cmd; }
 
-    int get_vendor_id() {
-        return get_u32(NL80211_ATTR_VENDOR_ID);
-    }
+    int get_vendor_id() { return get_u32(NL80211_ATTR_VENDOR_ID); }
 
-    int get_vendor_subcmd() {
-        return get_u32(NL80211_ATTR_VENDOR_SUBCMD);
-    }
+    int get_vendor_subcmd() { return get_u32(NL80211_ATTR_VENDOR_SUBCMD); }
 
-    void *get_vendor_data() {
-        return get_data(NL80211_ATTR_VENDOR_DATA);
-    }
+    void* get_vendor_data() { return get_data(NL80211_ATTR_VENDOR_DATA); }
 
-    int get_vendor_data_len() {
-        return get_len(NL80211_ATTR_VENDOR_DATA);
-    }
+    int get_vendor_data_len() { return get_len(NL80211_ATTR_VENDOR_DATA); }
 
-    const char *get_cmdString();
+    const char* get_cmdString();
 
-    nlattr ** attributes() {
-        return mAttributes;
-    }
+    nlattr** attributes() { return mAttributes; }
 
-    nlattr *get_attribute(int attribute) {
-        return mAttributes[attribute];
-    }
+    nlattr* get_attribute(int attribute) { return mAttributes[attribute]; }
 
     int get_s8(int attribute) {
         return mAttributes[attribute] ? nla_get_s8(mAttributes[attribute]) : 0;
@@ -101,73 +83,51 @@ public:
         return mAttributes[attribute] ? nla_len(mAttributes[attribute]) : 0;
     }
 
-    void *get_data(int attribute) {
+    void* get_data(int attribute) {
         return mAttributes[attribute] ? nla_data(mAttributes[attribute]) : NULL;
     }
 
-    void *get_string(int attribute) {
+    void* get_string(int attribute) {
         return mAttributes[attribute] ? nla_get_string(mAttributes[attribute]) : NULL;
     }
-private:
-    WifiEvent(const WifiEvent&);        // hide copy constructor to prevent copies
+
+  private:
+    WifiEvent(const WifiEvent&);  // hide copy constructor to prevent copies
 };
 
 class nl_iterator {
-    struct nlattr *pos;
+    struct nlattr* pos;
     int rem;
-public:
-    nl_iterator(struct nlattr *attr) {
-        pos = (struct nlattr *)nla_data(attr);
+
+  public:
+    nl_iterator(struct nlattr* attr) {
+        pos = (struct nlattr*)nla_data(attr);
         rem = nla_len(attr);
     }
-    bool has_next() {
-        return nla_ok(pos, rem);
-    }
-    void next() {
-        pos = (struct nlattr *)nla_next(pos, &(rem));
-    }
-    struct nlattr *get() {
-        return pos;
-    }
-    uint16_t get_type() {
-        return nla_type(pos);
-    }
-    uint8_t get_u8() {
-        return nla_get_u8(pos);
-    }
-    int get_s8() {
-        return nla_get_s8(pos);
-    }
-    uint16_t get_u16() {
-        return nla_get_u16(pos);
-    }
-    uint32_t get_u32() {
-        return nla_get_u32(pos);
-    }
-    uint64_t get_u64() {
-        return nla_get_u64(pos);
-    }
-    void* get_data() {
-        return nla_data(pos);
-    }
-    int get_len() {
-        return nla_len(pos);
-    }
-    void* get_string() {
-        return nla_get_string(pos);
-    }
-private:
-    nl_iterator(const nl_iterator&);    // hide copy constructor to prevent copies
+    bool has_next() { return nla_ok(pos, rem); }
+    void next() { pos = (struct nlattr*)nla_next(pos, &(rem)); }
+    struct nlattr* get() { return pos; }
+    uint16_t get_type() { return nla_type(pos); }
+    uint8_t get_u8() { return nla_get_u8(pos); }
+    int get_s8() { return nla_get_s8(pos); }
+    uint16_t get_u16() { return nla_get_u16(pos); }
+    uint32_t get_u32() { return nla_get_u32(pos); }
+    uint64_t get_u64() { return nla_get_u64(pos); }
+    void* get_data() { return nla_data(pos); }
+    int get_len() { return nla_len(pos); }
+    void* get_string() { return nla_get_string(pos); }
+
+  private:
+    nl_iterator(const nl_iterator&);  // hide copy constructor to prevent copies
 };
 
-class WifiRequest
-{
-private:
+class WifiRequest {
+  private:
     int mFamily;
     int mIface;
-    struct nl_msg *mMsg;
+    struct nl_msg* mMsg;
 
-public:
+  public:
     WifiRequest(int family) {
         mMsg = NULL;
         mFamily = family;
@@ -180,9 +140,7 @@ public:
         mIface = iface;
     }
 
-    ~WifiRequest() {
-        destroy();
-    }
+    ~WifiRequest() { destroy(); }
 
     void destroy() {
         if (mMsg) {
@@ -191,26 +149,18 @@ public:
         }
     }
 
-    nl_msg *getMessage() {
-        return mMsg;
-    }
+    nl_msg* getMessage() { return mMsg; }
 
     /* Command assembly helpers */
     int create(int family, uint8_t cmd, int flags, int data_len);
-    int create(uint8_t cmd) {
-        return create(mFamily, cmd, 0, 0);
-    }
+    int create(uint8_t cmd) { return create(mFamily, cmd, 0, 0); }
 
-    int create_custom_len(uint8_t cmd, int data_len) {
-        return create(mFamily, cmd, 0, data_len);
-    }
+    int create_custom_len(uint8_t cmd, int data_len) { return create(mFamily, cmd, 0, data_len); }
 
     int create(uint32_t id, int subcmd);
     int create_custom_len(uint32_t id, int subcmd, int data_len);
 
-    int put(int attribute, void *ptr, unsigned len) {
-        return nla_put(mMsg, attribute, len, ptr);
-    }
+    int put(int attribute, void* ptr, unsigned len) { return nla_put(mMsg, attribute, len, ptr); }
     int put_s8(int attribute, int8_t value) {
         return nla_put(mMsg, attribute, sizeof(value), &value);
     }
@@ -226,51 +176,45 @@ public:
     int put_u64(int attribute, uint64_t value) {
         return nla_put(mMsg, attribute, sizeof(value), &value);
     }
-    int put_string(int attribute, const char *value) {
+    int put_string(int attribute, const char* value) {
         return nla_put(mMsg, attribute, strlen(value) + 1, value);
     }
     int put_addr(int attribute, mac_addr value) {
         return nla_put(mMsg, attribute, sizeof(mac_addr), value);
     }
 
-    struct nlattr * attr_start(int attribute) {
-        return nla_nest_start(mMsg, attribute);
-    }
-    void attr_end(struct nlattr *attr) {
-        nla_nest_end(mMsg, attr);
-    }
+    struct nlattr* attr_start(int attribute) { return nla_nest_start(mMsg, attribute); }
+    void attr_end(struct nlattr* attr) { nla_nest_end(mMsg, attr); }
 
-    int set_iface_id(int ifindex) {
-        return put_u32(NL80211_ATTR_IFINDEX, ifindex);
-    }
-private:
-    WifiRequest(const WifiRequest&);        // hide copy constructor to prevent copies
+    int set_iface_id(int ifindex) { return put_u32(NL80211_ATTR_IFINDEX, ifindex); }
 
+  private:
+    WifiRequest(const WifiRequest&);  // hide copy constructor to prevent copies
 };
 
-class WifiCommand
-{
-protected:
-    const char *mType;
-    hal_info *mInfo;
+class WifiCommand {
+  protected:
+    const char* mType;
+    hal_info* mInfo;
     WifiRequest mMsg;
     Condition mCondition;
     wifi_request_id mId;
-    interface_info *mIfaceInfo;
+    interface_info* mIfaceInfo;
     int mRefs;
-public:
-    WifiCommand(const char *type, wifi_handle handle, wifi_request_id id)
-            : mType(type), mMsg(getHalInfo(handle)->nl80211_family_id), mId(id), mRefs(1)
-    {
+
+  public:
+    WifiCommand(const char* type, wifi_handle handle, wifi_request_id id)
+        : mType(type), mMsg(getHalInfo(handle)->nl80211_family_id), mId(id), mRefs(1) {
         mIfaceInfo = NULL;
         mInfo = getHalInfo(handle);
         // ALOGD("WifiCommand %p created, mInfo = %p, mIfaceInfo = %p", this, mInfo, mIfaceInfo);
     }
 
-    WifiCommand(const char *type, wifi_interface_handle iface, wifi_request_id id)
-            : mType(type), mMsg(getHalInfo(iface)->nl80211_family_id, getIfaceInfo(iface)->id),
-            mId(id), mRefs(1)
-    {
+    WifiCommand(const char* type, wifi_interface_handle iface, wifi_request_id id)
+        : mType(type),
+          mMsg(getHalInfo(iface)->nl80211_family_id, getIfaceInfo(iface)->id),
+          mId(id),
+          mRefs(1) {
         mIfaceInfo = getIfaceInfo(iface);
         mInfo = getHalInfo(iface);
         // ALOGD("WifiCommand %p created, mInfo = %p, mIfaceInfo = %p", this, mInfo, mIfaceInfo);
@@ -280,13 +224,9 @@ public:
         // ALOGD("WifiCommand %p destroyed", this);
     }
 
-    wifi_request_id id() {
-        return mId;
-    }
+    wifi_request_id id() { return mId; }
 
-    const char *getType() {
-        return mType;
-    }
+    const char* getType() { return mType; }
 
     virtual void addRef() {
         int refs = __sync_add_and_fetch(&mRefs, 1);
@@ -319,18 +259,12 @@ public:
     int requestResponse(WifiRequest& request);
     int requestDebugResponse(WifiRequest& request);
 
-protected:
-    wifi_handle wifiHandle() {
-        return getWifiHandle(mInfo);
-    }
+  protected:
+    wifi_handle wifiHandle() { return getWifiHandle(mInfo); }
 
-    wifi_interface_handle ifaceHandle() {
-        return getIfaceHandle(mIfaceInfo);
-    }
+    wifi_interface_handle ifaceHandle() { return getIfaceHandle(mIfaceInfo); }
 
-    int familyId() {
-        return mInfo->nl80211_family_id;
-    }
+    int familyId() { return mInfo->nl80211_family_id; }
 
     int ifaceId() {
         if (mIfaceInfo) {
@@ -355,9 +289,7 @@ protected:
         return wifi_register_handler(wifiHandle(), cmd, &event_handler, this);
     }
 
-    void unregisterHandler(int cmd) {
-        wifi_unregister_handler(wifiHandle(), cmd);
-    }
+    void unregisterHandler(int cmd) { wifi_unregister_handler(wifiHandle(), cmd); }
 
     int registerVendorHandler(uint32_t id, int subcmd) {
         return wifi_register_vendor_handler(wifiHandle(), id, subcmd, &event_handler, this);
@@ -371,30 +303,29 @@ protected:
         wifi_unregister_vendor_handler(wifiHandle(), id, subcmd);
     }
 
-private:
-    WifiCommand(const WifiCommand& );           // hide copy constructor to prevent copies
+  private:
+    WifiCommand(const WifiCommand&);  // hide copy constructor to prevent copies
 
     /* Event handling */
-    static int response_handler(struct nl_msg *msg, void *arg);
+    static int response_handler(struct nl_msg* msg, void* arg);
 
-    static int event_handler(struct nl_msg *msg, void *arg);
+    static int event_handler(struct nl_msg* msg, void* arg);
 
     /* Other event handlers */
-    static int valid_handler(struct nl_msg *msg, void *arg);
+    static int valid_handler(struct nl_msg* msg, void* arg);
 
-    static int ack_handler(struct nl_msg *msg, void *arg);
+    static int ack_handler(struct nl_msg* msg, void* arg);
 
-    static int finish_handler(struct nl_msg *msg, void *arg);
+    static int finish_handler(struct nl_msg* msg, void* arg);
 
-    static int error_handler(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg);
+    static int error_handler(struct sockaddr_nl* nla, struct nlmsgerr* err, void* arg);
 };
 
 /* nl message processing macros (required to pass C++ type checks) */
 
-#define for_each_attr(pos, nla, rem) \
-    for (pos = (nlattr *)nla_data(nla), rem = nla_len(nla); \
-        nla_ok(pos, rem); \
-        pos = (nlattr *)nla_next(pos, &(rem)))
+#define for_each_attr(pos, nla, rem)                                         \
+    for (pos = (nlattr*)nla_data(nla), rem = nla_len(nla); nla_ok(pos, rem); \
+         pos = (nlattr*)nla_next(pos, &(rem)))
 
 extern void InitResponseLock();
 extern void DestroyResponseLock();
