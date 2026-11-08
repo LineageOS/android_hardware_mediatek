@@ -17,6 +17,7 @@
  */
 
 #include <pthread.h>
+#include <sys/time.h>
 
 #ifndef __WIFI_HAL_SYNC_H__
 #define __WIFI_HAL_SYNC_H__
@@ -49,6 +50,20 @@ class Condition {
     }
 
     int wait() { return pthread_cond_wait(&mCondition, &mMutex); }
+    /* Timed wait; reltime is a relative timeout (as used by the NAN code). */
+    int wait(struct timespec reltime) {
+        struct timeval now;
+        struct timespec abstime;
+
+        gettimeofday(&now, NULL);
+        abstime.tv_sec = now.tv_sec + reltime.tv_sec;
+        abstime.tv_nsec = reltime.tv_nsec + now.tv_usec * 1000L;
+        if (abstime.tv_nsec >= 1000000000L) {
+            abstime.tv_sec += 1;
+            abstime.tv_nsec -= 1000000000L;
+        }
+        return pthread_cond_timedwait(&mCondition, &mMutex, &abstime);
+    }
 
     void signal() { pthread_cond_signal(&mCondition); }
 };
