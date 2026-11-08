@@ -16,55 +16,54 @@
  * limitations under the License.
  */
 
-#include <inttypes.h>
-#include <stdint.h>
 #include <fcntl.h>
-#include <sys/socket.h>
-#include <netlink/genl/genl.h>
-#include <netlink/genl/family.h>
-#include <netlink/genl/ctrl.h>
-#include <linux/rtnetlink.h>
-#include <netpacket/packet.h>
-#include <linux/filter.h>
+#include <inttypes.h>
 #include <linux/errqueue.h>
+#include <linux/filter.h>
+#include <linux/rtnetlink.h>
+#include <netlink/genl/ctrl.h>
+#include <netlink/genl/family.h>
+#include <netlink/genl/genl.h>
+#include <netpacket/packet.h>
+#include <stdint.h>
+#include <sys/socket.h>
 
 #include <linux/pkt_sched.h>
-#include <netlink/object-api.h>
-#include <netlink/netlink.h>
-#include <netlink/socket.h>
 #include <netlink/handlers.h>
+#include <netlink/netlink.h>
+#include <netlink/object-api.h>
+#include <netlink/socket.h>
 
 #include "sync.h"
 
-#define LOG_TAG  "WifiHAL"
+#define LOG_TAG "WifiHAL"
 
-#include <utils/Log.h>
 #include <hardware_legacy/wifi_hal.h>
+#include <utils/Log.h>
 #include "common.h"
 #include "cpp_bindings.h"
 
 #define CACHE_SCAN_RESULT_SIZE sizeof(wifi_cached_scan_result)
-#define MAX_CACHE_SCAN_RESULT_SIZE (MAX_CACHED_SCAN_RESULT*CACHE_SCAN_RESULT_SIZE)
+#define MAX_CACHE_SCAN_RESULT_SIZE (MAX_CACHED_SCAN_RESULT * CACHE_SCAN_RESULT_SIZE)
 typedef enum {
-    WIFI_ATTRIBUTE_CACHED_SCAN_INVALID        = 0,
+    WIFI_ATTRIBUTE_CACHED_SCAN_INVALID = 0,
     WIFI_ATTRIBUTE_CACHED_SCAN_BOOT_TIMESTAMP = 1,
-    WIFI_ATTRIBUTE_CACHED_SCANNED_FREQ_NUM    = 2,
-    WIFI_ATTRIBUTE_CACHED_SCANNED_FREQ_LIST   = 3,
-    WIFI_ATTRIBUTE_CACHED_SCAN_RESULT_CNT     = 4,
-    WIFI_ATTRIBUTE_CACHED_SCAN_RESULTS        = 5,
+    WIFI_ATTRIBUTE_CACHED_SCANNED_FREQ_NUM = 2,
+    WIFI_ATTRIBUTE_CACHED_SCANNED_FREQ_LIST = 3,
+    WIFI_ATTRIBUTE_CACHED_SCAN_RESULT_CNT = 4,
+    WIFI_ATTRIBUTE_CACHED_SCAN_RESULTS = 5,
     WIFI_ATTRIBUTE_CACHED_SCAN_MAX
 } SCAN_ATTRIBUTE;
 /////////////////////////////////////////////////////////////////////////////
 
 class GetCachedScanResultsCommand : public WifiCommand {
     wifi_cached_scan_result_handler mHandler;
-    wifi_cached_scan_report *mReport;
+    wifi_cached_scan_report* mReport;
 
-public:
+  public:
     GetCachedScanResultsCommand(wifi_interface_handle iface, int id,
-            wifi_cached_scan_result_handler handler)
-        : WifiCommand("GetCachedScanResultsCommand", iface, id), mHandler(handler)
-    {
+                                wifi_cached_scan_result_handler handler)
+        : WifiCommand("GetCachedScanResultsCommand", iface, id), mHandler(handler) {
         mReport = NULL;
     }
 
@@ -79,7 +78,7 @@ public:
         return ret;
     }
 
-    protected:
+  protected:
     virtual int handleResponse(WifiEvent& reply) {
         ALOGI("In GetCachedScanResultsCommand::handleResponse");
 
@@ -97,7 +96,7 @@ public:
 
         ALOGV("Id = %0x, subcmd = %d", id, subcmd);
 
-        nlattr *vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
         int len = reply.get_vendor_data_len();
 
         if (vendor_data == NULL || len == 0) {
@@ -105,7 +104,7 @@ public:
             return NL_SKIP;
         }
 
-        mReport = (wifi_cached_scan_report *)malloc(sizeof(wifi_cached_scan_report));
+        mReport = (wifi_cached_scan_report*)malloc(sizeof(wifi_cached_scan_report));
         if (mReport == NULL) {
             ALOGE("Failed to allocate!!\n");
             return NL_SKIP;
@@ -120,23 +119,23 @@ public:
             } else if (it.get_type() == WIFI_ATTRIBUTE_CACHED_SCAN_RESULT_CNT) {
                 valid_entries = min(it.get_u16(), MAX_CACHED_SCAN_RESULT);
                 ALOGV("cached scan result cnt: %d", valid_entries);
-            } else if ((it.get_type() == WIFI_ATTRIBUTE_CACHED_SCAN_RESULTS) &&
-                valid_entries && timestamp) {
+            } else if ((it.get_type() == WIFI_ATTRIBUTE_CACHED_SCAN_RESULTS) && valid_entries &&
+                       timestamp) {
                 size = min(it.get_len(), MAX_CACHE_SCAN_RESULT_SIZE);
-                if (size > (valid_entries*CACHE_SCAN_RESULT_SIZE)) {
+                if (size > (valid_entries * CACHE_SCAN_RESULT_SIZE)) {
                     ALOGE("Not enough space to copy!!\n");
                     return NL_SKIP;
                 }
                 result_size = valid_entries * CACHE_SCAN_RESULT_SIZE;
-                mReport->results = (wifi_cached_scan_result *)malloc(result_size);
+                mReport->results = (wifi_cached_scan_result*)malloc(result_size);
                 if (mReport->results == NULL) {
                     ALOGE("Failed to allocate!!\n");
                     return NL_SKIP;
                 }
-                memcpy((void *)mReport->results, (void *)it.get_data(), size);
+                memcpy((void*)mReport->results, (void*)it.get_data(), size);
             } else {
-                ALOGW("Ignoring invalid attribute type = %d, size = %d",
-                        it.get_type(), it.get_len());
+                ALOGW("Ignoring invalid attribute type = %d, size = %d", it.get_type(),
+                      it.get_len());
             }
         }
 
@@ -150,7 +149,7 @@ public:
 
         if (mReport) {
             if (mReport->results) {
-                free((void *)mReport->results);
+                free((void*)mReport->results);
             }
             free(mReport);
         }
@@ -159,9 +158,8 @@ public:
 };
 
 wifi_error wifi_get_cached_scan_results(wifi_interface_handle iface,
-    wifi_cached_scan_result_handler handler)
-{
+                                        wifi_cached_scan_result_handler handler) {
     ALOGI("Getting cached scan results, iface handle = %p", iface);
     GetCachedScanResultsCommand command(iface, 0, handler);
-    return (wifi_error) command.requestResponse();
+    return (wifi_error)command.requestResponse();
 }
