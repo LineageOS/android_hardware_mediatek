@@ -18,6 +18,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <inttypes.h>
 #include <linux/errqueue.h>
 #include <linux/filter.h>
 #include <linux/rtnetlink.h>
@@ -52,9 +53,9 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include "brcm_version.h"
 #include "common.h"
 #include "cpp_bindings.h"
+#include "mtk_version.h"
 /*
  BUGBUG: normally, libnl allocates ports for all connections it makes; but
  being a static library, it doesn't really know how many other netlink connections
@@ -114,24 +115,68 @@ wifi_error wifi_nan_resume_request(transaction_id id, wifi_interface_handle ifac
 
 typedef enum wifi_attr {
     ANDR_WIFI_ATTRIBUTE_INVALID = 0,
-    ANDR_WIFI_ATTRIBUTE_NUM_FEATURE_SET = 1,
-    ANDR_WIFI_ATTRIBUTE_FEATURE_SET = 2,
-    ANDR_WIFI_ATTRIBUTE_PNO_RANDOM_MAC_OUI = 3,
-    ANDR_WIFI_ATTRIBUTE_NODFS_SET = 4,
-    ANDR_WIFI_ATTRIBUTE_COUNTRY = 5,
-    ANDR_WIFI_ATTRIBUTE_ND_OFFLOAD_VALUE = 6,
-    ANDR_WIFI_ATTRIBUTE_TCPACK_SUP_VALUE = 7,
-    ANDR_WIFI_ATTRIBUTE_LATENCY_MODE = 8,
-    ANDR_WIFI_ATTRIBUTE_RANDOM_MAC = 9,
-    ANDR_WIFI_ATTRIBUTE_TX_POWER_SCENARIO = 10,
-    ANDR_WIFI_ATTRIBUTE_THERMAL_MITIGATION = 11,
-    ANDR_WIFI_ATTRIBUTE_THERMAL_COMPLETION_WINDOW = 12,
-    ANDR_WIFI_ATTRIBUTE_VOIP_MODE = 13,
-    ANDR_WIFI_ATTRIBUTE_DTIM_MULTIPLIER = 14,
-    ANDR_WIFI_ATTRIBUTE_CHAN_POLICY = 15,
+    ANDR_WIFI_ATTRIBUTE_NUM_FEATURE_SET = 4,
+    ANDR_WIFI_ATTRIBUTE_FEATURE_SET = 5,
+    ANDR_WIFI_ATTRIBUTE_PNO_RANDOM_MAC_OUI = 6,
+    ANDR_WIFI_ATTRIBUTE_NODFS_SET = 7,
+    ANDR_WIFI_ATTRIBUTE_COUNTRY = 8,
+    ANDR_WIFI_ATTRIBUTE_TX_POWER_SCENARIO = 15,
+    ANDR_WIFI_ATTRIBUTE_LATENCY_MODE = 17,
+    ANDR_WIFI_ATTRIBUTE_ND_OFFLOAD_VALUE = 0x40,
+    ANDR_WIFI_ATTRIBUTE_TCPACK_SUP_VALUE = 0x41,
+    ANDR_WIFI_ATTRIBUTE_RANDOM_MAC = 0x42,
+    ANDR_WIFI_ATTRIBUTE_THERMAL_MITIGATION = 0x43,
+    ANDR_WIFI_ATTRIBUTE_THERMAL_COMPLETION_WINDOW = 0x44,
+    ANDR_WIFI_ATTRIBUTE_VOIP_MODE = 0x45,
+    ANDR_WIFI_ATTRIBUTE_DTIM_MULTIPLIER = 0x46,
+    ANDR_WIFI_ATTRIBUTE_CHAN_POLICY = 1,
     // Add more attribute here
     ANDR_WIFI_ATTRIBUTE_MAX
 } wifi_attr_t;
+
+enum {
+    WIFI_ATTRIBUTE_BAND = 1,
+    WIFI_ATTRIBUTE_NUM_CHANNELS,
+    WIFI_ATTRIBUTE_CHANNEL_LIST,
+    WIFI_ATTRIBUTE_NUM_FEATURE_SET,
+    WIFI_ATTRIBUTE_FEATURE_SET,
+    WIFI_ATTRIBUTE_PNO_RANDOM_MAC_OUI,
+    WIFI_ATTRIBUTE_NODFS_VALUE,
+    WIFI_ATTRIBUTE_COUNTRY_CODE,
+    WIFI_ATTRIBUTE_ROAMING_CAPABILITIES,
+    WIFI_ATTRIBUTE_ROAMING_BLACKLIST_NUM,
+    WIFI_ATTRIBUTE_ROAMING_BLACKLIST_BSSID,
+    WIFI_ATTRIBUTE_ROAMING_WHITELIST_NUM,
+    WIFI_ATTRIBUTE_ROAMING_WHITELIST_SSID,
+    WIFI_ATTRIBUTE_ROAMING_STATE,
+};
+enum {
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_INVALID,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_BAND,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_IFACE,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_FILTER,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_MAX_SIZE,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_MAX
+};
+enum {
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_RESP_INVALID,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_RESP_ARRAY,
+    WIFI_ATTRIBUTE_USABLE_CHANNEL_RESP_MAX
+};
+
+enum {
+    WIFI_ATTRIBUTE_CONCURRENCY_MATRIX = 16, /* gl_vendor.h */
+};
+enum {
+    WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_INVALID = 0,
+    WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_MLO_ASSOCIATION_LINK_COUNT = 1,
+    WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_MLO_STR_LINK_COUNT = 2,
+    WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_CONCURRENT_TDLS_SESSION_COUNT = 3,
+};
+wifi_error wifi_get_chip_capabilities(wifi_handle handle,
+                                      wifi_chip_capabilities* chip_capabilities);
+wifi_error wifi_get_supported_iface_concurrency_matrix(wifi_handle handle,
+                                                       wifi_iface_concurrency_matrix* matrix);
 
 enum wifi_radio_combo_attributes {
     ANDR_WIFI_ATTRIBUTE_RADIO_COMBO_INVALID = 0,
@@ -150,10 +195,11 @@ enum wifi_rssi_monitor_attr {
 };
 
 enum wifi_apf_attr {
-    APF_ATTRIBUTE_VERSION,
-    APF_ATTRIBUTE_MAX_LEN,
-    APF_ATTRIBUTE_PROGRAM,
-    APF_ATTRIBUTE_PROGRAM_LEN
+    APF_ATTRIBUTE_INVALID = 0,
+    APF_ATTRIBUTE_VERSION = 1,
+    APF_ATTRIBUTE_MAX_LEN = 2,
+    APF_ATTRIBUTE_PROGRAM = 3,
+    APF_ATTRIBUTE_PROGRAM_LEN = 4
 };
 
 enum apf_request_type { GET_APF_CAPABILITIES, SET_APF_PROGRAM, READ_APF_PROGRAM };
@@ -193,8 +239,9 @@ enum wifi_usable_channel_attributes {
 };
 
 enum wifi_multista_attr {
-    MULTISTA_ATTRIBUTE_PRIM_CONN_IFACE,
-    MULTISTA_ATTRIBUTE_USE_CASE,
+    MULTISTA_ATTRIBUTE_INVALID = 0,
+    MULTISTA_ATTRIBUTE_PRIM_CONN_IFACE = 1,
+    MULTISTA_ATTRIBUTE_USE_CASE = 2,
     /* Add more attributes here */
     MULTISTA_ATTRIBUTE_MAX
 };
@@ -254,18 +301,9 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     fn->wifi_cleanup = wifi_cleanup;
     fn->wifi_event_loop = wifi_event_loop;
     fn->wifi_get_supported_feature_set = wifi_get_supported_feature_set;
-    fn->wifi_get_concurrency_matrix = wifi_get_concurrency_matrix;
     fn->wifi_set_scanning_mac_oui = wifi_set_scanning_mac_oui;
     fn->wifi_get_ifaces = wifi_get_ifaces;
     fn->wifi_get_iface_name = wifi_get_iface_name;
-    fn->wifi_start_gscan = wifi_start_gscan;
-    fn->wifi_stop_gscan = wifi_stop_gscan;
-    fn->wifi_get_cached_gscan_results = wifi_get_cached_gscan_results;
-    fn->wifi_set_bssid_hotlist = wifi_set_bssid_hotlist;
-    fn->wifi_reset_bssid_hotlist = wifi_reset_bssid_hotlist;
-    fn->wifi_set_significant_change_handler = wifi_set_significant_change_handler;
-    fn->wifi_reset_significant_change_handler = wifi_reset_significant_change_handler;
-    fn->wifi_get_gscan_capabilities = wifi_get_gscan_capabilities;
     fn->wifi_get_link_stats = wifi_get_link_stats;
     fn->wifi_set_link_stats = wifi_set_link_stats;
     fn->wifi_clear_link_stats = wifi_clear_link_stats;
@@ -273,13 +311,7 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     fn->wifi_rtt_range_request_v4 = wifi_rtt_range_request_v4;
     fn->wifi_rtt_range_cancel = wifi_rtt_range_cancel;
     fn->wifi_get_rtt_capabilities_v4 = wifi_get_rtt_capabilities_v4;
-    fn->wifi_rtt_get_responder_info = wifi_rtt_get_responder_info;
-    fn->wifi_enable_responder = wifi_enable_responder;
-    fn->wifi_disable_responder = wifi_disable_responder;
-    fn->wifi_set_nodfs_flag = wifi_set_nodfs_flag;
     fn->wifi_start_logging = wifi_start_logging;
-    fn->wifi_set_epno_list = wifi_set_epno_list;
-    fn->wifi_reset_epno_list = wifi_reset_epno_list;
     fn->wifi_set_country_code = wifi_set_country_code;
     fn->wifi_get_firmware_memory_dump = wifi_get_firmware_memory_dump;
     fn->wifi_set_log_handler = wifi_set_log_handler;
@@ -293,7 +325,6 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     fn->wifi_get_driver_version = wifi_get_driver_version;
     fn->wifi_start_rssi_monitoring = wifi_start_rssi_monitoring;
     fn->wifi_stop_rssi_monitoring = wifi_stop_rssi_monitoring;
-    fn->wifi_configure_nd_offload = wifi_configure_nd_offload;
     fn->wifi_start_sending_offloaded_packet = wifi_start_sending_offloaded_packet;
     fn->wifi_stop_sending_offloaded_packet = wifi_stop_sending_offloaded_packet;
     fn->wifi_start_pkt_fate_monitoring = wifi_start_pkt_fate_monitoring;
@@ -329,40 +360,16 @@ wifi_error init_wifi_vendor_hal_func_table(wifi_hal_fn* fn) {
     fn->wifi_reset_tx_power_scenario = wifi_reset_tx_power_scenario;
     fn->wifi_read_packet_filter = wifi_read_packet_filter;
     fn->wifi_set_subsystem_restart_handler = wifi_set_subsystem_restart_handler;
-    fn->wifi_set_thermal_mitigation_mode = wifi_set_thermal_mitigation_mode;
-    fn->wifi_map_dscp_access_category = wifi_map_dscp_access_category;
-    fn->wifi_reset_dscp_mapping = wifi_reset_dscp_mapping;
     fn->wifi_virtual_interface_create = wifi_virtual_interface_create;
     fn->wifi_virtual_interface_delete = wifi_virtual_interface_delete;
-    fn->wifi_set_coex_unsafe_channels = wifi_set_coex_unsafe_channels;
-    fn->wifi_twt_get_capabilities = wifi_twt_get_capabilities;
-    fn->wifi_twt_register_events = wifi_twt_register_events;
-    fn->wifi_twt_session_setup = wifi_twt_session_setup;
-    fn->wifi_twt_session_update = wifi_twt_session_update;
-    fn->wifi_twt_session_suspend = wifi_twt_session_suspend;
-    fn->wifi_twt_session_resume = wifi_twt_session_resume;
-    fn->wifi_twt_session_teardown = wifi_twt_session_teardown;
-    fn->wifi_twt_session_get_stats = wifi_twt_session_get_stats;
     fn->wifi_multi_sta_set_primary_connection = wifi_multi_sta_set_primary_connection;
     fn->wifi_multi_sta_set_use_case = wifi_multi_sta_set_use_case;
-    fn->wifi_set_voip_mode = wifi_set_voip_mode;
-    fn->wifi_set_dtim_config = wifi_set_dtim_config;
     fn->wifi_get_usable_channels = wifi_get_usable_channels;
+    fn->wifi_get_chip_capabilities = wifi_get_chip_capabilities;
+    fn->wifi_get_supported_iface_concurrency_matrix = wifi_get_supported_iface_concurrency_matrix;
     fn->wifi_trigger_subsystem_restart = wifi_trigger_subsystem_restart;
     fn->wifi_get_supported_radio_combinations_matrix = wifi_get_supported_radio_combinations_matrix;
-    fn->wifi_nan_rtt_chre_enable_request = nan_chre_enable_request;
-    fn->wifi_nan_rtt_chre_disable_request = nan_chre_disable_request;
-    fn->wifi_chre_register_handler = nan_chre_register_handler;
-    fn->wifi_enable_tx_power_limits = wifi_enable_tx_power_limits;
-    fn->wifi_get_cached_scan_results = wifi_get_cached_scan_results;
     fn->wifi_enable_sta_channel_for_peer_network = wifi_enable_sta_channel_for_peer_network;
-    fn->wifi_nan_suspend_request = wifi_nan_suspend_request;
-    fn->wifi_nan_resume_request = wifi_nan_resume_request;
-    fn->wifi_nan_pairing_request = nan_pairing_request;
-    fn->wifi_nan_pairing_indication_response = nan_pairing_indication_response;
-    fn->wifi_nan_bootstrapping_request = nan_bootstrapping_request;
-    fn->wifi_nan_bootstrapping_indication_response = nan_bootstrapping_indication_response;
-    fn->wifi_nan_pairing_end = nan_pairing_end;
     return WIFI_SUCCESS;
 }
 
@@ -1272,9 +1279,9 @@ class AndroidPktFilterCommand : public WifiCommand {
 
         ALOGI("mProgramLen : %d\n", mProgramLen);
         if (mProgramLen > NL_MSG_DEFAULT_LEN) {
-            result = request.create_custom_len(GOOGLE_OUI, APF_SUBCMD_SET_FILTER, NL_MSG_MAX_LEN);
+            result = request.create_custom_len(MTK_OUI, APF_SUBCMD_SET_FILTER, NL_MSG_MAX_LEN);
         } else {
-            result = request.create(GOOGLE_OUI, APF_SUBCMD_SET_FILTER);
+            result = request.create(MTK_OUI, APF_SUBCMD_SET_FILTER);
         }
         if (result < 0) {
             ALOGE("Failed to create cmd: %d, err %d\n", APF_SUBCMD_SET_FILTER, result);
@@ -1301,7 +1308,7 @@ class AndroidPktFilterCommand : public WifiCommand {
     }
 
     int createGetPktFilterCapabilitesRequest(WifiRequest& request) {
-        int result = request.create(GOOGLE_OUI, APF_SUBCMD_GET_CAPABILITIES);
+        int result = request.create(MTK_OUI, APF_SUBCMD_GET_CAPABILITIES);
         if (result < 0) {
             return result;
         }
@@ -1312,7 +1319,7 @@ class AndroidPktFilterCommand : public WifiCommand {
     }
 
     int createReadPktFilterRequest(WifiRequest& request) {
-        int result = request.create(GOOGLE_OUI, APF_SUBCMD_READ_FILTER);
+        int result = request.create(MTK_OUI, APF_SUBCMD_READ_FILTER);
         if (result < 0) {
             return result;
         }
@@ -1537,7 +1544,7 @@ class GetRadioComboCommand : public WifiCommand {
           set_size_max(max_size) {}
 
     virtual int createRequest(WifiRequest& mMsg) {
-        ret = mMsg.create(GOOGLE_OUI, WIFI_SUBCMD_GET_RADIO_COMBO_MATRIX);
+        ret = mMsg.create(MTK_OUI, WIFI_SUBCMD_GET_RADIO_COMBO_MATRIX);
         if (ret < 0) {
             ALOGE("Can't create message to send to driver - %d", ret);
         }
@@ -1656,7 +1663,8 @@ static int wifi_get_multicast_id(wifi_handle handle, const char* name, const cha
 
 static bool is_wifi_interface(const char* name) {
     if (strncmp(name, "wlan", 4) != 0 && strncmp(name, "swlan", 5) != 0 &&
-        strncmp(name, "p2p", 3) != 0 && strncmp(name, "aware", 5) != 0) {
+        strncmp(name, "p2p", 3) != 0 && strncmp(name, "ap", 2) != 0 &&
+        strncmp(name, "aware_data", 10) != 0 && strncmp(name, "nan", 3) != 0) {
         /* not a wifi interface; ignore it */
         return false;
     } else {
@@ -1866,11 +1874,6 @@ wifi_interface_handle wifi_get_iface_handle(wifi_handle handle, char* name) {
     return NULL;
 }
 
-wifi_error wifi_get_supported_feature_set(wifi_interface_handle handle, feature_set* set) {
-    GetFeatureSetCommand command(handle, ANDR_WIFI_ATTRIBUTE_NUM_FEATURE_SET, set, NULL, NULL, 1);
-    return (wifi_error)command.requestResponse();
-}
-
 wifi_error wifi_get_concurrency_matrix(wifi_interface_handle handle, int set_size_max,
                                        feature_set set[], int* set_size) {
     GetFeatureSetCommand command(handle, ANDR_WIFI_ATTRIBUTE_FEATURE_SET, NULL, set, set_size,
@@ -2034,7 +2037,7 @@ class TxPowerScenario : public WifiCommand {
         }
 
         nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
-        result = request.put_s8(ANDR_WIFI_ATTRIBUTE_TX_POWER_SCENARIO, mScenario);
+        result = request.put_u32(ANDR_WIFI_ATTRIBUTE_TX_POWER_SCENARIO, (uint32_t)mScenario);
         if (result < 0) {
             ALOGE("Failed to put tx power scenario request; result = %d", result);
             return result;
@@ -2703,6 +2706,7 @@ class MultiStaConfig : public WifiCommand {
         }
 
         nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
+        result = request.put_u32(MULTISTA_ATTRIBUTE_PRIM_CONN_IFACE, (uint32_t)mIfaceInfo->id);
         request.attr_end(data);
 
         return result;
@@ -2876,137 +2880,6 @@ wifi_error wifi_set_dtim_config(wifi_interface_handle handle, u32 multiplier) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-class UsableChannelCommand : public WifiCommand {
-  private:
-    u32 mBandMask;
-    u32 mIfaceModeMask;
-    u32 mFilterMask;
-    u32 mMaxSize;
-    u32* mSize;
-    wifi_usable_channel* mChannels;
-
-  public:
-    UsableChannelCommand(wifi_interface_handle handle, u32 band_mask, u32 iface_mode_mask,
-                         u32 filter_mask, u32 max_size, u32* size, wifi_usable_channel* channels)
-        : WifiCommand("UsableChannelCommand", handle, 0),
-          mBandMask(band_mask),
-          mIfaceModeMask(iface_mode_mask),
-          mFilterMask(filter_mask),
-          mMaxSize(max_size),
-          mSize(size),
-          mChannels(channels) {}
-
-    int createRequest(WifiRequest& request) {
-        createUsableChannelRequest(request);
-        return WIFI_SUCCESS;
-    }
-
-    int createUsableChannelRequest(WifiRequest& request) {
-        int result = request.create(GOOGLE_OUI, WIFI_SUBCMD_USABLE_CHANNEL);
-        if (result < 0) {
-            ALOGE("Failed to create UsableChannel request; result = %d", result);
-            return result;
-        }
-
-        nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
-
-        result = request.put_u32(USABLECHAN_ATTRIBUTE_BAND, mBandMask);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("Failed to put log level; result = %d", result);
-            return result;
-        }
-        result = request.put_u32(USABLECHAN_ATTRIBUTE_IFACE, mIfaceModeMask);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("Failed to put ring flags; result = %d", result);
-            return result;
-        }
-        result = request.put_u32(USABLECHAN_ATTRIBUTE_FILTER, mFilterMask);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("Failed to put usablechan filter; result = %d", result);
-            return result;
-        }
-        result = request.put_u32(USABLECHAN_ATTRIBUTE_MAX_SIZE, mMaxSize);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("Failed to put usablechan max_size; result = %d", result);
-            return result;
-        }
-        request.attr_end(data);
-
-        return WIFI_SUCCESS;
-    }
-
-    int start() {
-        WifiRequest request(familyId(), ifaceId());
-        int result = createRequest(request);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("failed to create request; result = %d", result);
-            return result;
-        }
-
-        result = requestResponse(request);
-        if (result != WIFI_SUCCESS) {
-            ALOGE("failed to set scanning mac OUI; result = %d", result);
-        }
-
-        return result;
-    }
-
-    virtual int handleResponse(WifiEvent& reply) {
-        ALOGD("In DebugCommand::handleResponse");
-
-        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
-            ALOGD("Ignoring reply with cmd = %d", reply.get_cmd());
-            return NL_SKIP;
-        }
-
-        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
-        int len = reply.get_vendor_data_len();
-        wifi_usable_channel* channels(mChannels);
-
-        if (vendor_data == NULL || len == 0) {
-            ALOGE("No Debug data found");
-            return NL_SKIP;
-        }
-
-        nl_iterator it(vendor_data);
-        if (it.get_type() == USABLECHAN_ATTRIBUTE_SIZE) {
-            *mSize = it.get_u32();
-        } else {
-            ALOGE("Unknown attribute: %d expecting %d", it.get_type(), USABLECHAN_ATTRIBUTE_SIZE);
-            return NL_SKIP;
-        }
-
-        it.next();
-        if (it.get_type() == USABLECHAN_ATTRIBUTE_CHANNELS) {
-            memcpy(channels, it.get_data(), sizeof(wifi_usable_channel) * *mSize);
-        } else {
-            ALOGE("Unknown attribute: %d expecting %d", it.get_type(), USABLECHAN_ATTRIBUTE_SIZE);
-            return NL_SKIP;
-        }
-
-        return NL_OK;
-    }
-
-    virtual int handleEvent(WifiEvent& event) {
-        /* NO events! */
-        return NL_SKIP;
-    }
-};
-
-wifi_error wifi_get_usable_channels(wifi_handle handle, u32 band_mask, u32 iface_mode_mask,
-                                    u32 filter_mask, u32 max_size, u32* size,
-                                    wifi_usable_channel* channels) {
-    int numIfaceHandles = 0;
-    wifi_interface_handle* ifaceHandles = NULL;
-    wifi_interface_handle wlan0Handle;
-
-    wlan0Handle = wifi_get_wlan_interface((wifi_handle)handle, ifaceHandles, numIfaceHandles);
-    UsableChannelCommand command(wlan0Handle, band_mask, iface_mode_mask, filter_mask, max_size,
-                                 size, channels);
-    return (wifi_error)command.start();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
 class EnableTxPowerLimit : public WifiCommand {
   private:
     bool mEnableTxLimits;
@@ -3086,4 +2959,717 @@ wifi_error wifi_enable_sta_channel_for_peer_network(wifi_handle handle,
     wlan0Handle = wifi_get_wlan_interface((wifi_handle)handle, ifaceHandles, numIfaceHandles);
     EnableStaChannel command(wlan0Handle, channelCategoryEnableFlag);
     return (wifi_error)command.requestResponse();
+}
+
+class ConfigRoamingCommand : public WifiCommand {
+  private:
+    wifi_roaming_config* mConfig;
+
+  public:
+    ConfigRoamingCommand(wifi_interface_handle handle, wifi_roaming_config* config)
+        : WifiCommand("ConfigRoamingCommand", handle, 0) {
+        mConfig = config;
+    }
+
+    int createRequest(WifiRequest& request, int subcmd, wifi_roaming_config* config) {
+        int result = request.create(GOOGLE_OUI, subcmd);
+        if (result < 0) {
+            return result;
+        }
+
+        nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
+        if (!data) {
+            ALOGE("Failed attr_start for VENDOR_DATA");
+            return WIFI_ERROR_UNKNOWN;
+        }
+
+        result = request.put_u32(WIFI_ATTRIBUTE_ROAMING_BLACKLIST_NUM, config->num_blacklist_bssid);
+        if (result < 0) {
+            return result;
+        }
+
+        mac_addr* bssid_list = config->blacklist_bssid;
+        for (u32 i = 0; i < config->num_blacklist_bssid; i++) {
+            result = request.put_addr(WIFI_ATTRIBUTE_ROAMING_BLACKLIST_BSSID, bssid_list[i]);
+            ALOGI("Blacklist BSSID[%d] " MACSTR, i, MAC2STR(bssid_list[i]));
+            if (result < 0) {
+                return result;
+            }
+        }
+
+        result = request.put_u32(WIFI_ATTRIBUTE_ROAMING_WHITELIST_NUM, config->num_whitelist_ssid);
+        if (result < 0) {
+            return result;
+        }
+
+        char ssid[MAX_SSID_LENGTH + 1];
+        ssid_t* ssid_list = config->whitelist_ssid;
+        for (u32 i = 0; i < config->num_whitelist_ssid; i++) {
+            memcpy(ssid, ssid_list[i].ssid_str, ssid_list[i].length);
+            ssid[ssid_list[i].length] = '\0';
+            result = request.put(WIFI_ATTRIBUTE_ROAMING_WHITELIST_SSID, ssid,
+                                 ssid_list[i].length + 1);
+            ALOGI("Whitelist ssid[%d] : %s", i, ssid);
+            if (result < 0) {
+                return result;
+            }
+        }
+
+        request.attr_end(data);
+        return WIFI_SUCCESS;
+    }
+
+    int start() {
+        ALOGV("Configure roaming");
+        WifiRequest request(familyId(), ifaceId());
+        int result = createRequest(request, WIFI_SUBCMD_CONFIG_ROAMING, mConfig);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("Failed to create request, result=%d", result);
+            return result;
+        }
+
+        result = requestResponse(request);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("[WIFI HAL]Failed to configure roaming, result=%d", result);
+        }
+
+        return result;
+    }
+
+  protected:
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("ConfigRoamingCommand complete!");
+        /* Nothing to do on response! */
+        return NL_SKIP;
+    }
+};
+
+class EnableRoamingCommand : public WifiCommand {
+  private:
+    fw_roaming_state_t mState;
+
+  public:
+    EnableRoamingCommand(wifi_interface_handle handle, fw_roaming_state_t state)
+        : WifiCommand("EnableRoamingCommand", handle, 0) {
+        mState = state;
+    }
+    virtual int create() {
+        int ret;
+
+        ret = mMsg.create(GOOGLE_OUI, WIFI_SUBCMD_ENABLE_ROAMING);
+        if (ret < 0) {
+            ALOGE("Can't create message to send to driver - %d", ret);
+            return ret;
+        }
+
+        nlattr* data = mMsg.attr_start(NL80211_ATTR_VENDOR_DATA);
+        if (!data) {
+            ALOGE("Failed attr_start for VENDOR_DATA");
+            return WIFI_ERROR_UNKNOWN;
+        }
+
+        ret = mMsg.put_u32(WIFI_ATTRIBUTE_ROAMING_STATE, mState);
+        if (ret < 0) {
+            return ret;
+        }
+
+        mMsg.attr_end(data);
+        return WIFI_SUCCESS;
+    }
+};
+
+class Gen4mFeatureSetCommand : public WifiCommand {
+  private:
+    int feature_type;
+    feature_set* fset;
+    feature_set* feature_matrix;
+    int* fm_size;
+    int set_size_max;
+
+  public:
+    Gen4mFeatureSetCommand(wifi_interface_handle handle, int feature, feature_set* set,
+                           feature_set set_matrix[], int* size, int max_size)
+        : WifiCommand("Gen4mFeatureSetCommand", handle, 0) {
+        feature_type = feature;
+        fset = set;
+        feature_matrix = set_matrix;
+        fm_size = size;
+        set_size_max = max_size;
+    }
+
+    virtual int create() {
+        int ret;
+
+        if (feature_type == WIFI_ATTRIBUTE_FEATURE_SET) {
+            ret = mMsg.create(GOOGLE_OUI, WIFI_SUBCMD_GET_FEATURE_SET);
+        } else if (feature_type == WIFI_ATTRIBUTE_ROAMING_CAPABILITIES) {
+            ret = mMsg.create(GOOGLE_OUI, WIFI_SUBCMD_GET_ROAMING_CAPABILITIES);
+        } else {
+            ALOGE("Unknown feature type %d", feature_type);
+            return -1;
+        }
+
+        if (ret < 0) {
+            ALOGE("Can't create subcmd message to driver, ret=%d", ret);
+        }
+
+        return ret;
+    }
+
+  protected:
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("In Gen4mFeatureSetCommand::handleResponse for %d", feature_type);
+
+        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
+            ALOGV("Ignore reply with cmd 0x%x", reply.get_cmd());
+            return NL_SKIP;
+        }
+
+        int vendor_id = reply.get_vendor_id();
+        int subcmd = reply.get_vendor_subcmd();
+        ALOGV("vendor_id = 0x%x, subcmd = 0x%x", vendor_id, subcmd);
+
+        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        int len = reply.get_vendor_data_len();
+        if (vendor_data == NULL || len == 0) {
+            ALOGE("No vendor data in Gen4mFeatureSetCommand response, ignore it");
+            return NL_SKIP;
+        }
+
+        if (feature_type == WIFI_ATTRIBUTE_FEATURE_SET) {
+            void* data = reply.get_vendor_data();
+            if (!data) {
+                ALOGE("Failed to get VENDOR_DATA");
+                return NL_SKIP;
+            }
+            if (!fset) {
+                ALOGE("feature_set pointer is not set");
+                return NL_SKIP;
+            }
+            memcpy(fset, data, min(len, (int)sizeof(*fset)));
+            ALOGI("feature_set=0x%" PRIx64, (uint64_t)(*fset));
+        } else if (feature_type == WIFI_ATTRIBUTE_ROAMING_CAPABILITIES) {
+            if (!feature_matrix || !fm_size) {
+                ALOGE("feature_set pointer is not set");
+                return NL_SKIP;
+            }
+
+            *fm_size = set_size_max;  // black and white
+            wifi_roaming_capabilities cap;
+            memset(&cap, 0, sizeof(cap));
+            for (nl_iterator it(vendor_data); it.has_next(); it.next()) {
+                if (it.get_type() == WIFI_ATTRIBUTE_ROAMING_BLACKLIST_NUM) {
+                    cap.max_blacklist_size =
+                            it.get_u32() > MAX_BLACKLIST_BSSID ? MAX_BLACKLIST_BSSID : it.get_u32();
+                } else if (it.get_type() == WIFI_ATTRIBUTE_ROAMING_WHITELIST_NUM) {
+                    cap.max_whitelist_size =
+                            it.get_u32() > MAX_WHITELIST_SSID ? MAX_WHITELIST_SSID : it.get_u32();
+                } else {
+                    ALOGW("Ignore invalid attribute type = %d", it.get_type());
+                }
+            }
+            ALOGI("blacklist/whitelist: %d: %d", cap.max_blacklist_size, cap.max_whitelist_size);
+            memcpy(feature_matrix, &cap, sizeof(wifi_roaming_capabilities));
+        }
+
+        return NL_OK;
+    }
+};
+
+class Gen4mChannelListCommand : public WifiCommand {
+  private:
+    wifi_channel* mChannels;
+    int mMaxChannels;
+    int* mNumOfChannel;
+    int mBand;
+
+  public:
+    Gen4mChannelListCommand(wifi_interface_handle handle, int band, int max_channels,
+                            wifi_channel* channels, int* num_channels)
+        : WifiCommand("Gen4mChannelListCommand", handle, 0) {
+        mBand = band;
+        mMaxChannels = max_channels;
+        mChannels = channels;
+        mNumOfChannel = num_channels;
+        memset(mChannels, 0, sizeof(wifi_channel) * mMaxChannels);
+    }
+
+    virtual int create() {
+        ALOGV("Creating message to get channel list; iface = %d", mIfaceInfo->id);
+
+        int ret = mMsg.create(GOOGLE_OUI, WIFI_SUBCMD_GET_CHANNEL_LIST);
+        if (ret < 0) {
+            return ret;
+        }
+
+        ALOGI("In GetChannelList::mBand=%d", mBand);
+
+        nlattr* data = mMsg.attr_start(NL80211_ATTR_VENDOR_DATA);
+        if (!data) {
+            ALOGE("Failed attr_start for VENDOR_DATA");
+            return WIFI_ERROR_UNKNOWN;
+        }
+
+        ret = mMsg.put_u32(WIFI_ATTRIBUTE_BAND, mBand);
+        if (ret < 0) {
+            return ret;
+        }
+
+        mMsg.attr_end(data);
+        return ret;
+    }
+
+  protected:
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("In GetChannelList::handleResponse");
+
+        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
+            ALOGE("Ignore reply with cmd 0x%x", reply.get_cmd());
+            return NL_SKIP;
+        }
+
+        int vendor_id = reply.get_vendor_id();
+        int subcmd = reply.get_vendor_subcmd();
+        ALOGV("vendor_id = 0x%x, subcmd = 0x%x", vendor_id, subcmd);
+
+        nlattr* vendor = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        int len = reply.get_vendor_data_len();
+        if (vendor == NULL || len == 0) {
+            ALOGE("No vendor data in GetChannelList response, ignore it");
+            return NL_SKIP;
+        }
+
+        int num_channels = 0;
+        for (nl_iterator it(vendor); it.has_next(); it.next()) {
+            if (it.get_type() == WIFI_ATTRIBUTE_NUM_CHANNELS) {
+                num_channels = it.get_u32();
+                ALOGI("Get channel list with %d channels", num_channels);
+                if (num_channels > mMaxChannels) num_channels = mMaxChannels;
+                *mNumOfChannel = num_channels;
+            } else if (it.get_type() == WIFI_ATTRIBUTE_CHANNEL_LIST && num_channels) {
+                memcpy(mChannels, it.get_data(), sizeof(wifi_channel) * num_channels);
+            } else {
+                ALOGW("Ignore invalid attribute type = %d, size = %d", it.get_type(), it.get_len());
+            }
+        }
+
+        ALOGV("mChannels[0]=%d mChannels[1]=%d", *mChannels, *(mChannels + 1));
+
+        return NL_OK;
+    }
+};
+
+class GetUsableChannelCommand : public WifiCommand {
+  private:
+    int mCtrlIface;
+    u32 mBandMask;
+    u32 mIfaceModeMask;
+    u32 mFilterMask;
+    u32 mMaxSize;
+    u32* mSize;
+    wifi_usable_channel* mChannels;
+
+  public:
+    GetUsableChannelCommand(wifi_handle handle, int ctrl_iface, u32 band_mask, u32 iface_mode_mask,
+                            u32 filter_mask, u32 max_size, u32* size, wifi_usable_channel* channels)
+        : WifiCommand("GetUsableChannelCommand", handle, 0),
+          mCtrlIface(ctrl_iface),
+          mBandMask(band_mask),
+          mIfaceModeMask(iface_mode_mask),
+          mFilterMask(filter_mask),
+          mMaxSize(max_size),
+          mSize(size),
+          mChannels(channels) {}
+
+    int createRequest(WifiRequest& request) {
+        ALOGV("GetUsableChannelCommand::createRequest");
+        int result = request.create(MTK_OUI, MTK_SUBCMD_GET_USABLE_CHANNEL);
+        if (result < 0) {
+            ALOGE("Failed to create UsableChannel request; result = %d", result);
+            return result;
+        }
+
+        nlattr* data = request.attr_start(NL80211_ATTR_VENDOR_DATA);
+
+        result = request.put_u32(WIFI_ATTRIBUTE_USABLE_CHANNEL_BAND, mBandMask);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("Failed to put log level; result = %d", result);
+            return result;
+        }
+        result = request.put_u32(WIFI_ATTRIBUTE_USABLE_CHANNEL_IFACE, mIfaceModeMask);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("Failed to put ring flags; result = %d", result);
+            return result;
+        }
+        result = request.put_u32(WIFI_ATTRIBUTE_USABLE_CHANNEL_FILTER, mFilterMask);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("Failed to put usablechan filter; result = %d", result);
+            return result;
+        }
+        result = request.put_u32(WIFI_ATTRIBUTE_USABLE_CHANNEL_MAX_SIZE, mMaxSize);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("Failed to put usablechan max_size; result = %d", result);
+            return result;
+        }
+        request.attr_end(data);
+
+        return WIFI_SUCCESS;
+    }
+
+    int start() {
+        ALOGV("GetUsableChannelCommand::start");
+        WifiRequest request(familyId(), mCtrlIface);
+        int result = createRequest(request);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("failed to create request, result = %d", result);
+            return result;
+        }
+
+        result = requestResponse(request);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("failed to get usable channel; result = %d", result);
+        }
+
+        return result;
+    }
+
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("GetUsableChannelCommand::handleResponse");
+
+        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
+            ALOGV("Ignoring reply with cmd = %d", reply.get_cmd());
+            return NL_SKIP;
+        }
+
+        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        int len = reply.get_vendor_data_len();
+        wifi_usable_channel* channels(mChannels);
+
+        if (vendor_data == NULL || len == 0) {
+            ALOGE("No data found");
+            return NL_SKIP;
+        }
+
+        nl_iterator it(vendor_data);
+        if (it.get_type() == WIFI_ATTRIBUTE_USABLE_CHANNEL_RESP_ARRAY) {
+            if (it.get_len() < sizeof(((wifi_usable_channel_response*)0)->array_size)) {
+                ALOGE("Invalid response size: %d", it.get_len());
+                return NL_SKIP;
+            }
+            wifi_usable_channel_response* resp_data = (wifi_usable_channel_response*)it.get_data();
+            ALOGV("resp_data->array_size=%" PRIu16, resp_data->array_size);
+            if (it.get_len() < sizeof(wifi_usable_channel) * resp_data->array_size +
+                                       sizeof(wifi_usable_channel_response)) {
+                ALOGE("Invalid response size: %d, array size: %" PRIu16, it.get_len(),
+                      resp_data->array_size);
+                return NL_SKIP;
+            }
+            *mSize = resp_data->array_size;
+            memcpy(channels, resp_data->channel_array,
+                   sizeof(wifi_usable_channel) * resp_data->array_size);
+        } else {
+            ALOGE("Unknown attribute: %d expecting %d", it.get_type(),
+                  WIFI_ATTRIBUTE_USABLE_CHANNEL_RESP_ARRAY);
+            return NL_SKIP;
+        }
+
+        return NL_OK;
+    }
+};
+
+wifi_error wifi_get_roaming_capabilities(wifi_interface_handle iface,
+                                         wifi_roaming_capabilities* caps) {
+    if (iface == nullptr) {
+        ALOGE("%s: invalid args: iface=%p", __FUNCTION__, (void*)iface);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    wifi_handle handle = getWifiHandle(iface);
+    hal_info* info = getHalInfo(handle);
+
+    if (!info) {
+        ALOGE("%s: hal_info is NULL", __FUNCTION__);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    // first time to get roaming cap
+    if (info->roaming_capa.max_blacklist_size == 0 && info->roaming_capa.max_whitelist_size == 0) {
+        int size = 0;
+        Gen4mFeatureSetCommand command(iface, WIFI_ATTRIBUTE_ROAMING_CAPABILITIES, NULL,
+                                       (feature_set*)caps, &size, 2);
+        wifi_error ret = (wifi_error)command.requestResponse();
+        if (ret == WIFI_SUCCESS) {
+            info->roaming_capa.max_blacklist_size = caps->max_blacklist_size;
+            info->roaming_capa.max_whitelist_size = caps->max_whitelist_size;
+        }
+        return ret;
+    } else {
+        memcpy(caps, &info->roaming_capa, sizeof(wifi_roaming_capabilities));
+    }
+
+    return WIFI_SUCCESS;
+}
+
+wifi_error wifi_configure_roaming(wifi_interface_handle iface,
+                                  wifi_roaming_config* roaming_config) {
+    if (iface == nullptr || roaming_config == nullptr) {
+        ALOGE("%s: invalid args: iface=%p, roaming_config=%p", __FUNCTION__, (void*)iface,
+              roaming_config);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    wifi_handle handle = getWifiHandle(iface);
+    hal_info* info = getHalInfo(handle);
+
+    /* Set bssid blacklist */
+    if (roaming_config->num_blacklist_bssid > info->roaming_capa.max_blacklist_size) {
+        ALOGE("%s: Number of blacklist bssids(%d) provided is more than maximum blacklist "
+              "bssids(%d)"
+              " supported",
+              __FUNCTION__, roaming_config->num_blacklist_bssid,
+              info->roaming_capa.max_blacklist_size);
+        return WIFI_ERROR_NOT_SUPPORTED;
+    }
+
+    /* Set ssid whitelist */
+    if (roaming_config->num_whitelist_ssid > info->roaming_capa.max_whitelist_size) {
+        ALOGE("%s: Number of whitelist ssid(%d) provided is more than maximum whitelist ssids(%d) "
+              "supported",
+              __FUNCTION__, roaming_config->num_whitelist_ssid,
+              info->roaming_capa.max_whitelist_size);
+        return WIFI_ERROR_NOT_SUPPORTED;
+    }
+
+    ConfigRoamingCommand command(iface, roaming_config);
+    return (wifi_error)command.start();
+}
+
+wifi_error wifi_enable_firmware_roaming(wifi_interface_handle iface, fw_roaming_state_t state) {
+    if (iface == nullptr) {
+        ALOGE("%s: invalid args: iface=%p", __FUNCTION__, (void*)iface);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+    EnableRoamingCommand command(iface, state);
+    return (wifi_error)command.requestResponse();
+}
+
+wifi_error wifi_get_valid_channels(wifi_interface_handle iface, int band, int max_channels,
+                                   wifi_channel* channels, int* num_channels) {
+    if (iface == nullptr || channels == nullptr || num_channels == nullptr) {
+        ALOGE("%s: invalid args: iface=%p, channels=%p, num_channels=%p", __FUNCTION__,
+              (void*)iface, channels, num_channels);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+    Gen4mChannelListCommand command(iface, band, max_channels, channels, num_channels);
+    return (wifi_error)command.requestResponse();
+}
+
+wifi_error wifi_get_usable_channels(wifi_handle handle, u32 band_mask, u32 iface_mode_mask,
+                                    u32 filter_mask, u32 max_size, u32* size,
+                                    wifi_usable_channel* channels) {
+    if (handle == nullptr || size == nullptr || channels == nullptr) {
+        ALOGE("%s: invalid args: handle=%p, size=%p, channels=%p", __FUNCTION__, handle, size,
+              channels);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    int ctrl_iface_index = if_nametoindex("wlan0");
+    if (!ctrl_iface_index) {
+        ALOGE("%s: failed to find wlan0", __FUNCTION__);
+        return WIFI_ERROR_UNKNOWN;
+    }
+
+    GetUsableChannelCommand command(handle, ctrl_iface_index, band_mask, iface_mode_mask,
+                                    filter_mask, max_size, size, channels);
+    return (wifi_error)command.start();
+}
+
+wifi_error wifi_get_supported_feature_set(wifi_interface_handle handle, feature_set* set) {
+    Gen4mFeatureSetCommand command(handle, WIFI_ATTRIBUTE_FEATURE_SET, set, NULL, NULL, 1);
+    return (wifi_error)command.requestResponse();
+}
+
+enum { MTK_SUBCMD_GET_CHIP_CAPABILITIES = 83, MTK_SUBCMD_GET_CHIP_CONCURRENCY_MATRIX = 84 };
+
+class GetChipCapabilitiesCommand : public WifiCommand {
+  private:
+    int mCtrlIface;
+    wifi_chip_capabilities* mCapabilities;
+
+  public:
+    GetChipCapabilitiesCommand(wifi_handle handle, int ctrl_iface,
+                               wifi_chip_capabilities* capabilities)
+        : WifiCommand("GetChipCapabilitiesCommand", handle, 0),
+          mCtrlIface(ctrl_iface),
+          mCapabilities(capabilities) {}
+
+    virtual int create() {
+        ALOGV("GetChipCapabilitiesCommand::create");
+        int ret = mMsg.create(MTK_OUI, MTK_SUBCMD_GET_CHIP_CAPABILITIES);
+        if (ret < 0) {
+            ALOGE("Can't create message %d to send to driver - %d",
+                  MTK_SUBCMD_GET_CHIP_CAPABILITIES, ret);
+        }
+        mMsg.put_u32(NL80211_ATTR_IFINDEX, mCtrlIface);
+        nlattr* data = mMsg.attr_start(NL80211_ATTR_VENDOR_DATA);
+        if (!data) {
+            ALOGE("Failed attr_start for VENDOR_DATA");
+            return WIFI_ERROR_UNKNOWN;
+        }
+        mMsg.attr_end(data);
+        return WIFI_SUCCESS;
+    }
+
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("GetChipCapabilitiesCommand::handleResponse");
+
+        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
+            ALOGV("Ignoring reply with cmd = %d", reply.get_cmd());
+            return NL_SKIP;
+        }
+
+        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        int len = reply.get_vendor_data_len();
+
+        if (vendor_data == NULL || len == 0) {
+            ALOGE("No data found");
+            return NL_SKIP;
+        }
+        // UINT32_MAX will be mapped to -1 after convertLegacyWifiChipCapabilitiesToAidl
+        // assigns uint32_t to int. We expect this to work with framework properly (unsupported
+        // value should be -1).
+        mCapabilities->max_mlo_association_link_count = UINT32_MAX;
+        mCapabilities->max_mlo_str_link_count = UINT32_MAX;
+        mCapabilities->max_concurrent_tdls_session_count = UINT32_MAX;
+
+        nl_iterator it(vendor_data);
+        for (nl_iterator it(vendor_data); it.has_next(); it.next()) {
+            if (it.get_type() ==
+                WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_MLO_ASSOCIATION_LINK_COUNT) {
+                mCapabilities->max_mlo_association_link_count = it.get_u32();
+            } else if (it.get_type() ==
+                       WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_MLO_STR_LINK_COUNT) {
+                mCapabilities->max_mlo_str_link_count = it.get_u32();
+            } else if (it.get_type() ==
+                       WIFI_ATTRIBUTE_CHIP_CAPABILITIES_RESP_MAX_CONCURRENT_TDLS_SESSION_COUNT) {
+                mCapabilities->max_concurrent_tdls_session_count = it.get_u32();
+            } else {
+                ALOGW("Ignore invalid attribute type = %d", it.get_type());
+            }
+        }
+
+        return NL_OK;
+    }
+};
+
+class GetChipConcurrencyMatrixCommand : public WifiCommand {
+  private:
+    int mCtrlIface;
+    wifi_iface_concurrency_matrix* mMatrix;
+
+  public:
+    GetChipConcurrencyMatrixCommand(wifi_handle handle, int ctrl_iface,
+                                    wifi_iface_concurrency_matrix* matrix)
+        : WifiCommand("GetChipConcurrencyMatrixCommand", handle, 0),
+          mCtrlIface(ctrl_iface),
+          mMatrix(matrix) {}
+
+    int createRequest(WifiRequest& request) {
+        ALOGV("GetChipConcurrencyMatrixCommand::createRequest");
+        int result = request.create(MTK_OUI, MTK_SUBCMD_GET_CHIP_CONCURRENCY_MATRIX);
+        if (result < 0) {
+            ALOGE("Failed to create GetChipConcurrencyMatrix request; result = %d", result);
+            return result;
+        }
+
+        request.put_u32(NL80211_ATTR_IFINDEX, mCtrlIface);
+
+        return WIFI_SUCCESS;
+    }
+
+    int start() {
+        ALOGV("GetChipConcurrencyMatrixCommand::start");
+        WifiRequest request(familyId(), mCtrlIface);
+        int result = createRequest(request);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("failed to create request, result = %d", result);
+            return result;
+        }
+
+        result = requestResponse(request);
+        if (result != WIFI_SUCCESS) {
+            ALOGE("failed to get usable channel; result = %d", result);
+        }
+
+        return result;
+    }
+
+    virtual int handleResponse(WifiEvent& reply) {
+        ALOGV("GetChipConcurrencyMatrixCommand::handleResponse");
+
+        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
+            ALOGV("Ignoring reply with cmd = %d", reply.get_cmd());
+            return NL_SKIP;
+        }
+
+        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
+        int len = reply.get_vendor_data_len();
+
+        if (vendor_data == NULL || len == 0) {
+            ALOGE("No data found");
+            return NL_SKIP;
+        }
+
+        memset(mMatrix, 0, sizeof(*mMatrix));
+
+        for (nl_iterator it(vendor_data); it.has_next(); it.next()) {
+            if (it.get_type() == WIFI_ATTRIBUTE_CONCURRENCY_MATRIX) {
+                if (it.get_len() <= sizeof(*mMatrix)) {
+                    memcpy(mMatrix, it.get_data(), it.get_len());
+                } else {
+                    ALOGE("Buffer size mismatch!");
+                    return NL_SKIP;
+                }
+            } else {
+                ALOGW("Ignore invalid attribute type = %d, size = %d", it.get_type(), it.get_len());
+            }
+        }
+
+        return NL_OK;
+    }
+};
+
+wifi_error wifi_get_chip_capabilities(wifi_handle handle,
+                                      wifi_chip_capabilities* chip_capabilities) {
+    if (handle == nullptr || chip_capabilities == nullptr) {
+        ALOGE("%s: invalid args: handle=%p, chip_capabilities=%p", __FUNCTION__, handle,
+              chip_capabilities);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    int ctrl_iface_index = if_nametoindex("wlan0");
+    if (!ctrl_iface_index) {
+        ALOGE("%s: failed to find wlan0", __FUNCTION__);
+        return WIFI_ERROR_UNKNOWN;
+    }
+
+    GetChipCapabilitiesCommand command(handle, ctrl_iface_index, chip_capabilities);
+    return (wifi_error)command.requestResponse();
+}
+
+wifi_error wifi_get_supported_iface_concurrency_matrix(wifi_handle handle,
+                                                       wifi_iface_concurrency_matrix* matrix) {
+    if (handle == nullptr || matrix == nullptr) {
+        ALOGE("%s: invalid args: handle=%p, matrix=%p", __FUNCTION__, handle, matrix);
+        return WIFI_ERROR_INVALID_ARGS;
+    }
+
+    int ctrl_iface_index = if_nametoindex("wlan0");
+    if (!ctrl_iface_index) {
+        ALOGE("%s: failed to find wlan0", __FUNCTION__);
+        return WIFI_ERROR_UNKNOWN;
+    }
+
+    GetChipConcurrencyMatrixCommand command(handle, ctrl_iface_index, matrix);
+    return (wifi_error)command.start();
 }
