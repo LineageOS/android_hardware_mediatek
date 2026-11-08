@@ -142,6 +142,7 @@ ndk::ScopedAStatus BluetoothHci::initialize(const std::shared_ptr<IBluetoothHciC
     }
 
     mCb = cb;
+    mDeathRecipient->LinkToDeath(mCb);
     {
         std::lock_guard<std::mutex> guard(mStateMutex);
         mState = HalState::ONE_CLIENT;
