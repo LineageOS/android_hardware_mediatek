@@ -251,98 +251,7 @@ wifi_error wifi_get_gscan_capabilities(wifi_interface_handle handle,
 }
 
 /* Function to get chipset supported roaming capabilities */
-wifi_error wifi_get_roaming_capabilities(wifi_interface_handle handle,
-                                         wifi_roaming_capabilities* capabilities) {
-    GetCapabilitiesCommand command(handle, capabilities, WIFI_SUBCMD_ROAM_CAPABILITY,
-                                   (int)sizeof(wifi_roaming_capabilities));
-    return (wifi_error)command.requestResponse();
-}
 
-class GetChannelListCommand : public WifiCommand {
-    wifi_channel* channels;
-    int max_channels;
-    int* num_channels;
-    int band;
-
-  public:
-    GetChannelListCommand(wifi_interface_handle iface, wifi_channel* channel_buf, int* ch_num,
-                          int num_max_ch, int band)
-        : WifiCommand("GetChannelListCommand", iface, 0),
-          channels(channel_buf),
-          max_channels(num_max_ch),
-          num_channels(ch_num),
-          band(band) {
-        memset(channels, 0, sizeof(wifi_channel) * max_channels);
-    }
-    virtual int create() {
-        ALOGV("Creating message to get channel list; iface = %d", mIfaceInfo->id);
-
-        int ret = mMsg.create(GOOGLE_OUI, GSCAN_SUBCMD_GET_CHANNEL_LIST);
-        if (ret < 0) {
-            return ret;
-        }
-
-        nlattr* data = mMsg.attr_start(NL80211_ATTR_VENDOR_DATA);
-        ret = mMsg.put_u32(GSCAN_ATTRIBUTE_BAND, band);
-        if (ret < 0) {
-            return ret;
-        }
-
-        mMsg.attr_end(data);
-
-        return ret;
-    }
-
-  protected:
-    virtual int handleResponse(WifiEvent& reply) {
-        ALOGV("In GetChannelList::handleResponse");
-
-        if (reply.get_cmd() != NL80211_CMD_VENDOR) {
-            ALOGD("Ignoring reply with cmd = %d", reply.get_cmd());
-            return NL_SKIP;
-        }
-
-        int id = reply.get_vendor_id();
-        int subcmd = reply.get_vendor_subcmd();
-        int num_channels_to_copy = 0;
-
-        nlattr* vendor_data = reply.get_attribute(NL80211_ATTR_VENDOR_DATA);
-        int len = reply.get_vendor_data_len();
-
-        ALOGV("Id = %0x, subcmd = %d, len = %d", id, subcmd, len);
-        if (vendor_data == NULL || len == 0) {
-            ALOGE("no vendor data in GetChannelList response; ignoring it");
-            return NL_SKIP;
-        }
-
-        for (nl_iterator it(vendor_data); it.has_next(); it.next()) {
-            if (it.get_type() == GSCAN_ATTRIBUTE_NUM_CHANNELS) {
-                num_channels_to_copy = it.get_u32();
-                ALOGI("Got channel list with %d channels", num_channels_to_copy);
-                if (num_channels_to_copy > max_channels) {
-                    num_channels_to_copy = max_channels;
-                }
-                *num_channels = num_channels_to_copy;
-            } else if (it.get_type() == GSCAN_ATTRIBUTE_CHANNEL_LIST && num_channels_to_copy) {
-                memcpy(channels, it.get_data(), sizeof(wifi_channel) * num_channels_to_copy);
-                for (int i = 0; i < num_channels_to_copy; i++) {
-                    ALOGD("count %d: channel %d MHz\n", i, channels[i]);
-                }
-            } else {
-                ALOGW("Ignoring invalid attribute type = %d, size = %d", it.get_type(),
-                      it.get_len());
-            }
-        }
-
-        return NL_OK;
-    }
-};
-
-wifi_error wifi_get_valid_channels(wifi_interface_handle handle, int band, int max_channels,
-                                   wifi_channel* channels, int* num_channels) {
-    GetChannelListCommand command(handle, channels, num_channels, max_channels, band);
-    return (wifi_error)command.requestResponse();
-}
 /////////////////////////////////////////////////////////////////////////////
 
 /* helper functions */
@@ -1705,35 +1614,6 @@ wifi_error wifi_set_bssid_blacklist(wifi_request_id id, wifi_interface_handle if
     return result;
 }
 
-wifi_error wifi_configure_roaming(wifi_interface_handle iface, wifi_roaming_config* roam_config) {
-    wifi_error ret;
-    wifi_bssid_params bssid_params;
-    unsigned int i;
-    wifi_request_id id = 0;
-
-    /* Set bssid blacklist */
-    if (roam_config->num_blacklist_bssid == 0) {
-        /* Flush request */
-        ALOGI("%s: num_blacklist_bssid == 0 (flush)", __FUNCTION__);
-    }
-
-    bssid_params.num_bssid = roam_config->num_blacklist_bssid;
-
-    for (i = 0; i < roam_config->num_blacklist_bssid; i++) {
-        mac_addr& addr1 = roam_config->blacklist_bssid[i];
-        memcpy(&bssid_params.bssids[i], &roam_config->blacklist_bssid[i], sizeof(mac_addr));
-        ALOGI("%02x:%02x:%02x:%02x:%02x:%02x\n", addr1[0], addr1[1], addr1[2], addr1[3], addr1[4],
-              addr1[5]);
-    }
-    ret = wifi_set_bssid_blacklist(id, iface, bssid_params);
-    if (ret != WIFI_SUCCESS) {
-        ALOGE("%s: Failed to configure blacklist bssids", __FUNCTION__);
-        return ret;
-    }
-
-    return ret;
-}
-
 class FirmwareRoamingStateCommand : public WifiCommand {
   private:
     fw_roaming_state_t roam_state;
@@ -1779,16 +1659,6 @@ class FirmwareRoamingStateCommand : public WifiCommand {
         return NL_SKIP;
     }
 };
-
-wifi_error wifi_enable_firmware_roaming(wifi_interface_handle iface, fw_roaming_state_t state) {
-    /* Set firmware roaming state */
-    FirmwareRoamingStateCommand* cmd = new FirmwareRoamingStateCommand(iface, state);
-    NULL_CHECK_RETURN(cmd, "memory allocation failure", WIFI_ERROR_OUT_OF_MEMORY);
-    wifi_error result = (wifi_error)cmd->start();
-    // release the reference of command as well
-    cmd->releaseRef();
-    return result;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 

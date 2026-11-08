@@ -176,6 +176,9 @@ class WifiRequest {
     int put_u64(int attribute, uint64_t value) {
         return nla_put(mMsg, attribute, sizeof(value), &value);
     }
+    int put_bytes(int attribute, const char* data, int len) {
+        return nla_put(mMsg, attribute, len, data);
+    }
     int put_string(int attribute, const char* value) {
         return nla_put(mMsg, attribute, strlen(value) + 1, value);
     }
@@ -253,6 +256,7 @@ class WifiCommand {
         return WIFI_ERROR_NOT_SUPPORTED;
     }
 
+    wifi_error mapKernelErrortoWifiHalError(int kern_err);
     int requestResponse();
     int requestEvent(int cmd);
     int requestVendorEvent(uint32_t id, int subcmd);
@@ -329,3 +333,41 @@ class WifiCommand {
 
 extern void InitResponseLock();
 extern void DestroyResponseLock();
+
+class WifiVendorCommand : public WifiCommand {
+  protected:
+    u32 mVendor_id;
+    u32 mSubcmd;
+    char* mVendorData;
+    u32 mDataLen;
+
+  public:
+    WifiVendorCommand(wifi_handle handle, wifi_request_id id, u32 vendor_id, u32 subcmd);
+    WifiVendorCommand(const char* type, wifi_handle handle, wifi_request_id id, u32 vendor_id,
+                      u32 subcmd);
+
+    virtual ~WifiVendorCommand();
+
+    virtual int create();
+
+    virtual wifi_error requestEvent();
+
+    virtual wifi_error put_u16(int attribute, uint16_t value);
+
+    virtual wifi_error put_u32(int attribute, uint32_t value);
+
+    virtual wifi_error put_string(int attribute, const char* value);
+
+    virtual struct nlattr* attr_start(int attribute);
+
+    virtual void attr_end(struct nlattr* attribute);
+
+    virtual wifi_error set_iface_id(const char* name);
+
+    virtual wifi_error put_bytes(int attribute, const char* data, int len);
+
+  protected:
+    virtual int handleResponse(WifiEvent& reply);
+
+    virtual int handleEvent(WifiEvent& event);
+};
