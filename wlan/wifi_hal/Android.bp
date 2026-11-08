@@ -43,5 +43,8 @@ cc_library {
         "-Wno-unused-private-field",
         "-Wno-unused-variable",
         "-Wno-unused-parameter",
-    ],
+    ] + select(soong_config_variable("wifi_hal", "enable_cfg_logger_support"), {
+        true: ["-DTARGET_SUPPORT_CFG_LOGGER"],
+        default: [],
+    }),
 }
