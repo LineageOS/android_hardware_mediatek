@@ -16,6 +16,24 @@
       "message": "Maybe also leave:\n\n// SPDX-FileCopyrightText: The Android Open Source Project\n\nas you did in a latter change from this chain.",
       "revId": "59c8a005bcd539976c5ed6b413409e6a0c5018a6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d8d8e9_8949774e",
+        "filename": "wlan/wpa_supplicant_8_lib/Android.bp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-10T23:36:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f3f30c8_76702556",
+      "revId": "59c8a005bcd539976c5ed6b413409e6a0c5018a6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
