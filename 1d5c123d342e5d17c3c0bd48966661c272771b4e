@@ -39,6 +39,30 @@
       },
       "revId": "1d5c123d342e5d17c3c0bd48966661c272771b4e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62881394_084d4658",
+        "filename": "wlan/wifi_hal/wifi_logger.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-11T00:24:13Z",
+      "side": 1,
+      "message": "Inside gl_vendor.h for the gen4m driver from Baklava Linux 6.12 branch. Although those are mostly unused if CFG_SUPPORT_LOGGER isn\u0027t enabled in the driver and could be unused on older gen4m branches.\n\nhttps://github.com/MiCode/MTK_kernel_modules/blob/bsp-warhol-w-oss/connectivity/wlan/core/gen4m/os/linux/include/gl_vendor.h#L193",
+      "parentUuid": "e6805498_db155daf",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 34
+      },
+      "revId": "1d5c123d342e5d17c3c0bd48966661c272771b4e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
