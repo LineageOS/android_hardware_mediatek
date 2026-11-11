@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d7b8b9c_c0acd6cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-11T20:54:48Z",
+      "side": 1,
+      "message": "https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-wlan-core-gen4m/commit/79f0d290a0d876f7be2457a79dcf8c091df2a9fd\n\nThat\u0027s what mtk added on gen4m since 6.12",
+      "parentUuid": "e061e24e_7daf6820",
+      "revId": "1d5c123d342e5d17c3c0bd48966661c272771b4e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6805498_db155daf",
         "filename": "wlan/wifi_hal/wifi_logger.cpp",
         "patchSetId": 7
