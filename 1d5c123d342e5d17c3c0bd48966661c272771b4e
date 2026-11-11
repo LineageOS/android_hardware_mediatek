@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1a042bc_1083c908",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-11T00:27:53Z",
+      "side": 1,
+      "message": "I do, but that means CFG_SUPPORT_LOGGER isn\u0027t enabled in your driver. I can always return it as unsupported or guard it for older gen4m / those who didn\u0027t enabled it.\n\nOr you could enable it and backport the related ALPS changes from MotorolaMobilityLLC history for gen4m if you wanna keep it",
+      "parentUuid": "634c2f92_4314d36a",
+      "revId": "1d5c123d342e5d17c3c0bd48966661c272771b4e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6805498_db155daf",
         "filename": "wlan/wifi_hal/wifi_logger.cpp",
         "patchSetId": 7
