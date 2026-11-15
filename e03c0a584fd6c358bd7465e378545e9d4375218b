@@ -16,6 +16,24 @@
       "message": "Are these values generic on all DICE platforms ?",
       "revId": "e03c0a584fd6c358bd7465e378545e9d4375218b",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408b85a2_503e0e7b",
+        "filename": "create_pl_dev/create_pl_dev.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 32620
+      },
+      "writtenOn": "2026-11-15T17:48:47Z",
+      "side": 1,
+      "message": "Yes. BRLYT is a BootROM thing, so the header \u0026 descriptor layout is the same everywhere.",
+      "parentUuid": "bdc8a22b_ccb7d44b",
+      "revId": "e03c0a584fd6c358bd7465e378545e9d4375218b",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
