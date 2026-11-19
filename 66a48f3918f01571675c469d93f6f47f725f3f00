@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a24c89_173f3fe9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-19T18:07:51Z",
+      "side": 1,
+      "message": "https://review.lineageos.org/c/LineageOS/android_hardware_mediatek/+/512411",
+      "revId": "66a48f3918f01571675c469d93f6f47f725f3f00",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
