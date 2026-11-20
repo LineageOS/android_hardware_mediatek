@@ -72,6 +72,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db5985cf_dede736b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-20T04:13:15Z",
+      "side": 1,
+      "message": "Made it optional for those who decide to enable it on gen4m / if mediatek start enable it by default in the future",
+      "parentUuid": "0d7b8b9c_c0acd6cf",
+      "revId": "1d5c123d342e5d17c3c0bd48966661c272771b4e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6805498_db155daf",
