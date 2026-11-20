@@ -135,6 +135,30 @@
       },
       "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b2e430b_7191d23c",
+        "filename": "wlan/wpa_supplicant_8_lib/driver_cmd_nl80211.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 24442
+      },
+      "writtenOn": "2026-11-20T11:54:03Z",
+      "side": 1,
+      "message": "I would appreciate if you weren\u0027t copy-pasting LLM responses. And that\u0027s not broadcom layout (you could have seen in the next commits), khadas one for some reason is like that.\n\nI will fix it anyway",
+      "parentUuid": "668793ea_a2a72cb4",
+      "range": {
+        "startLine": 96,
+        "startChar": 45,
+        "endLine": 97,
+        "endChar": 41
+      },
+      "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
