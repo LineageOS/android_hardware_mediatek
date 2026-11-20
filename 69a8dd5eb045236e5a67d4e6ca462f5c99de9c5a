@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae77b3fa_a4e3a9f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 34519
+      },
+      "writtenOn": "2026-11-20T05:57:14Z",
+      "side": 1,
+      "message": "Squash it below commit for cleaner commit history like Bruno said",
+      "revId": "69a8dd5eb045236e5a67d4e6ca462f5c99de9c5a",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
