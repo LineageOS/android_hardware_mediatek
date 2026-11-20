@@ -87,6 +87,30 @@
       },
       "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14b3f145_80f2cb52",
+        "filename": "wlan/wpa_supplicant_8_lib/driver_cmd_nl80211.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 38407
+      },
+      "writtenOn": "2026-11-20T11:43:39Z",
+      "side": 1,
+      "message": "Agreed on SETBAND. COUNTRY already works here, it goes through the private command path and gen4m accepts it.",
+      "parentUuid": "10532f48_ca26ee62",
+      "range": {
+        "startLine": 96,
+        "startChar": 45,
+        "endLine": 97,
+        "endChar": 41
+      },
+      "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
