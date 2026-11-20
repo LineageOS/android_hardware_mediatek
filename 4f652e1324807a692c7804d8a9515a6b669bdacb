@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d72883e_5ba8479c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37445
+      },
+      "writtenOn": "2026-11-20T06:07:49Z",
+      "side": 1,
+      "message": "hi @Elias Gheeraert, could you review this when free? or should i abandon it? thanks!",
+      "revId": "4f652e1324807a692c7804d8a9515a6b669bdacb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
