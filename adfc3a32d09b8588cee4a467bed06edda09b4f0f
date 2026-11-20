@@ -16,6 +16,29 @@
       "message": "same clang-format error on CI",
       "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48bf1b63_740cba14",
+        "filename": "wlan/wpa_supplicant_8_lib/driver_cmd_nl80211.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 38407
+      },
+      "writtenOn": "2026-11-20T10:19:48Z",
+      "side": 1,
+      "message": "```suggestion\n\t\tos_strncasecmp(cmd, \"RXFILTER\", 8) \u003d\u003d 0\n```\nThe early return here stubs out SETSUSPENDMODE and SETBAND, but gen4m handles both as private commands, so WLAN never enters suspend mode with the screen off.",
+      "range": {
+        "startLine": 96,
+        "startChar": 45,
+        "endLine": 97,
+        "endChar": 41
+      },
+      "revId": "adfc3a32d09b8588cee4a467bed06edda09b4f0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
