@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Wifi driver supports Opportunistic Wireless Encryption (OWE) Transition
+         aka Enhanced Open for Soft-AP -->
+    <bool name="config_wifiSoftapOweTransitionSupported">true</bool>
+
+    <!-- Wifi driver supports Opportunistic Wireless Encryption (OWE)
+         aka Enhanced Open for Soft-AP -->
+    <bool name="config_wifiSoftapOweSupported">true</bool>
+</resources>
