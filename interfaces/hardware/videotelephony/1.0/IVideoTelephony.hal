@@ -1,0 +1,9 @@
+package vendor.mediatek.hardware.videotelephony@1.0;
+
+interface IVideoTelephony {
+    configureFmqMode(uint16_t mode) generates (uint16_t result);
+
+    configureFmqSyncRead() generates (bool success, fmq_sync<uint8_t> mqDesc);
+
+    configureFmqSyncWrite() generates (bool success, fmq_sync<uint8_t> mqDesc);
+};
