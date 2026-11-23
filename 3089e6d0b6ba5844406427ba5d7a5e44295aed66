@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c128c37_4d1d554e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37445
+      },
+      "writtenOn": "2026-11-23T21:24:16Z",
+      "side": 1,
+      "message": "tested on a transsion mt6789 phone, stock vtservice loads the built lib fine\n\n```\n~\n❯ adb shell \"lshal --neat -i -p -c | grep videotelephony\"\nvendor.mediatek.hardware.videotelephony@1.0::IVideoTelephony/default                951\nvendor.mediatek.hardware.videotelephony@1.0::IVideoTelephony/default                951  951\nvendor.mediatek.hardware.videotelephony@1.0::I*/* (/vendor/lib/hw/)                 N/A\nvendor.mediatek.hardware.videotelephony@1.0::I*/* (/vendor/lib64/hw/)               N/A  951\n\n~\n❯ adb shell \u0027grep videotelephony@1.0 /proc/$(pidof vtservice)/maps\u0027\n77dc10b000-77dc115000 r--p 00000000 fe:09 267260                         /system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so\n77dc115000-77dc11f000 r-xp 0000a000 fe:09 267260                         /system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so\n77dc11f000-77dc121000 r--p 00014000 fe:09 267260                         /system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so\n77dc121000-77dc122000 rw-p 00016000 fe:09 267260                         /system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so\n```",
+      "revId": "3089e6d0b6ba5844406427ba5d7a5e44295aed66",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
