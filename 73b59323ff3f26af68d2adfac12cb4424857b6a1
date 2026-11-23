@@ -16,6 +16,23 @@
       "message": "works fine on a transsion phone (mt6789)\n```\n[WMT-IC][I]mtk_wcn_soc_rom_patch_dwn:[Rom Patch]Name\u003dsoc2_2_ram_bt_1d_1_hdr.bin,EmiOffset\u003d0x170000,Size\u003d0xa7e88\n[WMT-IC][I]mtk_wcn_soc_rom_patch_dwn:[Rom Patch]Name\u003dsoc2_2_ram_wifi_1d_1_hdr.bin,EmiOffset\u003d0x2a0000,Size\u003d0x3aedc\n[WMT-IC][I]mtk_wcn_soc_rom_patch_dwn:[Rom Patch]Name\u003dsoc2_2_ram_mcu_1d_1_hdr.bin,EmiOffset\u003d0x0,Size\u003d0x30548\n```",
       "revId": "73b59323ff3f26af68d2adfac12cb4424857b6a1",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "072de285_e7516a14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37445
+      },
+      "writtenOn": "2026-11-23T21:09:35Z",
+      "side": 1,
+      "message": "could you add mt6789 too? it\u0027s used by xelex mt6789-common (Q25, P26) and\ndaylight jagar iirc\n\nneeds {0x6789, \"soc2_2\"} here and {0x6789, \"1e_1\", \"1d_1\"} at\n\nhttps://review.lineageos.org/c/LineageOS/android_hardware_mediatek/+/514459/3/connectivity/wmt_loader/launcher.cpp#112",
+      "revId": "73b59323ff3f26af68d2adfac12cb4424857b6a1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
