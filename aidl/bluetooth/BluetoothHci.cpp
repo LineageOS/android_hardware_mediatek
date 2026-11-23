@@ -191,7 +191,10 @@ ndk::ScopedAStatus BluetoothHci::sendIsoData(const std::vector<uint8_t>& packet)
 }
 
 ndk::ScopedAStatus BluetoothHci::send(PacketType type, const std::vector<uint8_t>& data) {
-    VendorInterface::get()->Send(type, data.data(), data.size());
+    std::lock_guard<std::mutex> guard(mStateMutex);
+    if (mState == HalState::INITIALIZING || mState == HalState::ONE_CLIENT) {
+        VendorInterface::get()->Send(type, data.data(), data.size());
+    }
     return ndk::ScopedAStatus::ok();
 }
 
