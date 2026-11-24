@@ -33,6 +33,24 @@
       "message": "EventFlagBits enum is missing",
       "revId": "3089e6d0b6ba5844406427ba5d7a5e44295aed66",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7667ec6b_bd9578b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 37445
+      },
+      "writtenOn": "2026-11-24T08:55:26Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "6145849f_3c0ce5cc",
+      "revId": "3089e6d0b6ba5844406427ba5d7a5e44295aed66",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
