@@ -137,6 +137,7 @@ class ThermalThrottling {
     std::shared_mutex cdev_all_request_map_mutex_;
     // Set of all request for a cooling device from each sensor
     std::unordered_map<std::string, std::multiset<int, std::greater<int>>> cdev_all_request_map_;
+    std::unordered_map<std::string, std::unordered_set<std::string>> initial_cdev_sensor_map_;
 };
 
 }  // namespace implementation

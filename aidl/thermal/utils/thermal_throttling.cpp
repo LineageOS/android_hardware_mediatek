@@ -169,6 +169,10 @@ bool ThermalThrottling::registerThermalThrottling(
             }
         }
     }
+    for (const auto &cdev_request :
+         thermal_throttling_status_map_.at(sensor_name.data()).cdev_status_map) {
+        initial_cdev_sensor_map_[cdev_request.first].insert(sensor_name.data());
+    }
     return true;
 }
 
@@ -878,6 +882,14 @@ void ThermalThrottling::computeCoolingDevicesRequest(
             // Update sensor cdev request time in state
             thermal_stats_helper->updateSensorCdevRequestStats(sensor_name, cdev_name,
                                                                cdev_request_pair.second);
+        }
+        auto initial = initial_cdev_sensor_map_.find(cdev_name);
+        if (initial != initial_cdev_sensor_map_.end()) {
+            initial->second.erase(sensor_name.data());
+            if (initial->second.empty()) {
+                cooling_devices_to_update->emplace_back(cdev_name);
+                initial_cdev_sensor_map_.erase(initial);
+            }
         }
     }
 }
