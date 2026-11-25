@@ -69,6 +69,7 @@ struct SensorStatus {
     ThrottlingSeverity prev_hot_severity;
     ThrottlingSeverity prev_cold_severity;
     boot_clock::time_point last_update_time;
+    boot_clock::time_point next_retry_time;
     ThermalSample thermal_cached;
     std::vector<bool> count_threshold_counted;
     std::queue<ThermalSample> thermal_history;

@@ -21,7 +21,9 @@
 #include <sys/types.h>
 #include <utils/Trace.h>
 
+#include <algorithm>
 #include <chrono>
+#include <limits>
 #include <fstream>
 
 #include "../thermal-helper.h"
@@ -499,8 +501,17 @@ bool ThermalWatcher::threadLoop() {
     auto time_elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(boot_clock::now() -
                                                                                  last_update_time_);
 
-    if (time_elapsed_ms < sleep_ms_ &&
-        looper_->pollOnce(sleep_ms_.count(), &fd, nullptr, nullptr) >= 0) {
+    int timeout_ms = 0;
+    if (sleep_ms_ == std::chrono::milliseconds::max()) {
+        timeout_ms = -1;
+    } else if (time_elapsed_ms < sleep_ms_) {
+        auto remaining = sleep_ms_ - std::max(time_elapsed_ms, std::chrono::milliseconds::zero());
+        timeout_ms = static_cast<int>(std::min(
+                remaining.count(),
+                static_cast<std::chrono::milliseconds::rep>(std::numeric_limits<int>::max())));
+    }
+
+    if (timeout_ms != 0 && looper_->pollOnce(timeout_ms, &fd, nullptr, nullptr) >= 0) {
         ATRACE_NAME("ThermalWatcher::threadLoop - receive event");
         if (fd != uevent_fd_.get() && fd != thermal_genl_fd_.get()) {
             return true;
