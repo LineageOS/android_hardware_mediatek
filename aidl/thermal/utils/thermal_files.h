@@ -38,6 +38,7 @@ class ThermalFiles {
     // is read, this function will fill in data accordingly then return true.
     bool readThermalFile(std::string_view thermal_name, std::string *data) const;
     bool writeCdevFile(std::string_view thermal_name, std::string_view data);
+    bool writeCdevFile(std::string_view thermal_name, std::string_view data, int *error);
     size_t getNumThermalFiles() const { return thermal_name_to_path_map_.size(); }
 
   private:

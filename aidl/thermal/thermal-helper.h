@@ -12,6 +12,7 @@
 #include <chrono>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <shared_mutex>
 #include <string>
 #include <string_view>
@@ -75,6 +76,13 @@ struct SensorStatus {
     std::queue<ThermalSample> thermal_history;
     bool pending_notification;
     OverrideStatus override_status;
+};
+
+struct CoolingDeviceRequestStatus {
+    std::optional<int> accepted_request;
+    bool pending = false;
+    int last_write_errno = 0;
+    boot_clock::time_point next_retry_time = boot_clock::time_point::min();
 };
 
 class ThermalHelper {
@@ -231,7 +239,8 @@ class ThermalHelperImpl : public ThermalHelper {
     float readPredictionAfterTimeMs(std::string_view sensor_name, const size_t time_ms);
     bool readTemperaturePredictions(std::string_view sensor_name, std::vector<float> *predictions);
     float getThermalRising(const SensorStatus &sensor_status, const ThermalSample &curr_sample);
-    void updateCoolingDevices(const std::vector<std::string> &cooling_devices_to_update);
+    std::chrono::milliseconds updateCoolingDevices(
+            const std::vector<std::string> &cooling_devices_to_update);
     // Check the max throttling for binded cooling device
     void maxCoolingRequestCheck(
             std::unordered_map<std::string, BindedCdevInfo> *binded_cdev_info_map);
@@ -243,6 +252,8 @@ class ThermalHelperImpl : public ThermalHelper {
     PowerFiles power_files_;
     ThermalFiles thermal_sensors_;
     ThermalFiles cooling_devices_;
+    std::mutex cooling_device_request_mutex_;
+    std::unordered_map<std::string, CoolingDeviceRequestStatus> cooling_device_request_status_map_;
     ThermalThrottling thermal_throttling_;
     bool is_initialized_;
     const NotificationCallback cb_;

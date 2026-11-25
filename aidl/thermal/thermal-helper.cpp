@@ -694,30 +694,66 @@ bool ThermalHelperImpl::readTemperatureThreshold(std::string_view sensor_name,
     return true;
 }
 
-void ThermalHelperImpl::updateCoolingDevices(const std::vector<std::string> &updated_cdev) {
+std::chrono::milliseconds ThermalHelperImpl::updateCoolingDevices(
+        const std::vector<std::string> &updated_cdev) {
+    std::lock_guard<std::mutex> lock(cooling_device_request_mutex_);
     for (const auto &target_cdev : updated_cdev) {
-        int max_state;
-        const auto &cdev_info = cooling_device_info_map_.at(target_cdev);
-        if (thermal_throttling_.getCdevMaxRequest(target_cdev, &max_state)) {
-            const auto request =
-                    cdev_info.apply_powercap
-                            ? static_cast<int>(std::lround(cdev_info.state2power[max_state] /
-                                                           cdev_info.multiplier))
-                            : max_state;
-            if (cooling_devices_.writeCdevFile(target_cdev, std::to_string(request))) {
-                ATRACE_INT(target_cdev.c_str(), request);
-                if (cdev_info.apply_powercap) {
-                    LOG(INFO) << "Successfully update cdev " << target_cdev << " budget to "
-                              << request << "(state:" << max_state << ")";
-                } else {
-                    LOG(INFO) << "Successfully update cdev " << target_cdev << " sysfs to "
-                              << request;
-                }
-            } else {
-                LOG(ERROR) << "Failed to update cdev " << target_cdev << " sysfs to " << request;
-            }
+        if (cooling_device_info_map_.count(target_cdev)) {
+            cooling_device_request_status_map_.try_emplace(target_cdev);
         }
     }
+
+    const auto now = boot_clock::now();
+    for (auto &[target_cdev, status] : cooling_device_request_status_map_) {
+        if (status.pending && now < status.next_retry_time) {
+            continue;
+        }
+
+        int max_state;
+        if (!thermal_throttling_.getCdevMaxRequest(target_cdev, &max_state)) {
+            status.pending = true;
+            status.next_retry_time = boot_clock::now() + kMinPollIntervalMs;
+            continue;
+        }
+        const auto &cdev_info = cooling_device_info_map_.at(target_cdev);
+        const auto request =
+                cdev_info.apply_powercap
+                        ? static_cast<int>(std::lround(cdev_info.state2power[max_state] /
+                                                       cdev_info.multiplier))
+                        : max_state;
+        if (!status.pending && status.accepted_request == request) {
+            continue;
+        }
+
+        int write_errno = 0;
+        if (cooling_devices_.writeCdevFile(target_cdev, std::to_string(request), &write_errno)) {
+            status.accepted_request = request;
+            status.pending = false;
+            status.last_write_errno = 0;
+            status.next_retry_time = boot_clock::time_point::min();
+            ATRACE_INT(target_cdev.c_str(), request);
+            LOG(INFO) << "Accepted cdev " << target_cdev << " sysfs request " << request
+                      << "(state:" << max_state << ")";
+        } else {
+            status.pending = true;
+            status.last_write_errno = write_errno;
+            status.next_retry_time = boot_clock::now() + kMinPollIntervalMs;
+            LOG(ERROR) << "Failed to update cdev " << target_cdev << " sysfs to " << request
+                       << " errno " << (write_errno > 0 ? std::to_string(write_errno) : "UNKNOWN");
+        }
+    }
+
+    auto min_sleep_ms = std::chrono::milliseconds::max();
+    const auto completed = boot_clock::now();
+    for (const auto &[target_cdev, status] : cooling_device_request_status_map_) {
+        if (status.pending) {
+            const auto remaining = std::max(
+                    std::chrono::milliseconds::zero(),
+                    std::chrono::ceil<std::chrono::milliseconds>(status.next_retry_time - completed));
+            min_sleep_ms = std::min(min_sleep_ms, remaining);
+        }
+    }
+    return min_sleep_ms;
 }
 
 std::pair<ThrottlingSeverity, ThrottlingSeverity> ThermalHelperImpl::getSeverityFromThresholds(
@@ -1841,9 +1877,7 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
         }
     }
 
-    if (!cooling_devices_to_update.empty()) {
-        updateCoolingDevices(cooling_devices_to_update);
-    }
+    min_sleep_ms = std::min(min_sleep_ms, updateCoolingDevices(cooling_devices_to_update));
 
     int count_failed_reporting = thermal_stats_helper_.reportStats();
     if (count_failed_reporting != 0) {

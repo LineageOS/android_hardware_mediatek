@@ -15,6 +15,7 @@
 #include <android-base/strings.h>
 #include <utils/Trace.h>
 
+#include <cerrno>
 #include <string_view>
 
 namespace aidl {
@@ -83,11 +84,23 @@ bool ThermalFiles::readThermalFile(std::string_view thermal_name, std::string *d
 }
 
 bool ThermalFiles::writeCdevFile(std::string_view cdev_name, std::string_view data) {
+    return writeCdevFile(cdev_name, data, nullptr);
+}
+
+bool ThermalFiles::writeCdevFile(std::string_view cdev_name, std::string_view data, int *error) {
     const auto path_info =
             getThermalFilePath(::android::base::StringPrintf("%s_%s", cdev_name.data(), "w"));
 
     ATRACE_NAME(StringPrintf("ThermalFiles::writeCdevFile - %s", cdev_name.data()).c_str());
+    if (error) {
+        *error = 0;
+    }
+    errno = 0;
     if (!::android::base::WriteStringToFile(data.data(), path_info.path)) {
+        const int write_errno = errno;
+        if (error) {
+            *error = write_errno;
+        }
         PLOG(WARNING) << "Failed to write cdev: " << cdev_name << " to " << data.data();
         return false;
     }
