@@ -246,6 +246,7 @@ ThermalHelperImpl::ThermalHelperImpl(const NotificationCallback &cb)
                 .prev_hot_severity = ThrottlingSeverity::NONE,
                 .prev_cold_severity = ThrottlingSeverity::NONE,
                 .last_update_time = boot_clock::time_point::min(),
+                .next_retry_time = boot_clock::time_point::min(),
                 .thermal_cached = {NAN, boot_clock::time_point::min()},
                 .count_threshold_counted = count_threshold_counted,
                 .pending_notification = false,
@@ -1624,6 +1625,9 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
     for (const auto &[sensor, temp] : uevent_sensor_map) {
         if (!std::isnan(temp)) {
             std::unique_lock<std::shared_mutex> _lock(sensor_status_map_mutex_);
+            if (sensor_status_map_[sensor].next_retry_time != boot_clock::time_point::min()) {
+                continue;
+            }
             sensor_status_map_[sensor].thermal_cached.temp = temp;
             sensor_status_map_[sensor].thermal_cached.timestamp = now;
         }
@@ -1665,13 +1669,23 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
             }
         }
         // Force update if it's first time we update temperature value after device boot
-        if (sensor_status.last_update_time == boot_clock::time_point::min()) {
+        if (sensor_status.last_update_time != boot_clock::time_point::min()) {
+            time_elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    now - sensor_status.last_update_time);
+        }
+        if (sensor_status.next_retry_time != boot_clock::time_point::min()) {
+            if (now < sensor_status.next_retry_time) {
+                auto retry_remaining = std::chrono::ceil<std::chrono::milliseconds>(
+                        sensor_status.next_retry_time - now);
+                min_sleep_ms = std::min(min_sleep_ms, retry_remaining);
+                continue;
+            }
+            force_update = true;
+            force_no_cache = true;
+        } else if (sensor_status.last_update_time == boot_clock::time_point::min()) {
             force_update = true;
 
         } else {
-            // Handle other update event
-            time_elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                    now - sensor_status.last_update_time);
             // Update triggered from genlink or uevent
             if (uevent_sensor_map.size()) {
                 // Checking virtual sensor
@@ -1694,7 +1708,8 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
                         force_no_cache = true;
                     }
                 }
-            } else if (time_elapsed_ms > sleep_ms) {
+            }
+            if (time_elapsed_ms >= sleep_ms) {
                 // Update triggered from normal polling cylce
                 force_update = true;
             }
@@ -1731,14 +1746,20 @@ std::chrono::milliseconds ThermalHelperImpl::thermalWatcherCallbackFunc(
         if (ret == SensorReadStatus::ERROR) {
             LOG(ERROR) << __func__
                        << ": error reading temperature for sensor: " << name_status_pair.first;
+            sensor_status.next_retry_time = now + kMinPollIntervalMs;
+            min_sleep_ms = std::min(min_sleep_ms, kMinPollIntervalMs);
             continue;
         }
 
         if (ret == SensorReadStatus::UNDER_COLLECTING) {
             LOG(INFO) << __func__
                       << ": data under collecting for sensor: " << name_status_pair.first;
+            sensor_status.next_retry_time = now + kMinPollIntervalMs;
+            min_sleep_ms = std::min(min_sleep_ms, kMinPollIntervalMs);
             continue;
         }
+
+        sensor_status.next_retry_time = boot_clock::time_point::min();
 
         {
             std::unique_lock<std::shared_mutex> _lock(sensor_status_map_mutex_);
